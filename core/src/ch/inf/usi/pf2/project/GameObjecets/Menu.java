@@ -12,24 +12,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Menu extends GameObject {
     private SpriteBatch batch;
     private final Texture background;
-    private int degree;
-
-    private int x;
-    private int y;
 
 
     public Menu(SpriteBatch batch){
         this.batch = batch;
         this.background = new Texture("badlogic.jpg");
 
-
-        degree  = 0;
-        x=0;
-        y=0;
     }
 
     @Override
-    public void renderObject() {
+    public void renderGameObject() {
 
         // resets the frame probably
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -38,15 +30,17 @@ public class Menu extends GameObject {
         //this is where we can actually display stuff on the screen
         batch.begin();
 
-        batch.draw(new TextureRegion(background),x-100,y-100,100,100,200,200,1,1,degree);
+        batch.draw(new TextureRegion(background),100,100,100,100,200,200,1,1,0);
 
         batch.end();
-        x = Gdx.input.getX();
-        y = -Gdx.input.getY() + Gdx.graphics.getHeight();
 
-        degree+=Gdx.input.getX();
+    }
 
+    @Override
+    public void update(float dt){
+    }
 
-
+    @Override
+    public void inputHandler(){
     }
 }
