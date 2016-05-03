@@ -24,15 +24,13 @@ public class Boat {
         //boat.setScale((worldHeight/5f)*ratio,worldHeight/5f);
         //boat.scale(worldHeight/5f);
         boat.setSize((worldHeight/5f)*ratio,worldHeight/5f);
-        this.worldHeight=worldHeight;
-        this.worldWidth=worldWidth;
-        this.pos_x=pos_x;
-        this.pos_y=pos_y;
 
-
+        this.worldHeight = worldHeight;
 
         velocity = new Vector2(0,0);
         boat.setPosition(pos_x-boat.getWidth()/2f,pos_y-boat.getHeight()/2f);
+
+        System.out.println(boat.getHeight());
 
     }
 
@@ -41,14 +39,18 @@ public class Boat {
     }
 
     public void updateBoat(float dt){
-        if( boat.getY() + velocity.y * dt - boat.getHeight()/2f > 0 && boat.getY() + velocity.y*dt - boat.getHeight()/4f < worldHeight ){
-            boat.translateY(velocity.y * dt);
 
+        if(velocity.y*dt + boat.getY() + boat.getWidth()/2f - 19  < worldHeight && velocity.y*dt + boat.getY() +20 >  0  ){
+            boat.translateY(velocity.y * dt);
         }
         boat.translateX(velocity.x * dt);
 
 
+
+
+
     }
+
 
     public void handleInput(){
 
