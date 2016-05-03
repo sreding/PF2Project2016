@@ -1,4 +1,4 @@
-package ch.inf.usi.pf2.project.GameObjecets;
+package ch.inf.usi.pf2.project.gameStates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Created by alexandercamenzind on 27/04/16.
  */
-public class Menu extends GameObject {
+public class Menu extends gameState {
     private SpriteBatch batch;
     private final Texture background;
 

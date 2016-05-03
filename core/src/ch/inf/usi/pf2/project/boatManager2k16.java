@@ -7,18 +7,19 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
-import ch.inf.usi.pf2.project.GameObjecets.*;
+
+import ch.inf.usi.pf2.project.gameStates.*;
 
 public class boatManager2k16 extends ApplicationAdapter {
 	SpriteBatch batch;
-	GameObject currentState;
-	private Stack<GameObject> stateStack;
+	gameState currentState;
+	private Stack<gameState> stateStack;
 
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		currentState = new Map(batch);
+		currentState =new MiniGame(batch);
 
 	}
 
