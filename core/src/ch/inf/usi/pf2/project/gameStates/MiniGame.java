@@ -35,9 +35,9 @@ public class MiniGame extends gameState {
         WorldWidth=bg.getWidth();
         aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.cam = new OrthographicCamera(WorldHeight * aspectRatio, WorldHeight);
-        cam.position.set((WorldHeight * aspectRatio)/2f,WorldHeight/2f,0);
+        cam.position.set((WorldHeight * aspectRatio)/2f,WorldHeight/2f,0); 
 
-        boat = new Boat(new Sprite( new Texture("testBoat.png")),(WorldHeight * aspectRatio)/2f,WorldHeight/2f, WorldHeight);
+        boat = new Boat(new Sprite( new Texture("testBoat.png")),(WorldHeight * aspectRatio)/2f,WorldHeight/2f, WorldHeight, WorldWidth);
 
 
 
