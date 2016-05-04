@@ -23,7 +23,7 @@ public class Boat {
         float ratio = boat.getWidth() / boat.getHeight();
         //boat.setScale((worldHeight/5f)*ratio,worldHeight/5f);
         //boat.scale(worldHeight/5f);
-        boat.setSize((worldHeight/5f)*ratio,worldHeight/5f);
+        boat.setSize((worldHeight/8f)*ratio,worldHeight/8f);
 
         this.worldHeight = worldHeight;
 
@@ -40,7 +40,7 @@ public class Boat {
 
     public void updateBoat(float dt){
 
-        if(velocity.y*dt + boat.getY() + boat.getWidth()/2f - 19  < worldHeight && velocity.y*dt + boat.getY() +20 >  0  ){
+        if(velocity.y*dt + boat.getY() +boat.getHeight()   < worldHeight && velocity.y*dt + boat.getY() >  0  ){
             boat.translateY(velocity.y * dt);
         }
         boat.translateX(velocity.x * dt);
