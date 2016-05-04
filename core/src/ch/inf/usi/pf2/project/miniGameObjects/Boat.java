@@ -23,9 +23,12 @@ public class Boat {
         float ratio = boat.getWidth() / boat.getHeight();
         //boat.setScale((worldHeight/5f)*ratio,worldHeight/5f);
         //boat.scale(worldHeight/5f);
-        boat.setSize((worldHeight/8f)*ratio,worldHeight/8f);
+        boat.setSize((worldHeight/15f)*ratio,worldHeight/15f);
 
         this.worldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+        this.pos_x = pos_x;
+        this.pos_y = pos_y;
 
         velocity = new Vector2(0,0);
         boat.setPosition(pos_x-boat.getWidth()/2f,pos_y-boat.getHeight()/2f);
@@ -46,9 +49,13 @@ public class Boat {
         boat.translateX(velocity.x * dt);
 
 
+    }
 
 
-
+    //allows for infinite scrolling background doesnt really fit though
+    public void reset(){
+        //this.boat.setPosition(pos_x-boat.getWidth()/2f,pos_y-boat.getHeight()/2f);
+        boat.setX(boat.getX() - worldWidth);
     }
 
 

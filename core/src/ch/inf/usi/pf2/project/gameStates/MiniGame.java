@@ -18,6 +18,7 @@ public class MiniGame extends gameState {
     private SpriteBatch batch;
     private OrthographicCamera cam;
     private Sprite bg;
+    private Sprite bg2;
 
     private float WorldHeight;
     private float WorldWidth;
@@ -29,6 +30,8 @@ public class MiniGame extends gameState {
 
 
         this.bg = new Sprite ( new Texture("miniGameBackground.png"));
+        bg2= new Sprite (new Texture("miniGameBackground.png"));
+        bg2.translateX(bg.getWidth());
         this.batch=batch;
 
         WorldHeight=bg.getHeight();
@@ -56,7 +59,7 @@ public class MiniGame extends gameState {
         //this is where we can actually display stuff on the screen
         batch.begin();
         bg.draw(batch);
-       // batch.draw(boat.getBoat(),boat.getPosition().x, boat.getPosition().y);
+        bg2.draw(batch);
         boat.getBoat().draw(batch);
         batch.end();
 
@@ -67,6 +70,12 @@ public class MiniGame extends gameState {
     @Override
     public void update(float dt){
         boat.updateBoat(dt);
+
+
+        //this makes the background be infinite
+        if(cam.position.x > 1.5 * WorldWidth ){
+            boat.reset();
+        }
 
         cam.position.set(boat.getBoat().getX()+(WorldHeight * aspectRatio)/2f, WorldHeight / 2f, 0);
 

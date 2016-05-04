@@ -19,7 +19,7 @@ public class boatManager2k16 extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		currentState =new MiniGame(batch);
+		currentState =new Map(batch);
 
 	}
 
