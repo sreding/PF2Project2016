@@ -21,7 +21,10 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
+import ch.inf. usi.pf2.project.mapObjects.Button;
+import java.util.ArrayList;
 /**
  * Created by alexandercamenzind on 28/04/16.
  */
@@ -41,25 +44,33 @@ public class Map extends gameState {
 
     private ShapeRenderer shapeRenderer;
 
+    private ArrayList<Button> buttons;
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
+        shapeRenderer= new ShapeRenderer();
+
+
+        //set up camera
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         cam = new OrthographicCamera();
         cam.setToOrtho(false,500*w/h,500);
         cam.update();
 
+        //set up map
         tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
         prop = tiledMap.getProperties();
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
-
         this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
 
-        shapeRenderer= new ShapeRenderer();
+        //set up buttons
+        buttons = new ArrayList<Button>();
+        buttons.add(new Button(50,50,20, new Sprite(new Texture("buttonTest.png"))));
 
 
 
@@ -77,23 +88,17 @@ public class Map extends gameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        shapeRenderer.setProjectionMatrix(cam.combined);
+        batch.begin();
 
-        for(MapObject object : objects){
-            if(object instanceof RectangleMapObject){
-
-
-                RectangleMapObject rec =  (RectangleMapObject) object;
-
-                shapeRenderer.begin(ShapeType.Filled);
-                shapeRenderer.setColor(Color.RED);
-                Rectangle r = rec.getRectangle();
-                shapeRenderer.rect(r.x, r.y, r.width, r.height);
-
-
-                shapeRenderer.end();
-            }
+        for(Button b: buttons){
+            b.drawButton(batch);
         }
+
+        batch.end();
+
+
+      // showHitBoxes();
+
 
 
 
@@ -113,10 +118,13 @@ public class Map extends gameState {
 
         cam.translate(-Gdx.input.getDeltaX(),Gdx.input.getDeltaY());
 
+        if(Gdx.input.justTouched()){
+            System.out.println(cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0)).x);
+        }
 
+        if(buttons.get(0).isTouched()){
+            System.out.println("button pressed");
 
-        if(Gdx.input.isTouched() && Gdx.input.getX() > 1000){
-            //cam.zoom -= 0.1;
         }
     }
 
@@ -134,6 +142,25 @@ public class Map extends gameState {
         if(cam.position.y + cam.viewportHeight/2 > MAP_HEIGHT){
             cam.position.y = MAP_HEIGHT - cam.viewportHeight/2;
         }
+    }
+
+    private void showHitBoxes(){
+        shapeRenderer.setProjectionMatrix(cam.combined);
+
+        for(MapObject object : objects){
+            if(object instanceof RectangleMapObject){
+
+
+                RectangleMapObject rec =  (RectangleMapObject) object;
+
+                shapeRenderer.begin(ShapeType.Filled);
+                shapeRenderer.setColor(Color.RED);
+                Rectangle r = rec.getRectangle();
+                shapeRenderer.rect(r.x, r.y, r.width, r.height);
+                shapeRenderer.end();
+            }
+        }
+
     }
 
 
