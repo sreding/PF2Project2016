@@ -1,11 +1,15 @@
 package ch.inf.usi.pf2.project.gameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -13,6 +17,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by alexandercamenzind on 28/04/16.
@@ -25,9 +33,14 @@ public class Map extends gameState {
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
     private TiledMapTileLayer layer;
+    private MapProperties prop;
 
-    private int index1;
-    private int index2;
+    private int MAP_WIDTH;
+    private int MAP_HEIGHT;
+    private MapObjects objects;
+
+    private ShapeRenderer shapeRenderer;
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
@@ -40,20 +53,14 @@ public class Map extends gameState {
         tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+        prop = tiledMap.getProperties();
+        MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
+        MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
 
-        index1 =0;
-        index2 = 0;
+        this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
 
+        shapeRenderer= new ShapeRenderer();
 
-
-        /*
-        worldMap = new Sprite (new Texture("worldMap2.jpg"));
-
-
-        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
-        this.cam = new OrthographicCamera(2f * aspectRatio, 2f);
-        cam.setToOrtho(false);
-        */
 
 
 
@@ -70,48 +77,65 @@ public class Map extends gameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        for(int i = 0; i<100; i++ ){
-            for(int j = 0; j < 50; j++){
-                Cell c = layer.getCell(i,j);
-                if(i % 2 == 0){
-                    c.setFlipVertically(true);
-                }
-                else {
-                    c.setFlipHorizontally(true);
-                }
+        shapeRenderer.setProjectionMatrix(cam.combined);
 
+        for(MapObject object : objects){
+            if(object instanceof RectangleMapObject){
+
+
+                RectangleMapObject rec =  (RectangleMapObject) object;
+
+                shapeRenderer.begin(ShapeType.Filled);
+                shapeRenderer.setColor(Color.RED);
+                Rectangle r = rec.getRectangle();
+                shapeRenderer.rect(r.x, r.y, r.width, r.height);
+
+
+                shapeRenderer.end();
             }
         }
 
 
 
-        /*
-        // resets the frame probably
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //updates the camera
-        cam.update();
-        batch.setProjectionMatrix(cam.combined);
 
-        //this is where we can actually display stuff on the screen
-        batch.begin();
-
-        batch.end();
-        */
     }
 
     @Override
     public void update(float dt){
         //cam.zoom-=0.2;
+        pushCameraBack();
 
     }
 
     @Override
     public void inputHandler(){
+
         cam.translate(-Gdx.input.getDeltaX(),Gdx.input.getDeltaY());
+
+
+
         if(Gdx.input.isTouched() && Gdx.input.getX() > 1000){
             //cam.zoom -= 0.1;
         }
     }
+
+    private void pushCameraBack(){
+        if(cam.position.x - cam.viewportWidth/2 < 0){
+            cam.position.x = cam.viewportWidth/2;
+        }
+        if(cam.position.x + cam.viewportWidth/2 > MAP_WIDTH){
+            cam.position.x = MAP_WIDTH - cam.viewportWidth/2;
+
+        }
+        if(cam.position.y - cam.viewportHeight/2 <0){
+            cam.position.y = cam.viewportHeight/2;
+        }
+        if(cam.position.y + cam.viewportHeight/2 > MAP_HEIGHT){
+            cam.position.y = MAP_HEIGHT - cam.viewportHeight/2;
+        }
+    }
+
+
+
 }
