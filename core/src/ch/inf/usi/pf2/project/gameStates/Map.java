@@ -56,7 +56,7 @@ public class Map extends gameState {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         cam = new OrthographicCamera();
-        cam.setToOrtho(false,500*w/h,500);
+        cam.setToOrtho(false,720*w/h,720);
         cam.update();
 
         //set up map
@@ -70,7 +70,7 @@ public class Map extends gameState {
 
         //set up buttons
         buttons = new ArrayList<Button>();
-        buttons.add(new Button(50,50,20, new Sprite(new Texture("buttonTest.png"))));
+        buttons.add(new Button(100,50,20, new Sprite(new Texture("buttonTest.png"))));
 
 
 
@@ -97,7 +97,7 @@ public class Map extends gameState {
         batch.end();
 
 
-      // showHitBoxes();
+      showHitBoxes();
 
 
 
@@ -129,13 +129,21 @@ public class Map extends gameState {
     }
 
     private void pushCameraBack(){
+        Vector3 pos = cam.position;
+        if(pos.x> 3*MAP_WIDTH/4){
+            cam.position.x = MAP_WIDTH/4;
+        }
+        else if(pos.x< MAP_WIDTH/4){
+            cam.position.x = 3*MAP_WIDTH/4;
+        }
+/*
         if(cam.position.x - cam.viewportWidth/2 < 0){
             cam.position.x = cam.viewportWidth/2;
         }
         if(cam.position.x + cam.viewportWidth/2 > MAP_WIDTH){
             cam.position.x = MAP_WIDTH - cam.viewportWidth/2;
-
         }
+        */
         if(cam.position.y - cam.viewportHeight/2 <0){
             cam.position.y = cam.viewportHeight/2;
         }

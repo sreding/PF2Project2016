@@ -10,26 +10,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class Button {
 
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private int width;
     private int height;
     private Sprite buttonImg;
 
     //scale in percentage of world width
     public Button(int x, int y, float scale, Sprite buttonImg){
-        this.x = x;
-        this.y = y;
-
         this.buttonImg=buttonImg;
-
-        buttonImg.setPosition(x,y);
-
 
         float ratio = buttonImg.getWidth() / buttonImg.getHeight();
         buttonImg.setSize(Gdx.graphics.getWidth()/100 * scale,Gdx.graphics.getWidth()/100 * scale / ratio );
+
+        this.x = (Gdx.graphics.getWidth() - buttonImg.getWidth())/100 * x;
+        this.y = (Gdx.graphics.getHeight() - buttonImg.getHeight())/100 *y;
+        buttonImg.setPosition(this.x,this.y);
         this.width = (int) buttonImg.getWidth();
         this.height= (int) buttonImg.getHeight();
+
+
 
     }
 
