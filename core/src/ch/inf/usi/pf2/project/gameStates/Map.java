@@ -12,11 +12,9 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -28,51 +26,53 @@ import java.util.ArrayList;
 /**
  * Created by alexandercamenzind on 28/04/16.
  */
-public class Map extends gameState {
+public class Map extends GameState {
 
+    // all the stuff we need for drawing
     private SpriteBatch batch;
     private OrthographicCamera cam;
-
+    private ShapeRenderer shapeRenderer;
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
-    private TiledMapTileLayer layer;
     private MapProperties prop;
 
+    // MAP_WIDTH is the width of the background in pixel
+    // MAP_HEIGHT is the height of the background in pixel
     private int MAP_WIDTH;
     private int MAP_HEIGHT;
     private MapObjects objects;
 
-    private ShapeRenderer shapeRenderer;
-
+    // a list to store all buttons
     private ArrayList<Button> buttons;
-
 
     public Map(SpriteBatch batch){
         this.batch = batch;
+
+        // setup shapeRenderer (allows us to draw stuff like rectangles or lines)
         shapeRenderer= new ShapeRenderer();
 
-
-        //set up camera
+        // set up camera
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         cam = new OrthographicCamera();
         cam.setToOrtho(false,720*w/h,720);
         cam.update();
 
-        //set up map
+        // set up map
         tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
         prop = tiledMap.getProperties();
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
         this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
 
-        //set up buttons
+        // set up buttons
+        // we can add as many buttons as we need to this ArrayList
         buttons = new ArrayList<Button>();
         buttons.add(new Button(100,50,20, new Sprite(new Texture("buttonTest.png"))));
 
-
+        // i think we might need this
+        Gdx.gl.glClearColor(1, 1, 1, 1);
 
 
 
@@ -81,13 +81,16 @@ public class Map extends gameState {
     @Override
     public void renderGameObject(){
 
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-       // Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // im not sure what that does but i'll leave it in case we need it
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // we have to update the camera, before we can render
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
+        // batch will draw according to screen coordinates
         batch.begin();
 
         for(Button b: buttons){
@@ -95,9 +98,7 @@ public class Map extends gameState {
         }
 
         batch.end();
-
-
-      showHitBoxes();
+        showHitBoxes();
 
 
 
@@ -106,28 +107,30 @@ public class Map extends gameState {
 
     }
 
+    // We should write everything that gets updated every frame in here
     @Override
     public void update(float dt){
-        //cam.zoom-=0.2;
         pushCameraBack();
-
     }
 
+
+    // handles input events
     @Override
     public void inputHandler(){
 
+        // moves the camera across the background according to dx and dy
         cam.translate(-Gdx.input.getDeltaX(),Gdx.input.getDeltaY());
 
-        if(Gdx.input.justTouched()){
-            System.out.println(cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0)).x);
+        for(Button b:buttons){
+            if(b.isTouched()){
+                System.out.println("button pressed");
+            }
         }
 
-        if(buttons.get(0).isTouched()){
-            System.out.println("button pressed");
-
-        }
     }
 
+    // this method pushes the camera back in bound, if someone tried to leave bounds,
+    // also it will make the illusion of an infinite background
     private void pushCameraBack(){
         Vector3 pos = cam.position;
         if(pos.x> 3*MAP_WIDTH/4){
@@ -136,7 +139,9 @@ public class Map extends gameState {
         else if(pos.x< MAP_WIDTH/4){
             cam.position.x = 3*MAP_WIDTH/4;
         }
-/*
+
+        // we probably wont need this anymore, but i will leave it in just in case
+        /*
         if(cam.position.x - cam.viewportWidth/2 < 0){
             cam.position.x = cam.viewportWidth/2;
         }
@@ -144,6 +149,7 @@ public class Map extends gameState {
             cam.position.x = MAP_WIDTH - cam.viewportWidth/2;
         }
         */
+
         if(cam.position.y - cam.viewportHeight/2 <0){
             cam.position.y = cam.viewportHeight/2;
         }
@@ -152,6 +158,7 @@ public class Map extends gameState {
         }
     }
 
+    // this method will draw a red rectangle at the hitboxes defined in the tiled map
     private void showHitBoxes(){
         shapeRenderer.setProjectionMatrix(cam.combined);
 

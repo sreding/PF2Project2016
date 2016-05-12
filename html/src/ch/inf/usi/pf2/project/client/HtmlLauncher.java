@@ -3,7 +3,7 @@ package ch.inf.usi.pf2.project.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import ch.inf.usi.pf2.project.boatManager2k16;
+import ch.inf.usi.pf2.project.BoatManager2k16;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new boatManager2k16();
+                return new BoatManager2k16();
         }
 }

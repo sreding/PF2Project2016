@@ -6,28 +6,46 @@ import com.badlogic.gdx.ApplicationAdapter;
 //import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import java.util.Stack;
 
 import ch.inf.usi.pf2.project.gameStates.*;
 
-public class boatManager2k16 extends ApplicationAdapter {
-	SpriteBatch batch;
-	gameState currentState;
-	private Stack<gameState> stateStack;
+//this is our main class
 
-	
+public class BoatManager2k16 extends ApplicationAdapter {
+	SpriteBatch batch;
+	GameState currentState;
+
+
+	//the create method will be called only once, when the aplication is started
 	@Override
 	public void create () {
+
+		// Sprite batch allows us to draw sprites (pictures) on the screen
 		batch = new SpriteBatch();
+
+		// We split the different parts of our game in GameState and GameState has 3 extensions at the moment
+		// Map, Menu, MiniGame
+		// we start off with the Map at the moment -> we store a Map instance in currentState
 		currentState =new Map(batch);
 
 	}
 
+	// the render method will be called every frame
 	@Override
 	public void render () {
 
+		//every gameState subclass has these 3 methods.
+
+		//everything that has to due with processing input should be put in the inputHandler methods
 		currentState.inputHandler();
+
+		// Gdx.graphics.getDeltaTime() returns the time it took for the last render, we need this to get
+		// update positions etc. without depending on how many frames per second we get
+		// -> basically we should always multiply any changes we do every frame by the render time
 		currentState.update(Gdx.graphics.getDeltaTime());
+
+		// in the renderGameObject method we should everything, that has to do with actually displaying
+		// objects, that need to be displayed, like the background or sprites
 		currentState.renderGameObject();
 
 	}

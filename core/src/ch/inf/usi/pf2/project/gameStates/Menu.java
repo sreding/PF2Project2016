@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Created by alexandercamenzind on 27/04/16.
  */
-public class Menu extends gameState {
+public class Menu extends GameState {
     private SpriteBatch batch;
     private final Texture background;
 

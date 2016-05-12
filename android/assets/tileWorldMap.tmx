@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1440" tileheight="720" nextobjectid="9">
- <tileset firstgid="1" name="worldMap" tilewidth="1440" tileheight="720" tilecount="1" columns="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="4">
+ <tileset firstgid="1" name="worldMap" tilewidth="720" tileheight="720" tilecount="2" columns="2">
   <image source="worldMap.png" width="1440" height="720"/>
  </tileset>
- <layer name="Tile Layer 1" width="1" height="1">
+ <layer name="Tile Layer 1" width="4" height="1">
   <data encoding="csv">
-1
+2,1,2,1
 </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object id="1" x="654" y="227" width="146" height="111"/>
-  <object id="2" x="757" y="238" width="124" height="260"/>
-  <object id="3" x="880" y="247" width="70" height="102"/>
-  <object id="4" x="685" y="183" width="33" height="30"/>
-  <object id="5" x="703" y="152" width="200" height="86"/>
-  <object id="6" x="747" y="106" width="180" height="44"/>
-  <object id="7" x="787" y="69" width="100" height="37"/>
-  <object id="8" x="907" y="90" width="327" height="161"/>
+  <object id="1" x="1373" y="220" width="276" height="118"/>
+  <object id="2" x="1481" y="340" width="123" height="157"/>
  </objectgroup>
 </map>
