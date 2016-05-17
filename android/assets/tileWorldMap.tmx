@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="4">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="32">
  <tileset firstgid="1" name="worldMap" tilewidth="720" tileheight="720" tilecount="2" columns="2">
   <image source="worldMap.png" width="1440" height="720"/>
  </tileset>
@@ -11,5 +11,46 @@
  <objectgroup name="Object Layer 1">
   <object id="1" x="1373" y="220" width="276" height="118"/>
   <object id="2" x="1481" y="340" width="123" height="157"/>
+ </objectgroup>
+ <objectgroup name="Ports">
+  <object id="12" name="New York" x="1125" y="190" width="36" height="31">
+   <ellipse/>
+  </object>
+  <object id="13" name="Greenland" x="1281" y="83" width="35" height="29">
+   <ellipse/>
+  </object>
+  <object id="14" name="Lissabon" x="1395" y="196" width="21" height="23">
+   <ellipse/>
+  </object>
+  <object id="16" name="Buenos Aires" x="1166" y="528" width="25" height="24">
+   <ellipse/>
+  </object>
+  <object id="17" name="Dublin" x="1399" y="122" width="28" height="32">
+   <ellipse/>
+  </object>
+  <object id="18" name="Los Angeles" x="946" y="209" width="32" height="25">
+   <ellipse/>
+  </object>
+  <object id="19" name="Sydney" x="546" y="492" width="27" height="27">
+   <ellipse/>
+  </object>
+  <object id="20" name="Cape Town" x="76" y="485" width="30" height="28">
+   <ellipse/>
+  </object>
+  <object id="22" name="Rio de Janeiro" x="1270" y="430" width="27" height="25">
+   <ellipse/>
+  </object>
+  <object id="23" name="New Dehli" x="290" y="306" width="22" height="23">
+   <ellipse/>
+  </object>
+  <object id="24" name="Hong Kong" x="479" y="234" width="21" height="22">
+   <ellipse/>
+  </object>
+  <object id="26" name="Vladiwostok" x="618" y="137" width="32" height="27">
+   <ellipse/>
+  </object>
+  <object id="31" name="Singapore" x="402" y="333" width="26" height="28">
+   <ellipse/>
+  </object>
  </objectgroup>
 </map>
