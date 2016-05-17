@@ -122,6 +122,7 @@ public class Map extends GameState {
     // We should write everything that gets updated every frame in here
     @Override
     public void update(float dt){
+
         pushCameraBack();
     }
 
