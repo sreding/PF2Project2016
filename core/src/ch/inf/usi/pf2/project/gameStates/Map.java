@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -22,6 +21,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import ch.inf. usi.pf2.project.mapObjects.Button;
+import ch.inf.usi.pf2.project.mapObjects.Path;
+
 import java.util.ArrayList;
 /**
  * Created by alexandercamenzind on 28/04/16.
@@ -44,6 +45,10 @@ public class Map extends GameState {
 
     // a list to store all buttons
     private ArrayList<Button> buttons;
+
+    // a list of paths
+    private ArrayList<Path> paths;
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
@@ -71,6 +76,11 @@ public class Map extends GameState {
         buttons = new ArrayList<Button>();
         buttons.add(new Button(100,50,20, new Sprite(new Texture("buttonTest.png"))));
 
+        //set up path, just a test
+        paths = new ArrayList<Path>();
+        paths.add(new Path(shapeRenderer));
+
+
         // i think we might need this
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
@@ -96,8 +106,10 @@ public class Map extends GameState {
         for(Button b: buttons){
             b.drawButton(batch);
         }
-
         batch.end();
+        for(Path p : paths){
+            p.drawPath();
+        }
         showHitBoxes();
 
 

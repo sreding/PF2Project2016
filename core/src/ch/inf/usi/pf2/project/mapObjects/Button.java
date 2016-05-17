@@ -16,7 +16,10 @@ public class Button {
     private int height;
     private Sprite buttonImg;
 
-    //scale in percentage of world width
+    // scale in percentage of screen width
+    // x position in percentage of screen width
+    // y position in percentage of screen height
+    // buttonImg is just the button image
     public Button(int x, int y, float scale, Sprite buttonImg){
         this.buttonImg=buttonImg;
 
@@ -33,10 +36,12 @@ public class Button {
 
     }
 
+    // just draws the button
     public void drawButton(SpriteBatch batch){
        buttonImg.draw(batch);
     }
 
+    // returns true if button is touched
     public boolean isTouched(){
         return Gdx.input.justTouched() && x < Gdx.input.getX() && Gdx.input.getX() < x+width
                 &&  y < -Gdx.input.getY() + Gdx.graphics.getHeight() && -Gdx.input.getY() + Gdx.graphics.getHeight() < y + height ;
