@@ -78,7 +78,7 @@ public class Map extends GameState {
 
         //set up path, just a test
         paths = new ArrayList<Path>();
-        paths.add(new Path(shapeRenderer));
+        paths.add(new Path(shapeRenderer, cam));
 
 
         // i think we might need this
@@ -92,7 +92,7 @@ public class Map extends GameState {
     public void renderGameObject(){
 
 
-        // Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // im not sure what that does but i'll leave it in case we need it
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // im not sure what that does but i'll leave it in case we need it
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // we have to update the camera, before we can render
@@ -107,7 +107,8 @@ public class Map extends GameState {
             b.drawButton(batch);
         }
         batch.end();
-        for(Path p : paths){
+
+        for(Path p : paths) {
             p.drawPath();
         }
         showHitBoxes();
@@ -138,6 +139,11 @@ public class Map extends GameState {
             if(b.isTouched()){
                 System.out.println("button pressed");
             }
+        }
+
+
+        for(Path p: paths){
+            p.inputPath();
         }
 
     }

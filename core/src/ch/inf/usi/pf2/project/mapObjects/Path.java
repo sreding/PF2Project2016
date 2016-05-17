@@ -4,8 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.InputAdapter;
 
@@ -20,15 +25,16 @@ public class Path{
     private ArrayList<Vector2> positions;
     private ShapeRenderer shapeRenderer;
     private final int delta = 1440;
+    private OrthographicCamera cam;
 
 
-    public Path(ShapeRenderer shapeRenderer){
+
+    public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam){
         this.shapeRenderer = shapeRenderer;
 
         positions = new ArrayList<Vector2>();
-        positions.add(new Vector2(10,10));
-        positions.add(new Vector2(900,100));
-        positions.add(new Vector2(200,200));
+
+        this.cam =cam;
 
 
 
@@ -45,18 +51,28 @@ public class Path{
         return true;
     }
 
+    public void inputPath(){
+        if(Gdx.input.isTouched()){
+            Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
+            addPoint((int) vec.x,(int) vec.y);
+        }
+
+    }
+
 
     public void drawPath(){
         Vector2 prev;
         Vector2 pos;
+
+
+
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
         for(int i = 1; i < positions.size() -1; i++){
             pos = positions.get(i);
             prev = positions.get(i-1);
             shapeRenderer.rectLine(pos.x,pos.y,prev.x,prev.y,5);
-            // we draw the line twice because of the way our infinite scrolling is implemented
-            shapeRenderer.rectLine(pos.x+delta,pos.y,prev.x+delta,prev.y,5);
         }
         shapeRenderer.end();
 
