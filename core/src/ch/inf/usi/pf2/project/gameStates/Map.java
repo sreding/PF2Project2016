@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -17,11 +18,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
+import ch.inf.usi.pf2.project.mapObjects.Ports;
 
 import java.util.ArrayList;
 /**
@@ -42,6 +45,9 @@ public class Map extends GameState {
     private int MAP_WIDTH;
     private int MAP_HEIGHT;
     private MapObjects objects;
+    private MapObjects portObjects;
+
+    private Ports ports;
 
     // a list to store all buttons
     private ArrayList<Button> buttons;
@@ -70,6 +76,7 @@ public class Map extends GameState {
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
         this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
+        this.portObjects = tiledMap.getLayers().get("Ports").getObjects();
 
         // set up buttons
         // we can add as many buttons as we need to this ArrayList
@@ -79,6 +86,8 @@ public class Map extends GameState {
         //set up path, just a test
         paths = new ArrayList<Path>();
         paths.add(new Path(shapeRenderer, cam));
+
+        this.ports = new Ports(portObjects);
 
 
         // i think we might need this
@@ -111,7 +120,8 @@ public class Map extends GameState {
         for(Path p : paths) {
             p.drawPath();
         }
-        showHitBoxes();
+        //showHitBoxes();
+        showPorts();
 
 
 
@@ -144,6 +154,10 @@ public class Map extends GameState {
 
         for(Path p: paths){
             p.inputPath();
+        }
+
+        if(Gdx.input.justTouched()){
+            ports.portTouched();
         }
 
     }
@@ -197,6 +211,21 @@ public class Map extends GameState {
 
     }
 
+
+    private void showPorts() {
+    for(MapObject p : portObjects){
+        if(p instanceof EllipseMapObject){
+            shapeRenderer.setProjectionMatrix(cam.combined);
+
+            Ellipse elip = ((EllipseMapObject) p).getEllipse();
+
+            shapeRenderer.begin(ShapeType.Filled);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.ellipse(elip.x,elip.y,elip.width,elip.height);
+            shapeRenderer.end();
+        }
+    }
+    }
 
 
 }
