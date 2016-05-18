@@ -26,15 +26,20 @@ public class Path{
     private ShapeRenderer shapeRenderer;
     private final int delta = 1440;
     private OrthographicCamera cam;
+    private int MAP_WIDTH;
 
 
 
-    public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam){
+    public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam, int MAP_WIDTH){
         this.shapeRenderer = shapeRenderer;
 
         positions = new ArrayList<Vector2>();
 
         this.cam =cam;
+        this.MAP_WIDTH=MAP_WIDTH;
+        addPoint(100,100);
+        addPoint(200,500);
+        addPoint(2000,100);
 
 
 
@@ -52,10 +57,13 @@ public class Path{
     }
 
     public void inputPath(){
-        if(Gdx.input.isTouched()){
+        System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+            cam.update();
             Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
             addPoint((int) vec.x,(int) vec.y);
-        }
+
+
+
 
     }
 
@@ -72,7 +80,7 @@ public class Path{
         for(int i = 1; i < positions.size() -1; i++){
             pos = positions.get(i);
             prev = positions.get(i-1);
-            shapeRenderer.rectLine(pos.x,pos.y,prev.x,prev.y,5);
+            shapeRenderer.rectLine(pos.x,pos.y,prev.x ,prev.y,5);
         }
         shapeRenderer.end();
 

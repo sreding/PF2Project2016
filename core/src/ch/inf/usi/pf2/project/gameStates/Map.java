@@ -55,6 +55,8 @@ public class Map extends GameState {
     // a list of paths
     private ArrayList<Path> paths;
 
+    private int mode; // 0 = moving, 1 = drawing
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
@@ -75,7 +77,7 @@ public class Map extends GameState {
         prop = tiledMap.getProperties();
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
-        this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
+        this.objects = tiledMap.getLayers().get("SquarePorts").getObjects();
         this.portObjects = tiledMap.getLayers().get("Ports").getObjects();
 
         // set up buttons
@@ -85,13 +87,15 @@ public class Map extends GameState {
 
         //set up path, just a test
         paths = new ArrayList<Path>();
-        paths.add(new Path(shapeRenderer, cam));
+        paths.add(new Path(shapeRenderer, cam, MAP_WIDTH));
 
-        this.ports = new Ports(portObjects);
+        this.ports = new Ports(objects, cam, MAP_HEIGHT);
 
 
         // i think we might need this
         Gdx.gl.glClearColor(1, 1, 1, 1);
+
+        mode = 0;
 
 
 
@@ -120,7 +124,7 @@ public class Map extends GameState {
         for(Path p : paths) {
             p.drawPath();
         }
-        //showHitBoxes();
+        showHitBoxes();
         showPorts();
 
 
@@ -142,18 +146,30 @@ public class Map extends GameState {
     @Override
     public void inputHandler(){
 
-        // moves the camera across the background according to dx and dy
-        cam.translate(-Gdx.input.getDeltaX(),Gdx.input.getDeltaY());
 
-        for(Button b:buttons){
-            if(b.isTouched()){
-                System.out.println("button pressed");
-            }
+        boolean modeChanged = false;
+        if(buttons.get(0).isTouched()){
+            System.out.println("button pressed");
+            mode += 1;
+            mode %= 2;
+            modeChanged = true;
+        }
+
+        // moves the camera across the background according to dx and dy
+        if(mode == 0) {
+            cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+        }
+        else if(!modeChanged && Gdx.input.justTouched()){
+            paths.get(0).inputPath();
+
         }
 
 
-        for(Path p: paths){
-            p.inputPath();
+
+        if(mode == 1 && !modeChanged && Gdx.input.justTouched()) {
+
+            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+
         }
 
         if(Gdx.input.justTouched()){
