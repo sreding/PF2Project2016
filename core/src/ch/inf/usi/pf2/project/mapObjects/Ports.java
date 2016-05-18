@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 
+import java.util.ArrayList;
+
 /**
  * Created by alexandercamenzind on 17/05/16.
  */
