@@ -75,7 +75,7 @@ public class Map extends GameState {
         prop = tiledMap.getProperties();
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
-        this.objects = tiledMap.getLayers().get("Object Layer 1").getObjects();
+        this.objects = tiledMap.getLayers().get("SquarePorts").getObjects();
         this.portObjects = tiledMap.getLayers().get("Ports").getObjects();
 
         // set up buttons
@@ -85,9 +85,9 @@ public class Map extends GameState {
 
         //set up path, just a test
         paths = new ArrayList<Path>();
-        paths.add(new Path(shapeRenderer, cam));
+        paths.add(new Path(shapeRenderer, cam, MAP_WIDTH));
 
-        this.ports = new Ports(portObjects);
+        this.ports = new Ports(objects, cam, MAP_HEIGHT);
 
 
         // i think we might need this
@@ -120,7 +120,7 @@ public class Map extends GameState {
         for(Path p : paths) {
             p.drawPath();
         }
-        //showHitBoxes();
+        showHitBoxes();
         showPorts();
 
 
