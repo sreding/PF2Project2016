@@ -55,7 +55,8 @@ public class Path{
     public void inputPath(){
             cam.update();
             Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
-            addPoint((int) vec.x,(int) vec.y);
+            addPoint((int) (vec.x) ,(int) vec.y);
+
     }
 
 

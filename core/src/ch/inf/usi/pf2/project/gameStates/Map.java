@@ -176,11 +176,11 @@ public class Map extends GameState {
     // also it will make the illusion of an infinite background
     private void pushCameraBack(){
         Vector3 pos = cam.position;
-        if(pos.x> 3*MAP_WIDTH/4){
-            cam.position.x = MAP_WIDTH/4;
+        if(pos.x + cam.viewportWidth/2 > MAP_WIDTH ){
+            cam.position.x = 2*MAP_WIDTH/4 - cam.viewportWidth/2;
         }
-        else if(pos.x< MAP_WIDTH/4){
-            cam.position.x = 3*MAP_WIDTH/4;
+        else if(pos.x - cam.viewportWidth/2< 0){
+            cam.position.x = 2*MAP_WIDTH/4 + cam.viewportWidth/2;
         }
 
         // we probably wont need this anymore, but i will leave it in just in case
