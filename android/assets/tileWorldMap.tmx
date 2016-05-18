@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="39">
  <tileset firstgid="1" name="worldMap" tilewidth="720" tileheight="720" tilecount="2" columns="2">
   <image source="worldMap.png" width="1440" height="720"/>
  </tileset>
@@ -53,5 +53,9 @@
    <ellipse/>
   </object>
  </objectgroup>
+ <objectgroup name="SquarePorts">
+  <object id="35" name="Sydney" x="538" y="490" width="40" height="42"/>
+  <object id="37" name="New York" x="1125" y="184" width="45" height="42"/>
+  <object id="38" name="Dublin" x="1392" y="124" width="42" height="35"/>
+ </objectgroup>
 </map>
-

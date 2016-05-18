@@ -55,6 +55,8 @@ public class Map extends GameState {
     // a list of paths
     private ArrayList<Path> paths;
 
+    private int mode; // 0 = moving, 1 = drawing
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
@@ -92,6 +94,8 @@ public class Map extends GameState {
 
         // i think we might need this
         Gdx.gl.glClearColor(1, 1, 1, 1);
+
+        mode = 0;
 
 
 
@@ -142,18 +146,30 @@ public class Map extends GameState {
     @Override
     public void inputHandler(){
 
-        // moves the camera across the background according to dx and dy
-        cam.translate(-Gdx.input.getDeltaX(),Gdx.input.getDeltaY());
 
-        for(Button b:buttons){
-            if(b.isTouched()){
-                System.out.println("button pressed");
-            }
+        boolean modeChanged = false;
+        if(buttons.get(0).isTouched()){
+            System.out.println("button pressed");
+            mode += 1;
+            mode %= 2;
+            modeChanged = true;
+        }
+
+        // moves the camera across the background according to dx and dy
+        if(mode == 0) {
+            cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+        }
+        else if(!modeChanged && Gdx.input.justTouched()){
+            paths.get(0).inputPath();
+
         }
 
 
-        for(Path p: paths){
-            p.inputPath();
+
+        if(mode == 1 && !modeChanged && Gdx.input.justTouched()) {
+
+            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+
         }
 
         if(Gdx.input.justTouched()){

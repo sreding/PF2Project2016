@@ -37,6 +37,9 @@ public class Path{
 
         this.cam =cam;
         this.MAP_WIDTH=MAP_WIDTH;
+        addPoint(100,100);
+        addPoint(200,500);
+        addPoint(2000,100);
 
 
 
@@ -54,10 +57,13 @@ public class Path{
     }
 
     public void inputPath(){
-        if(Gdx.input.isTouched()){
+        System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+            cam.update();
             Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
             addPoint((int) vec.x,(int) vec.y);
-        }
+
+
+
 
     }
 
