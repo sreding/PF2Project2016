@@ -26,7 +26,7 @@ public class Path{
     private ShapeRenderer shapeRenderer;
     private final int delta = 1440;
     private OrthographicCamera cam;
-    private int MAP_WIDTH;
+    private int c1;
 
 
 
@@ -36,35 +36,26 @@ public class Path{
         positions = new ArrayList<Vector2>();
 
         this.cam =cam;
-        this.MAP_WIDTH=MAP_WIDTH;
-        addPoint(100,100);
-        addPoint(200,500);
-        addPoint(2000,100);
-
+        c1=MAP_WIDTH/4;
 
 
     }
 
 
     public void addPoint(int x, int y){
-        if(checkColision(x,y)) {
+        if(checkCollision(x,y)) {
             positions.add(new Vector2(x, y));
         }
     }
 
-    private boolean checkColision(int x, int y){
+    private boolean checkCollision(int x, int y){
         return true;
     }
 
     public void inputPath(){
-        System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
             cam.update();
             Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
             addPoint((int) vec.x,(int) vec.y);
-
-
-
-
     }
 
 
@@ -75,12 +66,20 @@ public class Path{
 
 
 
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        for(int i = 1; i < positions.size() -1; i++){
+        for(int i = 1; i < positions.size() ; i++){
             pos = positions.get(i);
             prev = positions.get(i-1);
             shapeRenderer.rectLine(pos.x,pos.y,prev.x ,prev.y,5);
+            if(0 <= pos.x && c1 <= 2*c1){
+                shapeRenderer.rectLine(pos.x + c1*2,pos.y,prev.x+c1*2 ,prev.y,5);
+            }
+            if(2*c1<pos.x){
+                shapeRenderer.rectLine(pos.x - c1*2,pos.y,prev.x - c1*2 ,prev.y,5);
+            }
+
         }
         shapeRenderer.end();
 

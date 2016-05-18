@@ -159,18 +159,11 @@ public class Map extends GameState {
         if(mode == 0) {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
-        else if(!modeChanged && Gdx.input.justTouched()){
+        else if(mode == 1 && !modeChanged && Gdx.input.justTouched()){
             paths.get(0).inputPath();
 
         }
 
-
-
-        if(mode == 1 && !modeChanged && Gdx.input.justTouched()) {
-
-            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-
-        }
 
         if(Gdx.input.justTouched()){
             ports.portTouched();
