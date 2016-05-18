@@ -68,6 +68,19 @@ public class Ports {
         System.out.println(res);
         return res;
     }
+    public ArrayList<Port> portsToPortS(){
+        ArrayList<Port> Ports = new ArrayList<Port>();
+        for(MapObject p:ports){
+            if(p instanceof RectangleMapObject){
+                RectangleMapObject rec =  (RectangleMapObject) p;
+                int x = (int) ((int) rec.getRectangle().x + rec.getRectangle().width);
+                int y = (int) ((int) rec.getRectangle().y + rec.getRectangle().height);
+                Port port = new Port(rec.getName(),x,y);
+                Ports.add(port);
+            }
+        }
+        return Ports;
+    }
 
 
 

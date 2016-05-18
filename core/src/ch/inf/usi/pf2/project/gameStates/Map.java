@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector3;
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
+import ch.inf.usi.pf2.project.mapObjects.Port;
 
 import java.util.ArrayList;
 /**
@@ -48,6 +49,7 @@ public class Map extends GameState {
     private MapObjects portObjects;
 
     private Ports ports;
+    private ArrayList<Port> port;
 
     // a list to store all buttons
     private ArrayList<Button> buttons;
@@ -97,8 +99,7 @@ public class Map extends GameState {
 
         mode = 0;
 
-
-
+        port = ports.portsToPortS();
     }
 
     @Override
