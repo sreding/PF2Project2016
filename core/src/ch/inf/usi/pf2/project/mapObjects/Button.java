@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 
 /**
  * Created by alexandercamenzind on 10/05/16.
@@ -15,13 +16,16 @@ public class Button {
     private int width;
     private int height;
     private Sprite buttonImg;
+    private Sprite buttonImg2;
+    private int whatTodDisplay;
 
     // scale in percentage of screen width
     // x position in percentage of screen width
     // y position in percentage of screen height
     // buttonImg is just the button image
-    public Button(int x, int y, float scale, Sprite buttonImg){
+    public Button(int x, int y, float scale, Sprite buttonImg, Sprite buttonImg2){
         this.buttonImg=buttonImg;
+        this.buttonImg2=buttonImg2;
 
         float ratio = buttonImg.getWidth() / buttonImg.getHeight();
         buttonImg.setSize(Gdx.graphics.getWidth()/100 * scale,Gdx.graphics.getWidth()/100 * scale / ratio );
@@ -32,19 +36,34 @@ public class Button {
         this.width = (int) buttonImg.getWidth();
         this.height= (int) buttonImg.getHeight();
 
+        buttonImg2.setSize(Gdx.graphics.getWidth()/100 * scale,Gdx.graphics.getWidth()/100 * scale / ratio );
+        buttonImg2.setPosition(this.x,this.y);
+
+
 
 
     }
 
     // just draws the button
     public void drawButton(SpriteBatch batch){
-       buttonImg.draw(batch);
+        if(whatTodDisplay==0){
+            buttonImg.draw(batch);
+        }
+        else{
+            buttonImg2.draw(batch);
+        }
+
     }
 
     // returns true if button is touched
     public boolean isTouched(){
-        return Gdx.input.justTouched() && x < Gdx.input.getX() && Gdx.input.getX() < x+width
+        boolean res= Gdx.input.justTouched() && x < Gdx.input.getX() && Gdx.input.getX() < x+width
                 &&  y < -Gdx.input.getY() + Gdx.graphics.getHeight() && -Gdx.input.getY() + Gdx.graphics.getHeight() < y + height ;
+        if(res){
+            whatTodDisplay += 1;
+            whatTodDisplay %= 2;
+        }
+        return res;
     }
 
 

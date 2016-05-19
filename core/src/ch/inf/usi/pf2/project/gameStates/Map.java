@@ -19,9 +19,11 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import ch.inf.usi.pf2.project.mapObjects.Boat;
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
@@ -59,6 +61,8 @@ public class Map extends GameState {
 
     private int mode; // 0 = moving, 1 = drawing
 
+    private Boat testBoat;
+
 
     public Map(SpriteBatch batch){
         this.batch = batch;
@@ -85,7 +89,7 @@ public class Map extends GameState {
         // set up buttons
         // we can add as many buttons as we need to this ArrayList
         buttons = new ArrayList<Button>();
-        buttons.add(new Button(100,50,20, new Sprite(new Texture("buttonTest.png"))));
+        buttons.add(new Button(100,50,20, new Sprite(new Texture("move.png")), new Sprite(new Texture("draw.png"))));
 
         //set up path, just a test
         paths = new ArrayList<Path>();
@@ -100,6 +104,9 @@ public class Map extends GameState {
         mode = 0;
 
         port = ports.portsToPortS();
+
+        testBoat = new Boat(1000,10,99999,0, new Sprite(new Texture("topBoat1.png")),
+                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH );
     }
 
     @Override
@@ -114,6 +121,10 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
+        for(Path p : paths) {
+            p.drawPath();
+        }
+
         // batch will draw according to screen coordinates
         batch.begin();
 
@@ -122,11 +133,12 @@ public class Map extends GameState {
         }
         batch.end();
 
-        for(Path p : paths) {
-            p.drawPath();
-        }
+
+
         showHitBoxes();
-        showPorts();
+        //showPorts();
+
+
 
 
 
