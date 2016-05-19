@@ -1,5 +1,9 @@
 package ch.inf.usi.pf2.project.mapObjects;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 /**
  * Created by alexandercamenzind on 17/05/16.
  */
@@ -14,11 +18,15 @@ public class Boat {
     private double distFromOrigin;
     //private Port origin;
     private Path currentPath;
+    private OrthographicCamera cam;
+    private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
     //int crewMembers?
 
     public Boat(int capacity, double speed, double
                 distanceLimit, double maintenanceCost,
-                Sprite topBoat, Sprite sideBoat){
+                Sprite topBoat, Sprite sideBoat,
+                SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH ){
         this.capacity = capacity;
         this.speed = speed;
         this.distanceLimit = distanceLimit;
@@ -26,6 +34,13 @@ public class Boat {
         this.sideBoat = sideBoat;
         this.topBoat = topBoat;
         this.vulnerability = (maintenanceCost*distanceLimit)/speed;
+
+        this.cam = cam;
+        this.shapeRenderer = shapeRenderer;
+        this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH);
+        this.batch=batch;
+
+
     }
 
 
@@ -37,6 +52,10 @@ public class Boat {
     public void upgradeVulnerability(double upgrade){
         vulnerability = vulnerability * upgrade;
         maintenanceCost = maintenanceCost * upgrade;
+    }
+
+    public void drawBoatOnMap(){
+        topBoat.draw(batch);
     }
 
 
