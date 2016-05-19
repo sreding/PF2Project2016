@@ -64,10 +64,6 @@ public class Path{
         Vector2 prev;
         Vector2 pos;
 
-
-
-
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
         for(int i = 1; i < positions.size() ; i++){
@@ -84,5 +80,9 @@ public class Path{
         }
         shapeRenderer.end();
 
+    }
+
+    public ArrayList<Vector2> getPositions(){
+        return positions;
     }
 }

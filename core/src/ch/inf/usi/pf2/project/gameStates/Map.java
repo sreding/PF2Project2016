@@ -37,6 +37,9 @@ public class Map extends GameState {
 
     // all the stuff we need for drawing
     private SpriteBatch batch;
+    private final Matrix4 initialProjectionMatrix;
+
+
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
     private TiledMap tiledMap;
@@ -56,8 +59,6 @@ public class Map extends GameState {
     // a list to store all buttons
     private ArrayList<Button> buttons;
 
-    // a list of paths
-    private ArrayList<Path> paths;
 
     private int mode; // 0 = moving, 1 = drawing
 
@@ -66,6 +67,7 @@ public class Map extends GameState {
 
     public Map(SpriteBatch batch){
         this.batch = batch;
+        this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
 
         // setup shapeRenderer (allows us to draw stuff like rectangles or lines)
         shapeRenderer= new ShapeRenderer();
@@ -91,9 +93,6 @@ public class Map extends GameState {
         buttons = new ArrayList<Button>();
         buttons.add(new Button(100,50,20, new Sprite(new Texture("move.png")), new Sprite(new Texture("draw.png"))));
 
-        //set up path, just a test
-        paths = new ArrayList<Path>();
-        paths.add(new Path(shapeRenderer, cam, MAP_WIDTH));
 
         this.ports = new Ports(objects, cam, MAP_HEIGHT);
 
@@ -121,28 +120,33 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        for(Path p : paths) {
-            p.drawPath();
-        }
+        testBoat.getCurrentPath().drawPath();
 
         // batch will draw according to screen coordinates
         batch.begin();
+        batch.setProjectionMatrix(cam.combined);
+
+        testBoat.drawBoatOnMap();
+
+        batch.setProjectionMatrix(initialProjectionMatrix);
 
         for(Button b: buttons){
             b.drawButton(batch);
         }
+
+
+
         batch.end();
 
 
 
+
+
+
+
+
         showHitBoxes();
-        //showPorts();
-
-
-
-
-
-
+        showPorts();
 
 
     }
@@ -173,7 +177,7 @@ public class Map extends GameState {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && Gdx.input.justTouched()){
-            paths.get(0).inputPath();
+            testBoat.getCurrentPath().inputPath();
 
         }
 

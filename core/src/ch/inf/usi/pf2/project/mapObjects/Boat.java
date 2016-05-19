@@ -16,6 +16,9 @@ public class Boat {
     private final Sprite topBoat;
     private final Sprite sideBoat;
     private double distFromOrigin;
+
+
+
     //private Port origin;
     private Path currentPath;
     private OrthographicCamera cam;
@@ -60,6 +63,10 @@ public class Boat {
 
 
     // various getter Methods
+    public Path getCurrentPath() {
+        return currentPath;
+    }
+
     public int getCapacity() {
         return capacity;
     }

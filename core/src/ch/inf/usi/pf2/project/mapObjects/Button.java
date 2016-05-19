@@ -47,10 +47,11 @@ public class Button {
     // just draws the button
     public void drawButton(SpriteBatch batch){
         if(whatTodDisplay==0){
-            buttonImg.draw(batch);
+            buttonImg2.draw(batch);
+
         }
         else{
-            buttonImg2.draw(batch);
+            buttonImg.draw(batch);
         }
 
     }
