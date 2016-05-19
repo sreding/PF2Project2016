@@ -12,7 +12,7 @@ public class Boat {
     private final Sprite topBoat;
     private final Sprite sideBoat;
     private double distFromOrigin;
-    //private Port origin;
+    private Port origin;
     private Path currentPath;
     //int crewMembers?
 
@@ -28,6 +28,15 @@ public class Boat {
         this.vulnerability = (maintenanceCost*distanceLimit)/speed;
     }
 
+    public void changeOrigin(Port port){
+        origin = port;
+    }
+
+    public void moveBoat(){
+        if(distFromOrigin <= distanceLimit){
+            distFromOrigin = distFromOrigin + speed;
+        }
+    }
 
     //upgrade Methods
     public void upgradeCapacity(int upgrade){
