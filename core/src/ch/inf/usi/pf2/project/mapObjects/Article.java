@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by simonreding on 23/05/16.
  */
 
-public class Article extends Actor {
+public class Article {
     private String title;
     private String content;
 
