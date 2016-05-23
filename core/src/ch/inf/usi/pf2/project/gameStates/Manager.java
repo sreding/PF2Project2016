@@ -5,13 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,12 +23,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import  com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 
 /**
@@ -48,59 +54,97 @@ public class Manager extends GameState {
     private TextButton startButton;
     private TextButton quitButton;
     private Sprite sprite;
+    private Label attributes;
+    private Table table_atrributes;
+    private Texture boat1;
+    private Table boat_attributes;
+
+
+
 
 
 
     public Manager(SpriteBatch batch)
     {
+        batch=new SpriteBatch();
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
 
-//        table = new Table();
-//        table.setWidth(stage.getWidth());
-//        table.align(Align.center|Align.top);
+
+
+        table = new Table();
+        table.setWidth(stage.getWidth());
+        table.align(Align.left|Align.top);
+        table.setPosition(0, Gdx.graphics.getHeight());
+
+        table_atrributes=new Table();
+        table_atrributes.setWidth(stage.getWidth());
+        table_atrributes.align(Align.right|Align.top);
+        table_atrributes.setPosition(0, Gdx.graphics.getHeight());
+
+
+
+
+        startButton = new TextButton("Buy new boats",skin, "default");
+        quitButton = new TextButton("Your boats", skin, "default");
+        playerObject=new Player();
+        String text="Current Balance:";
+        text+=playerObject.money;
+
+        attributes=new Label(text,skin);
+        table_atrributes.add(attributes).padRight(30);
+        attributes=new Label("Ships Owned:1",skin);
+        table_atrributes.add(attributes);
+
+
+
+
+
+        startButton.getSkin().getFont("default-font").getData().setScale(2f,2f);
+        table.padTop(30);
+        table.add(startButton).padBottom(50).width(250f).height(50f);
+        table.row();
+        table.add(quitButton).width(250f).height(50f);
+
+
+
+
+
+
+
+        stage.addActor(table_atrributes);
+        stage.addActor(table);
+
+        this.batch = new SpriteBatch();
+        //sprite = new Sprite(new Texture(Gdx.files.internal("background.png")));
+        //sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
+
+
+        //final TextButton button = new TextButton("Buy a new boat",skin, "default");
+        //button.setWidth(300);
+        //button.setHeight(400);
+        //button.getSkin().getFont("default-font").getData().setScale(2f,2f);
 //
-//        table.setPosition(0, Gdx.graphics.getHeight());
 //
-//        startButton = new TextButton("New Game", skin);
-//        quitButton = new TextButton("Quit Game", skin);
+//        final Dialog dialog = new Dialog ("Click Message", skin);
+//        button.addListener(new ClickListener(){
+//            @Override
+//            public void clicked(InputEvent event, float x, float y)
+//            {
+//                dialog.show(stage);
+//                Timer.schedule(new Timer.Task(){
+//                    @Override
+//                    public void run()
+//                    {
+//                        dialog.hide();
+//                    }
 //
-//        table.padTop(30);
-//        table.add(startButton).padBottom(30);
-//        table.row();
-//        table.add(quitButton);
+//                },5);
 //
-//        stage.addActor(table);
-//
-//        this.batch = new SpriteBatch();
-//        sprite = new Sprite(new Texture(Gdx.files.internal("background.png")));
-//        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-
-
-        final TextButton button = new TextButton("Buy a new boat",skin, "default");
-        button.setWidth(300);
-        button.setHeight(400);
-
-
-        final Dialog dialog = new Dialog ("Click Message", skin);
-        button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y)
-            {
-                dialog.show(stage);
-                Timer.schedule(new Timer.Task(){
-                    @Override
-                    public void run()
-                    {
-                        dialog.hide();
-                    }
-
-                },5);
-
-            }
-        });
-        stage.addActor(button);
+//            }
+//        });
+          //stage.addActor(button);
 //        stage.addActor(button);
         //BitmapFont font=new BitmapFont();
         //this.label=new Label("money",new LabelStyle(font, new Color().RED));
@@ -130,8 +174,38 @@ public class Manager extends GameState {
         //batch.begin();
        // sprite.draw(batch);
         //batch.end();
+        boat_attributes=new Table();
+        boat_attributes.setWidth(stage.getWidth());
+        boat_attributes.align(Align.left|Align.center);
+        boat_attributes.setPosition(0,Gdx.graphics.getHeight()/2);
+
+
+
+
+        attributes=new Label("NAME: Fascinosa",skin);
+        boat_attributes.add(attributes).padBottom(10);
+        boat_attributes.row();
+        attributes=new Label("SPEED: 14KNOTS",skin);
+        boat_attributes.add(attributes).padBottom(10);
+        boat_attributes.row();
+        attributes=new Label("CAPACITY: 1400PAX",skin);
+        boat_attributes.add(attributes).padBottom(10);
+        boat_attributes.row();
+        attributes=new Label("MAINTENANCE: 10$/KM",skin);
+        boat_attributes.add(attributes).padBottom(10);
+
+
+
+        stage.addActor(boat_attributes);
+
+        boat1 = new Texture(Gdx.files.internal("topBoat1.png"));
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        batch.begin();
+
+        batch.draw(boat1, Gdx.graphics.getWidth()/2 - 900/2,
+                Gdx.graphics.getHeight()/2 - 300/2, 900, 300);
+        batch.end();
 
 //        batch.begin();
 //

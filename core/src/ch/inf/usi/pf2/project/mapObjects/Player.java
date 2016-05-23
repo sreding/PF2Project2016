@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    private int money;
+    public int money;
     private ArrayList<Boat> boats;
     private ArrayList<Path> paths;
 
