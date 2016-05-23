@@ -1,5 +1,5 @@
 package ch.inf.usi.pf2.project.mapObjects;
-import
+
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
