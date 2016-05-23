@@ -65,6 +65,8 @@ public class Map extends GameState {
     private Boat testBoat;
 
 
+
+
     public Map(SpriteBatch batch){
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
@@ -120,7 +122,7 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        testBoat.getCurrentPath().drawPath();
+        testBoat.getCurrentPath().drawPath3();
 
         // batch will draw according to screen coordinates
         batch.begin();
@@ -177,7 +179,7 @@ public class Map extends GameState {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && Gdx.input.justTouched()){
-            testBoat.getCurrentPath().inputPath();
+            testBoat.getCurrentPath().inputPath3();
 
         }
 
@@ -252,6 +254,8 @@ public class Map extends GameState {
         }
     }
     }
+
+
 
 
 }
