@@ -38,53 +38,63 @@ import sun.security.x509.AlgIdDSA;
 
 
 public class News extends GameState {
-    static public Color debugTableColor = new Color(0, 0, 1, 1);
-    static public Color debugCellColor = new Color(1, 0, 0, 1);
-    static public Color debugActorColor = new Color(0, 1, 0, 1);
 
     private ArrayList articles;
     private SpriteBatch batch;
 
     private ScrollPane scrollPane;
     private Table table;
-    private Table newscontent;
+    private Table newsContent;
     private VerticalGroup verticalGroup;
     private TextButton esc;
     private Stage stage;
     private Skin skin;
-    private TextArea textArea;
+    private Label label;
 
 
 
     public News(SpriteBatch batch) {
         this.articles = new ArrayList<Article>();
-        this.batch = batch;
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         table = new Table();
-        table.setWidth(stage.getWidth());
-        table.align(Align.center| Align.top);
+        table.setFillParent(true);  //setWidth(stage.getWidth());
+        table.align(Align.left| Align.top);
 
         verticalGroup = new VerticalGroup();
-        verticalGroup.setWidth(stage.getWidth()*1/3);
+        verticalGroup.setWidth(stage.getWidth());
+        System.out.print(stage.getWidth());
         verticalGroup.align(Align.topRight);
 
         scrollPane =  new ScrollPane(verticalGroup);
         scrollPane.setWidth(verticalGroup.getWidth());
 
-        skin = new Skin();
+
         esc = new TextButton("esc",skin);
+        esc.align(Align.topLeft);
+
 
         TextButton testButton = new TextButton("Disaster", skin);
+        TextButton testButton2 = new TextButton("second Disaster", skin);
+        testButton.setFillParent(true);
+        testButton2.setFillParent(true);
         verticalGroup.addActor(testButton);
-        TextArea textArea = new TextArea("TextArea",skin);
+        verticalGroup.addActor(testButton2);
+
+        label = new Label("this is the label does it span over multiple lines?",skin);
+        label.setFillParent(true);
+        newsContent =  new Table(skin);
+        newsContent.setWidth(verticalGroup.getWidth());
+        newsContent.align(Align.bottomLeft);
+        newsContent.add(label);
 
 
-        table.add(scrollPane,esc);
+        table.add(newsContent,scrollPane,esc);
 
 
 
+        stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -109,7 +119,7 @@ public class News extends GameState {
         if(n == articles.size()){
             return buttons;
         }else {
-            Skin buttonSkin = new Skin(); //// ENTER PARAMETERS FOR SKIN!!!!!
+            Skin buttonSkin = new Skin(Gdx.files.internal("uiskin.json")); //// ENTER PARAMETERS FOR SKIN!!!!!
             TextButton newButton = new TextButton(articles.get(n).getTitle(),buttonSkin);
             buttons.add(newButton);
             return makeNewButtons(articles,buttons,n++);
@@ -130,7 +140,7 @@ public class News extends GameState {
             String country = regions.get(rn.nextInt(regions.size()+1));
             String title = events.get(n)+ " in " +country;
             String text = "The" + events.get(n) + " that destroyed " + country+"appear to" +
-                    "have devastationg consequences to the region";
+                    "have devastating consequences to the region";
             finishedArticles.add(new Article(title,text));
             n++;
             return makeArticles(regions,events,finishedArticles,n);
