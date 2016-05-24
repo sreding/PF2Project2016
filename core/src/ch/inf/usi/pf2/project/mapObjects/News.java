@@ -49,9 +49,10 @@ public class News extends GameState {
     private Table table;
     private Table newscontent;
     private VerticalGroup verticalGroup;
-    private Button esc;
+    private TextButton esc;
     private Stage stage;
     private Skin skin;
+    private TextArea textArea;
 
 
 
@@ -69,6 +70,20 @@ public class News extends GameState {
         verticalGroup.setWidth(stage.getWidth()*1/3);
         verticalGroup.align(Align.topRight);
 
+        scrollPane =  new ScrollPane(verticalGroup);
+        scrollPane.setWidth(verticalGroup.getWidth());
+
+        skin = new Skin();
+        esc = new TextButton("esc",skin);
+
+        TextButton testButton = new TextButton("Disaster", skin);
+        verticalGroup.addActor(testButton);
+        TextArea textArea = new TextArea("TextArea",skin);
+
+
+        table.add(scrollPane,esc);
+
+
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -76,6 +91,9 @@ public class News extends GameState {
     @Override
     public void renderGameObject(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
 
     }
 
@@ -111,7 +129,7 @@ public class News extends GameState {
             Random rn = new Random();
             String country = regions.get(rn.nextInt(regions.size()+1));
             String title = events.get(n)+ " in " +country;
-            String text = "The" + events.get(n) + " that destroyed " + regions+"appear to" +
+            String text = "The" + events.get(n) + " that destroyed " + country+"appear to" +
                     "have devastationg consequences to the region";
             finishedArticles.add(new Article(title,text));
             n++;
