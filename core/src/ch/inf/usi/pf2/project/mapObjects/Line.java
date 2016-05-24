@@ -1,6 +1,11 @@
 package ch.inf.usi.pf2.project.mapObjects;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -19,6 +24,7 @@ public class Line {
         double dy =   end.y-start.y;
         length = Math.sqrt(dx*dx+dy*dy);
         direction = new Vector2((float) (dx/length),(float) (dy/length));
+
     }
 
     public Vector2 getEnd(){
@@ -40,5 +46,22 @@ public class Line {
 
     public Vector2 getDirection() {
         return direction;
+    }
+
+    public boolean intersectsWithPolygons(MapObjects polys){
+        boolean res =false;
+        for(MapObject o:polys){
+            if(o instanceof PolygonMapObject){
+                Polygon p = ((PolygonMapObject) o).getPolygon();
+                if(Intersector.intersectSegmentPolygon(start,end,p)){
+                    res =true;
+                }
+
+            }
+        }
+        System.out.println("asdf   " +res);
+
+
+        return res;
     }
 }

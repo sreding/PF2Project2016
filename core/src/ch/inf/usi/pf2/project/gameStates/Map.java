@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -52,6 +55,7 @@ public class Map extends GameState {
     private int MAP_HEIGHT;
     private MapObjects objects;
     private MapObjects portObjects;
+    private MapObjects polygonMapObjects;
 
     private Ports ports;
     private ArrayList<Port> port;
@@ -87,8 +91,10 @@ public class Map extends GameState {
         prop = tiledMap.getProperties();
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
+
         this.objects = tiledMap.getLayers().get("SquarePorts").getObjects();
         this.portObjects = tiledMap.getLayers().get("Ports").getObjects();
+        this.polygonMapObjects = tiledMap.getLayers().get("Polygons").getObjects();
 
         // set up buttons
         // we can add as many buttons as we need to this ArrayList
@@ -108,7 +114,8 @@ public class Map extends GameState {
         port = ports.portsToPortS();
 
         testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH );
+                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects );
+
     }
 
     @Override
@@ -141,15 +148,9 @@ public class Map extends GameState {
 
         batch.end();
 
-
-
-
-
-
-
-
         showHitBoxes();
         showPorts();
+        showPolygons();
 
 
     }
@@ -258,6 +259,30 @@ public class Map extends GameState {
             shapeRenderer.end();
         }
     }
+    }
+
+    private void showPolygons(){
+        for(MapObject o : polygonMapObjects){
+            if(o instanceof PolygonMapObject){
+                Polygon p = ((PolygonMapObject) o).getPolygon();
+                shapeRenderer.begin(ShapeType.Line);
+                shapeRenderer.setColor(Color.GREEN);
+                float[] prevVertices = p.getVertices();
+                float[] vertices =new float[prevVertices.length];
+                float offsetX = p.getX();
+                float offsetY = p.getY();
+                for(int i = 0; i< vertices.length;i++){
+                    if(i%2 == 0){
+                        vertices[i] = prevVertices[i]+offsetX;
+                    }
+                    else{
+                        vertices[i] = prevVertices[i]+offsetY;
+                    }
+                }
+                shapeRenderer.polygon(vertices);
+                shapeRenderer.end();
+            }
+        }
     }
 
 

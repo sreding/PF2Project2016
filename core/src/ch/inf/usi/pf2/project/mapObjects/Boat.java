@@ -3,7 +3,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.ArrayList;
 
 /**
  * Created by alexandercamenzind on 17/05/16.
@@ -31,12 +36,14 @@ public class Boat {
     private int lineCount;
     private float localDistance;
     private boolean traveling;
+    private MapObjects landPolygons;
     //int crewMembers?
 
     public Boat(int capacity, double speed, double
                 distanceLimit, double maintenanceCost,
                 Sprite topBoat, Sprite sideBoat,
-                SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH ){
+                SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,
+                MapObjects landPolygons){
         this.capacity = capacity;
         this.speed = speed;
         this.distanceLimit = distanceLimit;
@@ -54,9 +61,11 @@ public class Boat {
 
         this.cam = cam;
         this.shapeRenderer = shapeRenderer;
-        this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH);
         this.batch=batch;
         this.traveling = false;
+        this.landPolygons = landPolygons;
+        this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
+
 
 
 

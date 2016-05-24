@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.InputAdapter;
 import java.util.ArrayList;
 
 import ch.inf.usi.pf2.project.BoatManager2k16;
+import ch.inf.usi.pf2.project.gameStates.Map;
 
 /**
  * Created by alexandercamenzind on 14/05/16.
@@ -39,6 +42,7 @@ public class Path{
     private boolean cameraFlag;
     private boolean cameraFlagLeft;
     private int previousCameraPosition;
+    private MapObjects landPolygons;
 
 
 
@@ -48,7 +52,7 @@ public class Path{
 
 
 
-    public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam, int MAP_WIDTH){
+    public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam, int MAP_WIDTH, MapObjects landPolygons){
         this.shapeRenderer = shapeRenderer;
 
         positions = new ArrayList<Vector2>();
@@ -61,6 +65,8 @@ public class Path{
 
         this.cam =cam;
         c1=MAP_WIDTH/4;
+
+        this.landPolygons=landPolygons;
 
 
     }
@@ -125,10 +131,12 @@ public class Path{
         int q;
         Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
        //Vector2 v = new Vector2(vec.x,vec.y);
+        /*
         System.out.println("left: " + cameraFlagLeft);
         System.out.println("right: "+cameraFlag);
         System.out.println("prev: " + prev);
         System.out.println("now: " + pos);
+        */
         if(topLeft != null){
             if(false){
             }
@@ -182,6 +190,7 @@ public class Path{
         }
         prev = pos;
         topLeft = left.get(left.size()-1);
+        topLeft.intersectsWithPolygons(landPolygons);
         cameraFlag=false;
         cameraFlagLeft=false;
     }
