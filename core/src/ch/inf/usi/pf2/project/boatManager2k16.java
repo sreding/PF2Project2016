@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ch.inf.usi.pf2.project.gameStates.*;
+import ch.inf.usi.pf2.project.mapObjects.News;
 
 //this is our main class
 
@@ -26,7 +27,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// We split the different parts of our game in GameState and GameState has 3 extensions at the moment
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
-		currentState =new Map(batch);
+		currentState = new News(batch);
 
 	}
 

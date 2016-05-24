@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TestGenerator;
 
 
 import java.util.ArrayList;
@@ -63,13 +64,15 @@ public class News extends GameState {
         table.align(Align.left| Align.top);
 
         verticalGroup = new VerticalGroup();
-        verticalGroup.setWidth(stage.getWidth()/3);
-        verticalGroup.setHeight(stage.getHeight()/3);
-        System.out.print(stage.getWidth());
+        //verticalGroup.setWidth(stage.getWidth()/3);
+        //verticalGroup.setHeight(stage.getHeight()/3);
+
         verticalGroup.align(Align.topRight);
 
         scrollPane =  new ScrollPane(verticalGroup);
         scrollPane.setWidth(verticalGroup.getWidth());
+        scrollPane.setBounds(stage.getWidth()*2/3,0f,stage.getWidth()/3,stage.getHeight());
+        verticalGroup.setFillParent(true);
 
 
         esc = new TextButton("esc",skin);
@@ -78,12 +81,18 @@ public class News extends GameState {
 
         TextButton testButton = new TextButton("Disaster", skin);
         TextButton testButton2 = new TextButton("second Disaster", skin);
-        testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
-        testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3);
+        //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
+        //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
+        testButton = autoPad(testButton,3);
+        testButton2 = autoPad(testButton2, 3);
         verticalGroup.addActor(testButton);
         verticalGroup.addActor(testButton2);
 
-        label = new Label("this is the label does it span over multiple lines?",skin);
+        label = new Label("this is the label does it span over multiple lines?"+stage.getHeight()+"Width:"
+                +stage.getWidth()+
+                "getWidth"
+                +Gdx.graphics.getWidth(),skin);
+        label.setWrap(true);
         label.setFillParent(true);
         newsContent =  new Table(skin);
         newsContent.setWidth(verticalGroup.getWidth());
@@ -91,12 +100,20 @@ public class News extends GameState {
         newsContent.add(label);
 
 
+
+
         table.add(newsContent,scrollPane,esc);
+
+        table.layout();
+        table.validate();
+
+
 
 
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
@@ -109,7 +126,13 @@ public class News extends GameState {
     }
 
 
-
+    private static TextButton autoPad(TextButton button,int pad){
+        button.padRight(Gdx.graphics.getWidth()/(2*pad));
+        button.padLeft(Gdx.graphics.getWidth()/(2*pad));
+        button.padBottom(Gdx.graphics.getHeight()/(2*pad));
+        button.padTop(Gdx.graphics.getHeight()/(2*pad));
+        return button;
+    }
     //creates an arrayList of new Buttons
     private static ArrayList<TextButton> newButtons(ArrayList<Article> articles){
         return makeNewButtons(articles,new ArrayList<TextButton>(),0);
