@@ -63,7 +63,8 @@ public class News extends GameState {
         table.align(Align.left| Align.top);
 
         verticalGroup = new VerticalGroup();
-        verticalGroup.setWidth(stage.getWidth());
+        verticalGroup.setWidth(stage.getWidth()/3);
+        verticalGroup.setHeight(stage.getHeight()/3);
         System.out.print(stage.getWidth());
         verticalGroup.align(Align.topRight);
 
@@ -77,8 +78,8 @@ public class News extends GameState {
 
         TextButton testButton = new TextButton("Disaster", skin);
         TextButton testButton2 = new TextButton("second Disaster", skin);
-        testButton.setFillParent(true);
-        testButton2.setFillParent(true);
+        testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
+        testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3);
         verticalGroup.addActor(testButton);
         verticalGroup.addActor(testButton2);
 
