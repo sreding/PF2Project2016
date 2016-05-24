@@ -61,22 +61,23 @@ public class News extends GameState {
 
         table = new Table();
         table.setFillParent(true);  //setWidth(stage.getWidth());
-        table.align(Align.left| Align.top);
+        table.align(Align.right| Align.top);
 
         verticalGroup = new VerticalGroup();
         //verticalGroup.setWidth(stage.getWidth()/3);
         //verticalGroup.setHeight(stage.getHeight()/3);
 
-        verticalGroup.align(Align.topRight);
+        verticalGroup.center();
+        //verticalGroup.setBounds(Gdx.graphics.getWidth()/3,0,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight());
 
         scrollPane =  new ScrollPane(verticalGroup);
-        scrollPane.setWidth(verticalGroup.getWidth());
-        scrollPane.setBounds(stage.getWidth()*2/3,0f,stage.getWidth()/3,stage.getHeight());
+        //scrollPane.setWidth(verticalGroup.getWidth());
+        //scrollPane.setBounds(stage.getWidth()*2/3,0f,stage.getWidth()/3,stage.getHeight());
         verticalGroup.setFillParent(true);
 
 
         esc = new TextButton("esc",skin);
-        esc.align(Align.topLeft);
+
 
 
         TextButton testButton = new TextButton("Disaster", skin);
@@ -85,6 +86,10 @@ public class News extends GameState {
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
         testButton = autoPad(testButton,3);
         testButton2 = autoPad(testButton2, 3);
+
+
+
+
         verticalGroup.addActor(testButton);
         verticalGroup.addActor(testButton2);
 
@@ -94,15 +99,16 @@ public class News extends GameState {
                 +Gdx.graphics.getWidth(),skin);
         label.setWrap(true);
         label.setFillParent(true);
-        newsContent =  new Table(skin);
+        newsContent = new Table(skin);
         newsContent.setWidth(verticalGroup.getWidth());
-        newsContent.align(Align.bottomLeft);
+        newsContent.align(Align.left);
         newsContent.add(label);
 
 
 
 
         table.add(newsContent,scrollPane,esc);
+        table.debug();
 
         table.layout();
         table.validate();
@@ -127,8 +133,9 @@ public class News extends GameState {
 
 
     private static TextButton autoPad(TextButton button,int pad){
-        button.padRight(Gdx.graphics.getWidth()/(2*pad));
-        button.padLeft(Gdx.graphics.getWidth()/(2*pad));
+        float value = (Gdx.graphics.getWidth()/(2*pad))-(button.getMinWidth()/2);
+        button.padRight(value);
+        button.padLeft(value);
         button.padBottom(Gdx.graphics.getHeight()/(2*pad));
         button.padTop(Gdx.graphics.getHeight()/(2*pad));
         return button;
