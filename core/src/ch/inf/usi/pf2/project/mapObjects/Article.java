@@ -1,6 +1,8 @@
 package ch.inf.usi.pf2.project.mapObjects;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -10,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Article {
     private String title;
     private String content;
+
 
     public Article(String title,String content){
         this.title = title;
