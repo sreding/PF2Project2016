@@ -37,6 +37,7 @@ public class Path{
     private Line topRight;
 
     private boolean cameraFlag;
+    private boolean cameraFlagLeft;
     private int previousCameraPosition;
 
 
@@ -62,6 +63,10 @@ public class Path{
         c1=MAP_WIDTH/4;
 
 
+    }
+
+    public boolean isEmpty(){
+        return left.size() == 0;
     }
 
 
@@ -118,11 +123,30 @@ public class Path{
     public void inputPath3(){
         int pos=computeQuadrant();
         int q;
-        System.out.println(pos);
         Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
        //Vector2 v = new Vector2(vec.x,vec.y);
+        System.out.println("left: " + cameraFlagLeft);
+        System.out.println("right: "+cameraFlag);
+        System.out.println("prev: " + prev);
+        System.out.println("now: " + pos);
         if(topLeft != null){
             if(false){
+            }
+            else if( prev <= 1 && pos < 3 && cameraFlagLeft){
+                Vector3 v = new Vector3(vec.x-4*c1, vec.y,0);
+                q=getQ(v,0);
+                left.add(new Line(topLeft.getEnd(),new Vector2(vec.x-2*c1,vec.y)));
+                //q = getQ(vec,2*c1);
+                /*
+                left.add(new Line(topLeft.getEnd(),new Vector2(0,q)));
+                System.out.println(topLeft.getEnd().toString());
+                System.out.println(new Vector2(0,q).toString());
+                System.out.println("########");
+                left.add(new Line(new Vector2(2*c1,q), new Vector2(vec.x-2*c1,vec.y)));
+                System.out.println(new Vector2(2*c1,q));
+                System.out.println( new Vector2(vec.x-2*c1,vec.y));
+                */
+
             }
 
             else if(prev <= 1 && pos >= 2){
@@ -130,9 +154,11 @@ public class Path{
 
                 left.add(new Line(topLeft.getEnd(), new Vector2(2*c1, q)));
                 left.add(new Line(new Vector2(0, q), new Vector2((int) vec.x-2*c1, vec.y)));
+                System.out.println("case 2");
 
             }
-            else if(prev>= 2 && pos <= 1 && !cameraFlag){
+            // from right to left over middle
+            else if(prev>= 2 && pos <= 1  && !cameraFlag){
                 q = getReverseQ(vec,2*c1,0);
                 left.add(new Line(topLeft.getEnd(),new Vector2(0,q)));
                 left.add(new Line(new Vector2(2*c1, q),new Vector2(vec.x,vec.y)));
@@ -157,6 +183,7 @@ public class Path{
         prev = pos;
         topLeft = left.get(left.size()-1);
         cameraFlag=false;
+        cameraFlagLeft=false;
     }
 
     private int getReverseQ(Vector3 pos, int transitionPoint,int no){
@@ -166,15 +193,22 @@ public class Path{
             last = new Vector2(v.x+transitionPoint,v.y);
         }
         else{
-            last = new Vector2(v.x-transitionPoint,v.y);
+            last = new Vector2(v.x,v.y);
         }
 
         double angle = Math.atan((pos.y-last.y)/(last.x-pos.x)); //Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
         double q =  (last.x - transitionPoint) * Math.tan(angle);
-        System.out.println(q);
         return (int) (q+ last.y);
 
 
+    }
+
+    private int getQ2(Vector3 pos, int transitionPoint){
+        Vector2 last = topLeft.getEnd();
+        last = new Vector2(last.x+transitionPoint,last.y);
+        double angle = Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
+        double q =  (transitionPoint - last.x ) * Math.tan(angle);
+        return (int) (q+ last.y);
     }
 
 
@@ -182,7 +216,6 @@ public class Path{
         Vector2 last = topLeft.getEnd();
         double angle = Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
         double q =  (transitionPoint - last.x ) * Math.tan(angle);
-        System.out.println(q);
         return (int) (q+ last.y);
 
 
@@ -210,20 +243,30 @@ public class Path{
 
     public void drawPath3(){
         updateCameraTransition();
-        System.out.println(cameraFlag);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
         for(Line l : left){
             l.draw(shapeRenderer);
             l.leftToRight(2*c1).draw(shapeRenderer);
         }
+        shapeRenderer.setColor(Color.GOLD);
+        if(topLeft!= null) {
+            shapeRenderer.circle(topLeft.getEnd().x, topLeft.getEnd().y, 10);
+            shapeRenderer.circle(topLeft.getEnd().x+2*c1, topLeft.getEnd().y, 10);
+        }
         shapeRenderer.end();
     }
 
     private void updateCameraTransition(){
         Vector3 v = cam.unproject(new Vector3(cam.position.x,cam.position.y,0));
-        if(v.x<c1*2&& previousCameraPosition > c1*2 ){
+        if(v.x<c1*2&& previousCameraPosition > c1*2  ){
             cameraFlag = true;
+            cameraFlagLeft=false;
+        }
+        if(previousCameraPosition <=c1*2 && v.x>=2 *c1 ){
+            cameraFlagLeft = true;
+            cameraFlag = false;
         }
         previousCameraPosition = (int) v.x;
 
@@ -275,7 +318,7 @@ public class Path{
 
     }
 
-    public ArrayList<Vector2> getPositions(){
-        return positions;
+    public ArrayList<Line> getPositions(){
+        return left;
     }
 }

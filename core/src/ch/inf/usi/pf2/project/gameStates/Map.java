@@ -94,6 +94,7 @@ public class Map extends GameState {
         // we can add as many buttons as we need to this ArrayList
         buttons = new ArrayList<Button>();
         buttons.add(new Button(100,50,20, new Sprite(new Texture("move.png")), new Sprite(new Texture("draw.png"))));
+        buttons.add(new Button(0,0,20,new Sprite(new Texture("move.png")),new Sprite(new Texture("move.png"))));
 
 
         this.ports = new Ports(objects, cam, MAP_HEIGHT);
@@ -106,7 +107,7 @@ public class Map extends GameState {
 
         port = ports.portsToPortS();
 
-        testBoat = new Boat(1000,10,99999,0, new Sprite(new Texture("topBoat1.png")),
+        testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH );
     }
 
@@ -156,6 +157,7 @@ public class Map extends GameState {
     // We should write everything that gets updated every frame in here
     @Override
     public void update(float dt){
+        testBoat.updateBoat(dt);
 
         pushCameraBack();
     }
@@ -168,10 +170,13 @@ public class Map extends GameState {
 
         boolean modeChanged = false;
         if(buttons.get(0).isTouched()){
-            System.out.println("button pressed");
+            //System.out.println("button pressed");
             mode += 1;
             mode %= 2;
             modeChanged = true;
+        }
+        if(buttons.get(1).isTouched()){
+            testBoat.startBoat();
         }
 
         // moves the camera across the background according to dx and dy
@@ -185,7 +190,7 @@ public class Map extends GameState {
 
 
         if(Gdx.input.justTouched()){
-            ports.portTouched();
+           // ports.portTouched();
         }
 
     }
