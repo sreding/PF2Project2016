@@ -45,12 +45,13 @@ public class News extends GameState {
 
     private ScrollPane scrollPane;
     private Table table;
-    private Table newsContent;
+    private Container newsContent;
     private VerticalGroup verticalGroup;
     private TextButton esc;
     private Stage stage;
     private Skin skin;
     private Label label;
+    private Table header;
 
 
 
@@ -60,26 +61,13 @@ public class News extends GameState {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
-        //table.setFillParent(true);  //setWidth(stage.getWidth());
-
-        //table.setHeight(Gdx.graphics.getHeight());
         table = new Table();
         table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
         table.align(Align.left| Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
 
         verticalGroup = new VerticalGroup();
-        //verticalGroup.setWidth(stage.getWidth()/3);
-        //verticalGroup.setHeight(stage.getHeight()/3);
-
-        //verticalGroup.center();
-        //verticalGroup.setBounds(Gdx.graphics.getWidth()/3,0,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight());
-
         scrollPane =  new ScrollPane(verticalGroup);
-        //scrollPane.setWidth(verticalGroup.getWidth());
-        //scrollPane.setBounds(stage.getWidth()*2/3,0f,stage.getWidth()/3,stage.getHeight());
-        //verticalGroup.setFillParent(true);
-
 
         esc = autoPad(new TextButton("Back",skin),8);
 
@@ -87,7 +75,7 @@ public class News extends GameState {
 
 
         TextButton testButton = new TextButton("Title goes here", skin);
-        TextButton testButton2 = new TextButton("second title goes here", skin);
+        TextButton testButton2 = new TextButton("second title goes here lets see how many characters go here", skin);
         //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
         testButton = autoPad(testButton,3);
@@ -104,28 +92,25 @@ public class News extends GameState {
                 "getWidth"
                 +Gdx.graphics.getWidth(),skin);
         label.setWrap(true);
-        label.setFillParent(true);
-        newsContent = new Window("Details",skin);
-        newsContent.setWidth(verticalGroup.getWidth());
-        newsContent.align(Align.left);
-        newsContent.add(label);
 
+        newsContent = new Container(label).align(Align.topLeft);
+        newsContent.fillX();
 
+        header = new Table(skin);
 
+        header.align(Align.topLeft);
+        table.add(esc).align(Align.left).width(esc.getPrefWidth());
+        header.add(new Label("The News",skin)).align(Align.center);
 
-
-
-
-
-        table.add(esc).align(Align.topLeft);
-        table.add(new Label("The News",skin));
-        //table.layout();
-        //table.validate();
+        table.add(header).align(Align.center);
+        table.add(new Label("Today's Headlines",skin)).align(Align.center);
         table.row();
-        table.add(newsContent).width((Gdx.graphics.getWidth())-testButton.getPrefWidth())
+        table.add(new Table(skin));
+        table.add(newsContent).width((stage.getWidth())-verticalGroup.getPrefWidth()-(esc.getPrefWidth()))
                 .height((Gdx.graphics.getHeight()-esc.getPrefHeight()));
         table.add(scrollPane).width(testButton.getPrefWidth());
-        table.debug();
+        //table.debug();
+
 
         //table.layout();
         //table.validate();
