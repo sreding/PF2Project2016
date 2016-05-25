@@ -59,29 +59,35 @@ public class News extends GameState {
         stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+
+        //table.setFillParent(true);  //setWidth(stage.getWidth());
+
+        //table.setHeight(Gdx.graphics.getHeight());
         table = new Table();
-        table.setFillParent(true);  //setWidth(stage.getWidth());
-        table.align(Align.right| Align.top);
+        table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
+        table.align(Align.left| Align.top);
+        table.setPosition(0,Gdx.graphics.getHeight());
 
         verticalGroup = new VerticalGroup();
         //verticalGroup.setWidth(stage.getWidth()/3);
         //verticalGroup.setHeight(stage.getHeight()/3);
 
-        verticalGroup.center();
+        //verticalGroup.center();
         //verticalGroup.setBounds(Gdx.graphics.getWidth()/3,0,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight());
 
         scrollPane =  new ScrollPane(verticalGroup);
         //scrollPane.setWidth(verticalGroup.getWidth());
         //scrollPane.setBounds(stage.getWidth()*2/3,0f,stage.getWidth()/3,stage.getHeight());
-        verticalGroup.setFillParent(true);
+        //verticalGroup.setFillParent(true);
 
 
-        esc = new TextButton("esc",skin);
+        esc = autoPad(new TextButton("Back",skin),8);
+
+        scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
 
-
-        TextButton testButton = new TextButton("Disaster", skin);
-        TextButton testButton2 = new TextButton("second Disaster", skin);
+        TextButton testButton = new TextButton("Title goes here", skin);
+        TextButton testButton2 = new TextButton("second title goes here", skin);
         //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
         testButton = autoPad(testButton,3);
@@ -89,7 +95,7 @@ public class News extends GameState {
 
 
 
-
+        verticalGroup.padBottom(stage.getHeight()-esc.getHeight());
         verticalGroup.addActor(testButton);
         verticalGroup.addActor(testButton2);
 
@@ -99,7 +105,7 @@ public class News extends GameState {
                 +Gdx.graphics.getWidth(),skin);
         label.setWrap(true);
         label.setFillParent(true);
-        newsContent = new Table(skin);
+        newsContent = new Window("Details",skin);
         newsContent.setWidth(verticalGroup.getWidth());
         newsContent.align(Align.left);
         newsContent.add(label);
@@ -107,11 +113,22 @@ public class News extends GameState {
 
 
 
-        table.add(newsContent,scrollPane,esc);
+
+
+
+
+        table.add(esc).align(Align.topLeft);
+        table.add(new Label("The News",skin));
+        //table.layout();
+        //table.validate();
+        table.row();
+        table.add(newsContent).width((Gdx.graphics.getWidth())-testButton.getPrefWidth())
+                .height((Gdx.graphics.getHeight()-esc.getPrefHeight()));
+        table.add(scrollPane).width(testButton.getPrefWidth());
         table.debug();
 
-        table.layout();
-        table.validate();
+        //table.layout();
+        //table.validate();
 
 
 
