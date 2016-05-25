@@ -36,7 +36,8 @@ public class Player {
 
     public int money;
     private ArrayList<Boat> boats;
-    private ArrayList<Path> paths;
+    //
+
 
     public Player()
     {

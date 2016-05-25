@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -35,6 +36,21 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import  com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
 /**
@@ -47,7 +63,7 @@ public class Manager extends GameState {
     private TextureAtlas atlas;
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
-    private Table table;
+    private Table container;
     private Label label;
     private Actor window;
     private BitmapFont font;
@@ -59,7 +75,7 @@ public class Manager extends GameState {
     private Sprite sprite;
     private Label attributes;
     private Table table_atrributes;
-    private Texture boat1;
+    private Texture boat;
     private Table boat_attributes;
     private ScrollPane scrollPane;
     private List list_of_boats;
@@ -69,6 +85,14 @@ public class Manager extends GameState {
     private Texture background;
     private Sprite splash;
     private BitmapFont black;
+    private VerticalGroup verticalGroup;
+    private boolean bool;
+    private String var;
+    private Image actor;
+    private TextureRegion region;
+
+
+
 
 
 
@@ -76,13 +100,51 @@ public class Manager extends GameState {
 
     public Manager(SpriteBatch batch)
     {
+        this.bool=true;
+        this.batch=batch;
+        stage = new Stage(new ScreenViewport(),batch);
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Gdx.input.setInputProcessor(stage);
 
-        this.batch = new SpriteBatch();
-        this.background = new Texture("background_manager.png");
-        this.splash = new Sprite(background);
-        this.splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // Gdx.graphics.setVSync(false);
 
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
+        container = new Table();
+        stage.addActor(container);
+        container.setFillParent(true);
+        boat = new Texture(Gdx.files.internal("topBoat1.png"));
+
+        Table table = new Table(skin);
+        table.getSkin().getFont("default-font").getData().setScale(2.5f,2.5f);
+        table.align(Align.right|Align.top);
+        table.setPosition(0,container.getHeight());
+        this.list_of_boats = new List(skin);
+        this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
+        list_of_boats.setPosition(0,Gdx.graphics.getHeight());
+        table.debug();
+
+        ScrollPane scroll = new ScrollPane(table, skin);
+        table.add(new Label("YOUR BOATS",skin)).row();
+        table.add(list_of_boats);
+
+
+
+        System.out.println(list_of_boats.getSelected());
+        container.add(scroll).expand().fill().colspan(4);
+        var =  list_of_boats.getSelected().toString();
+        boat = new Texture(Gdx.files.internal("topBoat1.png"));
+        region = new TextureRegion(boat, 0, 0, 512, 275);
+        actor = new Image(region);
+
+
+
+
+
+//        this.batch = new SpriteBatch();
+//        this.background = new Texture("background_manager.png");
+//        this.splash = new Sprite(background);
+//        this.splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
+
         //this.black = new BitmapFont(Gdx.files.internal("font_manager/blackfont.fnt"), false);
 
 
@@ -91,13 +153,36 @@ public class Manager extends GameState {
 
 
 //
-        this.stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+//        this.stage = new Stage();
+//       Gdx.input.setInputProcessor(stage);
 //        atlas = new TextureAtlas("uiatlas.pack");
 //        skin = new Skin(Gdx.files.internal("uiskin.json"),atlas);
 //
-        table = new Table(skin);
-        table.debug();
+//        this.table = new Table();
+//
+//        this.verticalGroup = new VerticalGroup();
+//        this.verticalGroup.setWidth(stage.getWidth());
+//        this.verticalGroup.align(Align.right|Align.top);
+//        this.verticalGroup.setPosition(0, Gdx.graphics.getHeight());
+//        this.verticalGroup.debug();
+
+//        this.list_of_boats = new List(skin);
+//        this.list_of_boats.setItems(new String[] {"Fascinosa", "Titanic", "Simon", "Alejandro", "GianMARKET", "PEROZA", "ILIJA","Fascinosa", "Titanic", "Simon","Fascinosa", "Titanic", "Simon", "Alejandro", "GianMARKET", "PEROZA", "ILIJA","Fascinosa", "Titanic", "Simon"});
+        //this.scrollPane = new ScrollPane(list_of_boats,skin);
+
+
+
+        //this.verticalGroup.addActor(list_of_boats);
+//        this.scrollPane = new ScrollPane(list_of_boats,skin);
+//
+//        this.table.setWidth(stage.getWidth());
+//        this.table.align(Align.right| Align.top);
+//        this.table.setPosition(0,Gdx.graphics.getHeight()/2);
+//        this.table.debug();
+//        this.table.setFillParent(true);
+//        this.table.add(scrollPane);
+
+
 
 //
 //        list_of_boats = new List(skin);
@@ -134,12 +219,12 @@ public class Manager extends GameState {
 //        my_boats.add("My Boats");
 
 
-
+//
 //        list_of_boats = new List(skin);
 //        list_of_boats.setItems(new String[] {"Fascinosa", "Titanic", "Simon", "Alejandro", "GianMARKET", "PEROZA", "ILIJA","Fascinosa", "Titanic", "Simon", "Alejandro", "GianMARKET", "PEROZA", "ILIJA"});
-//        scroll = new ScrollPane(list_of_boats,skin);
-//        scroll.setWidth(200f);
-//        scroll.setHeight(stage.getHeight()/1.3f);
+//        scrollPane = new ScrollPane(list_of_boats,skin);
+//        scrollPane.setWidth(200f);
+//        scrollPane.setHeight(stage.getHeight()/1.3f);
 
 
 
@@ -222,8 +307,12 @@ public class Manager extends GameState {
 //        boat_attributes.row();
 //        attributes=new Label("MAINTENANCE: 10$/KM",skin);
 //        boat_attributes.add(attributes).padBottom(10);
-
-       // stage.addActor(boat_attributes);
+//        boat_attributes.row();
+//        boat_attributes.debug();
+//
+//
+//        this.stage.addActor(boat_attributes);
+//        this.stage.addActor(table);
 
 
 
@@ -246,12 +335,14 @@ public class Manager extends GameState {
 
     @Override
     public void renderGameObject(){
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        splash.draw(batch);
-        batch.end();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
+//        batch.begin();
+//        splash.draw(batch);
+//        batch.end();
 
         //batch.begin();
        // sprite.draw(batch);
@@ -280,14 +371,7 @@ public class Manager extends GameState {
 
        // stage.addActor(boat_attributes);
 //
-//        boat1 = new Texture(Gdx.files.internal("topBoat1.png"));
-//        stage.act(Gdx.graphics.getDeltaTime());
-//        stage.draw();
-        //batch.begin();
 
-        //batch.draw(boat1, Gdx.graphics.getWidth()/2 - 900/2,
-       //         Gdx.graphics.getHeight()/2 - 300/2, 900, 300);
-       // batch.end();
 
 //        batch.begin();
 //
@@ -296,12 +380,28 @@ public class Manager extends GameState {
 //
 //        batch.end();
 
+
+
     }
 
     @Override
     public void update(float dt) {
 
+        System.out.println(var);
+        var =  list_of_boats.getSelected().toString();
+        if (var.equals("BOAT1") && bool) {
+            bool = false;
+            stage.addActor(actor);
+        }
+        else if(var.equals("BOAT1") && !bool) {
+        }
+        else  {
+            System.out.println("I AM HERE");
+            actor.remove();
+            bool=true;
+        }
     }
+
 
     @Override
     public void inputHandler() {
