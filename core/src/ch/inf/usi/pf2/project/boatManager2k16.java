@@ -27,6 +27,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// We split the different parts of our game in GameState and GameState has 3 extensions at the moment
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
+
 		currentState = new News(batch);
 
 	}

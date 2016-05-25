@@ -27,17 +27,12 @@ import ch.inf.usi.pf2.project.gameStates.Map;
 public class Path{
     private ArrayList<Vector2> positions;
     private ShapeRenderer shapeRenderer;
-    private final int delta = 1440;
     private OrthographicCamera cam;
     private int c1;
 
-    private ArrayList<Vector2> positionsLeft;
-    private ArrayList<Vector2> positionsRight;
 
     private  ArrayList<Line> left;
     private Line topLeft;
-    private  ArrayList<Line> right;
-    private Line topRight;
 
     private boolean cameraFlag;
     private boolean cameraFlagLeft;
@@ -56,12 +51,8 @@ public class Path{
         this.shapeRenderer = shapeRenderer;
 
         positions = new ArrayList<Vector2>();
-        positionsLeft =new ArrayList<Vector2>();
-        positionsRight =new ArrayList<Vector2>();
 
         left = new ArrayList<Line>();
-        right = new ArrayList<Line>();
-
 
         this.cam =cam;
         c1=MAP_WIDTH/4;
@@ -76,55 +67,12 @@ public class Path{
     }
 
 
-    public void addPoint(int x, int y){
-        if(checkCollision(x,y)) {
-            positions.add(new Vector2(x, y));
-        }
-    }
-    public void addPointLeft(int x, int y){
-        if(checkCollision(x,y)) {
-            positionsLeft.add(new Vector2(x, y));
-        }
-    }
-    public void addPointRight(int x, int y){
-        if(checkCollision(x,y)) {
-            positionsRight.add(new Vector2(x, y));
-        }
-    }
-
     private boolean checkCollision(int x, int y){
         return true;
     }
 
-    public void inputPath(){
-            cam.update();
-            Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
-            addPoint((int) (vec.x) ,(int) vec.y);
 
-    }
 
-    public void inputPath2(){
-
-        Vector2 prev;
-        Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
-        if(positionsLeft.size()<0){
-             prev = positionsLeft.get(positionsLeft.size()-1);}
-        else{
-            prev = new Vector2(0,0);
-        }
-        if(vec.x>2*c1){
-            double angle = Math.atan((vec.y-prev.y) / (vec.x-prev.x));
-            double q = (2*c1-prev.x)*Math.tan(angle) + prev.y;
-            addPointLeft(2*c1,(int) q);
-            addPointRight(2*c1,(int) q);
-            addPointLeft(0,0);
-            addPointLeft((int)vec.x-2*c1,(int) vec.y);
-            addPointRight((int) vec.x,(int) vec.y);
-            }
-        else{
-            addPointLeft((int) vec.x, (int) vec.y);
-        }
-    }
 
     public void inputPath3(){
         int pos=computeQuadrant();
@@ -137,62 +85,73 @@ public class Path{
         System.out.println("prev: " + prev);
         System.out.println("now: " + pos);
         */
+        int addedLines = 0;
         if(topLeft != null){
             if(false){
             }
-            else if( prev <= 1 && pos < 3 && cameraFlagLeft){
-                Vector3 v = new Vector3(vec.x-4*c1, vec.y,0);
-                q=getQ(v,0);
+            else if( prev >= 1 && pos < 3 && cameraFlag){
+                System.out.println("case 1");
                 left.add(new Line(topLeft.getEnd(),new Vector2(vec.x-2*c1,vec.y)));
-                //q = getQ(vec,2*c1);
-                /*
-                left.add(new Line(topLeft.getEnd(),new Vector2(0,q)));
-                System.out.println(topLeft.getEnd().toString());
-                System.out.println(new Vector2(0,q).toString());
-                System.out.println("########");
-                left.add(new Line(new Vector2(2*c1,q), new Vector2(vec.x-2*c1,vec.y)));
-                System.out.println(new Vector2(2*c1,q));
-                System.out.println( new Vector2(vec.x-2*c1,vec.y));
-                */
+                addedLines+=1;
 
             }
 
-            else if(prev <= 1 && pos >= 2){
-                q = getQ(vec, 2*c1);
-
-                left.add(new Line(topLeft.getEnd(), new Vector2(2*c1, q)));
-                left.add(new Line(new Vector2(0, q), new Vector2((int) vec.x-2*c1, vec.y)));
+            else if(prev <= 1 && pos >= 2) {
+                q = getQ(vec, 2 * c1);
+                left.add(new Line(topLeft.getEnd(), new Vector2(2 * c1, q)));
+                left.add(new Line(new Vector2(0, q), new Vector2((int) vec.x - 2 * c1, vec.y)));
+                addedLines += 2;
                 System.out.println("case 2");
 
             }
-            // from right to left over middle
             else if(prev>= 2 && pos <= 1  && !cameraFlag){
                 q = getReverseQ(vec,2*c1,0);
                 left.add(new Line(topLeft.getEnd(),new Vector2(0,q)));
                 left.add(new Line(new Vector2(2*c1, q),new Vector2(vec.x,vec.y)));
+                addedLines+=2;
+                System.out.println("case 3");
 
             }
             else if( pos > 1) {
                 left.add(new Line(topLeft.getEnd() , new Vector2(vec.x - 2*c1,vec.y)));
-               // right.add(new Line(topRight.getEnd(), new Vector2(vec.x+2*c1,vec.y)));
+                addedLines+=1;
+                System.out.println("case 4");
             }
             else if(true){
                 left.add(new Line(topLeft.getEnd() , new Vector2(vec.x,vec.y)));
+                addedLines+=1;
+                System.out.println("case 5");
             }
         }
         else{
             if(pos <=1){
                 left.add(new Line(new Vector2(vec.x,vec.y) , new Vector2(vec.x,vec.y)));
+                addedLines+=1;
             }
-            else{
+            else{System.out.println("case 1");
                 left.add(new Line(new Vector2(vec.x-2*c1,vec.y) , new Vector2(vec.x-2*c1,vec.y)));
+                addedLines+=1;
             }
         }
-        prev = pos;
-        topLeft = left.get(left.size()-1);
-        topLeft.intersectsWithPolygons(landPolygons);
-        cameraFlag=false;
-        cameraFlagLeft=false;
+        if(addedLines==1 && left.get(left.size() -1).intersectsWithPolygons(landPolygons)) {
+                left.remove(left.size() - 1);
+
+        }
+        else if(addedLines == 2 && (left.get(left.size()-1).intersectsWithPolygons(landPolygons) ||
+                left.get(left.size()-1).intersectsWithPolygons(landPolygons))){
+            left.remove(left.size() - 1);
+            left.remove(left.size() - 1);
+
+        }
+        else{
+            prev = pos;
+            topLeft = left.get(left.size()-1);
+            cameraFlag=false;
+            cameraFlagLeft=false;
+
+        }
+        System.out.println("contains too big x  " + containsTooBigX());
+
     }
 
     private int getReverseQ(Vector3 pos, int transitionPoint,int no){
@@ -208,8 +167,6 @@ public class Path{
         double angle = Math.atan((pos.y-last.y)/(last.x-pos.x)); //Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
         double q =  (last.x - transitionPoint) * Math.tan(angle);
         return (int) (q+ last.y);
-
-
     }
 
     private int getQ2(Vector3 pos, int transitionPoint){
@@ -262,6 +219,7 @@ public class Path{
         shapeRenderer.setColor(Color.GOLD);
         if(topLeft!= null) {
             shapeRenderer.circle(topLeft.getEnd().x, topLeft.getEnd().y, 10);
+            shapeRenderer.setColor(Color.MAGENTA);
             shapeRenderer.circle(topLeft.getEnd().x+2*c1, topLeft.getEnd().y, 10);
         }
         shapeRenderer.end();
@@ -281,51 +239,21 @@ public class Path{
 
     }
 
-
-
-    public void drawPath2(){
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        Vector2 prev;
-        Vector2 pos;
-        for(int i = 1; i < positionsLeft.size() ; i++) {
-            pos = positionsLeft.get(i);
-            prev = positionsLeft.get(i-1);
-            if(!(pos.x+pos.y ==0 || prev.x+prev.y == 0) ) {
-                shapeRenderer.rectLine(pos.x, pos.y, prev.x, prev.y, 5);
+    public boolean containsTooBigX(){
+        for(Line l: left){
+            if(l.containsTooBigX(2*c1)){
+                return true;
             }
         }
-        for(int i = 1; i < positionsRight.size() ; i++) {
-            pos = positionsRight.get(i);
-            prev = positionsRight.get(i-1);
-            shapeRenderer.rectLine(pos.x,pos.y,prev.x ,prev.y,5);
-        }
-        shapeRenderer.end();
-
+        return false;
     }
 
 
-    public void drawPath(){
-        Vector2 prev;
-        Vector2 pos;
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        for(int i = 1; i < positions.size() ; i++){
-            pos = positions.get(i);
-            prev = positions.get(i-1);
-            shapeRenderer.rectLine(pos.x,pos.y,prev.x ,prev.y,5);
-            if(0 <= pos.x && c1 <= 2*c1){
-                shapeRenderer.rectLine(pos.x + c1*2,pos.y,prev.x+c1*2 ,prev.y,5);
-            }
-            if(2*c1<pos.x){
-                shapeRenderer.rectLine(pos.x - c1*2,pos.y,prev.x - c1*2 ,prev.y,5);
-            }
 
-        }
-        shapeRenderer.end();
 
-    }
+
+
 
     public ArrayList<Line> getPositions(){
         return left;

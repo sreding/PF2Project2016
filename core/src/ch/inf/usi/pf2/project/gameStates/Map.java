@@ -148,7 +148,7 @@ public class Map extends GameState {
 
         batch.end();
 
-        showHitBoxes();
+        //showHitBoxes();
         showPorts();
         showPolygons();
 
@@ -262,11 +262,13 @@ public class Map extends GameState {
     }
 
     private void showPolygons(){
+        shapeRenderer.setProjectionMatrix(cam.combined);
+        shapeRenderer.begin(ShapeType.Line);
+        shapeRenderer.setColor(Color.GREEN);
         for(MapObject o : polygonMapObjects){
             if(o instanceof PolygonMapObject){
                 Polygon p = ((PolygonMapObject) o).getPolygon();
-                shapeRenderer.begin(ShapeType.Line);
-                shapeRenderer.setColor(Color.GREEN);
+
                 float[] prevVertices = p.getVertices();
                 float[] vertices =new float[prevVertices.length];
                 float offsetX = p.getX();
@@ -280,9 +282,11 @@ public class Map extends GameState {
                     }
                 }
                 shapeRenderer.polygon(vertices);
-                shapeRenderer.end();
+
             }
         }
+
+        shapeRenderer.end();
     }
 
 
