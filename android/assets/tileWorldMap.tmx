@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="39">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="49">
  <tileset firstgid="1" name="worldMap" tilewidth="720" tileheight="720" tilecount="2" columns="2">
   <image source="worldMap.png" width="1440" height="720"/>
  </tileset>
@@ -8,11 +8,11 @@
 2,1,2,1
 </data>
  </layer>
- <objectgroup name="Object Layer 1">
+ <objectgroup name="Object Layer 1" visible="0">
   <object id="1" x="1373" y="220" width="276" height="118"/>
   <object id="2" x="1481" y="340" width="123" height="157"/>
  </objectgroup>
- <objectgroup name="Ports">
+ <objectgroup name="Ports" visible="0">
   <object id="12" name="New York" x="1125" y="190" width="36" height="31">
    <ellipse/>
   </object>
@@ -53,9 +53,17 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="SquarePorts">
+ <objectgroup name="SquarePorts" visible="0">
   <object id="35" name="Sydney" x="538" y="490" width="40" height="42"/>
   <object id="37" name="New York" x="1125" y="184" width="45" height="42"/>
   <object id="38" name="Dublin" x="1392" y="124" width="42" height="35"/>
+ </objectgroup>
+ <objectgroup name="Polygons">
+  <object id="41" name="SouthAmerica" x="1168.98" y="577.639">
+   <polygon points="0,0 -29.3715,-17.6229 -5.87429,-146.857 -35.2457,-162.522 -60.701,-209.516 -21.5391,-268.259 25.4553,-262.385 72.4496,-229.097 58.7429,-211.474 123.36,-203.642 133.151,-187.977 105.737,-127.276 80.282,-121.402 76.3658,-105.737 54.8267,-76.3658 37.2038,-78.3239 5.87429,-31.3295"/>
+  </object>
+  <object id="48" x="800.862" y="135.109">
+   <polygon points="0,0 -29.3715,-35.2457 -21.5391,-48.9524 5.87429,-60.701 93.9886,-52.8686 137.067,-56.7848 148.815,-82.2401 180.145,-86.1563 233.014,-82.2401 266.301,-84.1982 260.427,-97.9048 383.787,-109.653 442.53,-103.779 513.021,-113.57 550.225,-107.695 593.303,-103.779 554.141,-95.9467 554.141,-60.701 479.734,-37.2038 466.027,-13.7067 436.656,-27.4134 424.907,-43.0781 432.739,-58.7429 409.242,-74.4077 348.541,-92.0305 319.17,-76.3658 391.619,-43.0781 368.122,-29.3715 340.709,-35.2457 350.499,-46.9943 321.128,-54.8267 307.421,-41.12 330.918,-21.5391 358.332,-23.4972 360.29,-11.7486 379.871,-11.7486 417.075,11.7486 368.122,25.4553 393.577,45.0362 356.374,48.9524 307.421,101.821 258.469,101.821 246.72,121.402 254.553,144.899 270.217,150.773 283.924,142.941 287.84,158.606 309.379,164.48 309.379,178.187 346.583,193.852 332.876,203.642 256.511,160.564 221.265,146.857 187.977,99.8629 191.893,125.318 166.438,88.1144 144.899,66.5753 146.857,33.2876 92.0305,-11.7486 45.0362,-15.6648"/>
+  </object>
  </objectgroup>
 </map>
