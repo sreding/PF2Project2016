@@ -59,9 +59,11 @@ public class Line {
 
             }
         }
-        System.out.println("asdf   " +res);
-
-
+        System.out.println("intersects land   " +res);
         return res;
     }
+
+    public boolean containsTooBigX(int bound){
+        return (start.x > bound || end.x > bound);
+        }
 }
