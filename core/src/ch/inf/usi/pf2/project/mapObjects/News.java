@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Value.Fixed;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.Align;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ch.inf.usi.pf2.project.gameStates.GameState;
+import javafx.scene.control.TextFormatter;
 import sun.security.x509.AlgIdDSA;
 
 /**
@@ -40,9 +42,9 @@ import sun.security.x509.AlgIdDSA;
 
 public class News extends GameState {
 
-    private ArrayList articles;
+    private ArrayList<Article> articles;
     private SpriteBatch batch;
-
+    private int numberOfArticles;
     private ScrollPane scrollPane;
     private Table table;
     private Container newsContent;
@@ -52,6 +54,8 @@ public class News extends GameState {
     private Skin skin;
     private Label label;
     private Table header;
+    private ButtonGroup buttonGroup;
+
 
 
 
@@ -59,8 +63,11 @@ public class News extends GameState {
         this.articles = new ArrayList<Article>();
         stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        numberOfArticles = 0;
+        ///ADD ARRAYLIST OF ARTCLES FROM PLAYER!
 
-
+        buttonGroup = new ButtonGroup();
+        buttonGroup.setMaxCheckCount(1);
         table = new Table();
         table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
         table.align(Align.left| Align.top);
@@ -69,19 +76,20 @@ public class News extends GameState {
         verticalGroup = new VerticalGroup();
         scrollPane =  new ScrollPane(verticalGroup);
 
-        esc = autoPad(new TextButton("Back",skin),8);
+        esc = autoPad(new TxtButton("Back",skin,-3),8);
 
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
 
-        TextButton testButton = new TextButton("Title goes here", skin);
-        TextButton testButton2 = new TextButton("second title goes here lets see how many characters go here", skin);
+        TxtButton testButton = new TxtButton("Title goes here", skin,1);
+        TxtButton testButton2 = new TxtButton("second title goes here lets see how many characters go here", skin,2);
         //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
         testButton = autoPad(testButton,3);
         testButton2 = autoPad(testButton2, 3);
 
 
+        buttonGroup.add(testButton,testButton2);
 
         verticalGroup.padBottom(stage.getHeight()-esc.getHeight());
         verticalGroup.addActor(testButton);
@@ -114,27 +122,45 @@ public class News extends GameState {
 
         //table.layout();
         //table.validate();
-
-
-
-
-
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
     }
 
+
     @Override
     public void renderGameObject(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        TxtButton button = (TxtButton)buttonGroup.getChecked();
+        if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
+            label = new Label(articles.get(button.getIndex()).getContent(), skin);
+        }
+        if(esc.isPressed() == true){
+            // IMPLEMENT GOING BACK TO MAP
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
-
     }
 
 
-    private static TextButton autoPad(TextButton button,int pad){
+
+    private void setLabel(int n){
+        this.label.setText(articles.get(n).getContent());
+    }
+
+    private void addArticles(ArrayList<Article> newA){
+        for(Article a:newA){
+            TxtButton button = a.getTextButton();
+            button.setIndex(numberOfArticles);
+            button = autoPad(button, 3);
+            verticalGroup.addActor(button);
+            this.articles.add(a);
+            numberOfArticles++;
+        }
+
+    }
+    private static TxtButton autoPad(TxtButton button,int pad){
         float value = (Gdx.graphics.getWidth()/(2*pad))-(button.getMinWidth()/2);
         button.padRight(value);
         button.padLeft(value);
@@ -156,16 +182,17 @@ public class News extends GameState {
             TextButton newButton = new TextButton(articles.get(n).getTitle(),buttonSkin);
             buttons.add(newButton);
             return makeNewButtons(articles,buttons,n++);
-
         }
 
 
     }
+
     //simple function that generates a list of articles given lists of
     // strings containing names of regions and desasters
     private static ArrayList<Article> makeArticles(ArrayList<String> regions,
                                                    ArrayList<String> events,
-                                                   ArrayList<Article> finishedArticles, int n) {
+                                                   ArrayList<Article> finishedArticles, int n,
+                                                   int numberOfArticles) {
         if(events.size() == n){
             return finishedArticles;
     }else{
@@ -174,9 +201,10 @@ public class News extends GameState {
             String title = events.get(n)+ " in " +country;
             String text = "The" + events.get(n) + " that destroyed " + country+"appear to" +
                     "have devastating consequences to the region";
-            finishedArticles.add(new Article(title,text));
+            finishedArticles.add(new Article(title,text,numberOfArticles));
             n++;
-            return makeArticles(regions,events,finishedArticles,n);
+            numberOfArticles++;
+            return makeArticles(regions,events,finishedArticles,n,numberOfArticles);
         }
 
     }
