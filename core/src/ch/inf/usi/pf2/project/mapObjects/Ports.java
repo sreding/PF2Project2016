@@ -49,11 +49,12 @@ public class Ports {
         return res;
         }
 
-    public void handlePortInput(){
+    public Port handlePortInput(){
         Port p = portTouched();
         if(Gdx.input.justTouched()&& p != null){
             System.out.println("pls display options for port: " + p.getName());
         }
+        return p;
     }
 
     public void addPorts(MapObjects mO){

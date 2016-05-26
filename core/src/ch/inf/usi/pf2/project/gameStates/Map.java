@@ -25,15 +25,20 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import ch.inf.usi.pf2.project.mapObjects.Boat;
+import ch.inf.usi.pf2.project.mapObjects.BoatButton;
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
 import ch.inf.usi.pf2.project.mapObjects.Player;
@@ -75,7 +80,7 @@ public class Map extends GameState {
     private int mode; // 0 = moving, 1 = drawing
     private Player player;
 
-    private Boat testBoat;
+    private Boat courrentBoat;
 
     private boolean touchUp;
     private boolean wasTouched;
@@ -120,25 +125,15 @@ public class Map extends GameState {
 
         this.ports = new Ports(objects, cam, MAP_WIDTH);
 
-        testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+        Boat testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
+        Boat testBoat2 = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+                new Sprite(new Texture("sideBoat5.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
         player=new Player();
         player.addBoat(testBoat);
+        player.addBoat(testBoat2);
 
-        //start of stage stuff
-        stage=new Stage(new ScreenViewport(),batch);
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Table table = new Table();
-        table.setFillParent(true);
-        table.align(Align.right| Align.top);
-        VerticalGroup verticalGroup = new VerticalGroup();
-        ScrollPane scrollPane =  new ScrollPane(verticalGroup);
-        table.add(scrollPane).width(Gdx.graphics.getWidth()/5).padTop(4*Gdx.graphics.getHeight()/5);
 
-        TxtButton testButton = new TxtButton("Some text", skin,1);
-        verticalGroup.addActor(testButton);
-
-        stage.addActor(table);
 
 
 
@@ -149,6 +144,8 @@ public class Map extends GameState {
         touchUp=false;
         wasTouched=false;
         modeChanged=false;
+        Gdx.input.setInputProcessor(stage);
+        stage=new Stage(new ScreenViewport(),batch);
 
 
 
@@ -168,13 +165,18 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        testBoat.getCurrentPath().drawPath3(mode);
+        if(courrentBoat != null){
+            courrentBoat.getCurrentPath().drawPath3(mode);
+        }
 
         // batch will draw according to screen coordinates
         batch.begin();
         batch.setProjectionMatrix(cam.combined);
 
-        testBoat.drawBoatOnMap();
+
+        if(courrentBoat != null) {
+            courrentBoat.drawBoatOnMap();
+        }
 
         batch.setProjectionMatrix(initialProjectionMatrix);
 
@@ -186,23 +188,21 @@ public class Map extends GameState {
 
         batch.end();
 
-
         stage.draw();
-
-
 
         showHitBoxes();
         //showPorts();
         showPolygons();
-
-
 
     }
 
     // We should write everything that gets updated every frame in here
     @Override
     public void update(float dt){
-        testBoat.updateBoat(dt);
+        if(courrentBoat != null) {
+            courrentBoat.updateBoat(dt);
+        }
+        stage.act(Gdx.graphics.getDeltaTime());
 
         pushCameraBack();
     }
@@ -226,7 +226,7 @@ public class Map extends GameState {
             modeChanged = true;
         }
         if(buttons.get(1).isTouched()){
-            testBoat.startBoat();
+            courrentBoat.startBoat();
         }
 
 
@@ -235,11 +235,14 @@ public class Map extends GameState {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && touchUp){
-            testBoat.getCurrentPath().inputPath4();
+            courrentBoat.getCurrentPath().inputPath4();
 
         }
 
-        ports.handlePortInput();
+        Port p = ports.handlePortInput();
+        if(p!= null && Gdx.input.justTouched()){
+            showBoatButtonList();
+        }
 
 
 
@@ -258,11 +261,11 @@ public class Map extends GameState {
         Vector3 pos = cam.position;
         if(pos.x + cam.viewportWidth/2 > MAP_WIDTH ){
             cam.position.x = 2*MAP_WIDTH/4 - cam.viewportWidth/2;
-            testBoat.getCurrentPath().notifyPath(); //tells the path, that we just wrapped around the screen
+            courrentBoat.getCurrentPath().notifyPath(); //tells the path, that we just wrapped around the screen
         }
         else if(pos.x - cam.viewportWidth/2< 0){
             cam.position.x = 2*MAP_WIDTH/4 + cam.viewportWidth/2;
-            testBoat.getCurrentPath().notifyPath();
+            courrentBoat.getCurrentPath().notifyPath();
         }
 
         // we probably wont need this anymore, but i will leave it in just in case
@@ -346,6 +349,40 @@ public class Map extends GameState {
         }
 
         shapeRenderer.end();
+    }
+
+    public void showBoatButtonList(){
+
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Table table = new Table();
+        table.setFillParent(true);
+        table.align(Align.right| Align.top);
+        table.debug();
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.setMaxCheckCount(1);
+
+        VerticalGroup verticalGroup = new VerticalGroup();
+        ScrollPane scrollPane =  new ScrollPane(verticalGroup);
+        int i =0;
+        for(Boat b: player.getBoats()){
+            final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
+            verticalGroup.addActor(tb);
+            tb.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("asidgpiausdbpiuas");
+                    //courrentBoat =player.getBoats().get(i);
+                    courrentBoat=tb.getB();
+                    stage.clear();
+                    //start to draw
+                }
+            });}
+
+
+        table.add(scrollPane).width(Gdx.graphics.getWidth()/5).padTop(4*Gdx.graphics.getHeight()/5);
+
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
     }
 
 
