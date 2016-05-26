@@ -62,7 +62,7 @@ public class News extends GameState {
     public News(SpriteBatch batch) {
         this.articles = new ArrayList<Article>();
         stage = new Stage(new ScreenViewport(),batch);
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"));//,Gdx.files.internal("uiskin.atlas"));
         numberOfArticles = 0;
         ///ADD ARRAYLIST OF ARTCLES FROM PLAYER!
 
@@ -75,7 +75,6 @@ public class News extends GameState {
 
         verticalGroup = new VerticalGroup();
         scrollPane =  new ScrollPane(verticalGroup);
-
         esc = autoPad(new TxtButton("Back",skin,-3),8);
 
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
@@ -90,6 +89,7 @@ public class News extends GameState {
 
 
         buttonGroup.add(testButton,testButton2);
+        verticalGroup.fill();
 
         verticalGroup.padBottom(stage.getHeight()-esc.getHeight());
         verticalGroup.addActor(testButton);
@@ -161,11 +161,17 @@ public class News extends GameState {
 
     }
     private static TxtButton autoPad(TxtButton button,int pad){
-        float value = (Gdx.graphics.getWidth()/(2*pad))-(button.getMinWidth()/2);
+        float value = (Gdx.graphics.getWidth()/(2*pad))-button.getMinWidth()/2;
         button.padRight(value);
         button.padLeft(value);
         button.padBottom(Gdx.graphics.getHeight()/(2*pad));
         button.padTop(Gdx.graphics.getHeight()/(2*pad));
+        StringBuilder sb = new StringBuilder(button.getText());
+        int i = 0;
+        while ((i = sb.indexOf(" ", i + 15)) != -1) {
+            sb.replace(i, i + 1, "\n");
+        }
+        button.setText(sb.toString());
         return button;
     }
     //creates an arrayList of new Buttons
