@@ -3,8 +3,10 @@ package ch.inf.usi.pf2.project.mapObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value.Fixed;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -72,6 +75,7 @@ public class News extends GameState {
         table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
         table.align(Align.left| Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
+        table.background(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("backgroundTexture.png")))));
 
         verticalGroup = new VerticalGroup();
         scrollPane =  new ScrollPane(verticalGroup);
@@ -108,10 +112,15 @@ public class News extends GameState {
 
         header.align(Align.topLeft);
         table.add(esc).align(Align.left).width(esc.getPrefWidth());
-        header.add(new Label("The News",skin)).align(Align.center);
-
+        Label news = new Label("The NEWS",skin);
+        news.setFontScale(4);
+        news.setColor(0.6f,0.5f,0.6f,1f);
+        header.add(news).align(Align.center);
+        Label headlines = new Label("Headlines",skin);
+        headlines.setFontScale(2f);
+        headlines.setColor(0.6f,0.5f,0.6f,1f);
         table.add(header).align(Align.center);
-        table.add(new Label("Today's Headlines",skin)).align(Align.center);
+        table.add(headlines).align(Align.center);
         table.row();
         table.add(new Table(skin));
         table.add(newsContent).width((stage.getWidth())-verticalGroup.getPrefWidth()-(esc.getPrefWidth()))
