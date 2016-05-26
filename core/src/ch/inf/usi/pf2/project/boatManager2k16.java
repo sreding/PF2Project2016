@@ -28,7 +28,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
-		currentState = new News(batch);
+		currentState = new Manager(batch);
 
 	}
 
