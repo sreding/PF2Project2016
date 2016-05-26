@@ -121,7 +121,7 @@ public class Map extends GameState {
         port = ports.portsToPortS();
 
         testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects );
+                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"");
 
     }
 
