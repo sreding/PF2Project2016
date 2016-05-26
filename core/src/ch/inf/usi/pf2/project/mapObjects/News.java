@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -33,9 +35,10 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TestGenerator;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import ch.inf.usi.pf2.project.gameStates.GameState;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.Background;
 import sun.security.x509.AlgIdDSA;
 
 /**
@@ -46,7 +49,7 @@ import sun.security.x509.AlgIdDSA;
 public class News extends GameState {
 
     private ArrayList<Article> articles;
-    private SpriteBatch batch;
+    private SpriteBatch spriteBatch;
     private int numberOfArticles;
     private ScrollPane scrollPane;
     private Table table;
@@ -58,11 +61,18 @@ public class News extends GameState {
     private Label label;
     private Table header;
     private ButtonGroup buttonGroup;
+    private Sprite background;
+    private SpriteBatch batch;
+    private BitmapFont bitmapFont;
 
 
 
 
     public News(SpriteBatch batch) {
+        bitmapFont = new BitmapFont(Gdx.files.internal("cinzel45.fnt"),Gdx.files.internal("cinzel45.png"),false);
+        this.spriteBatch = batch;
+        background = new Sprite(new Texture(Gdx.files.internal("backgroundTexture.png")));
+
         this.articles = new ArrayList<Article>();
         stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));//,Gdx.files.internal("uiskin.atlas"));
@@ -75,11 +85,12 @@ public class News extends GameState {
         table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
         table.align(Align.left| Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
-        table.background(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("backgroundTexture.png")))));
+
 
         verticalGroup = new VerticalGroup();
         scrollPane =  new ScrollPane(verticalGroup);
         esc = autoPad(new TxtButton("Back",skin,-3),8);
+        esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
 
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
@@ -88,6 +99,8 @@ public class News extends GameState {
         TxtButton testButton2 = new TxtButton("second title goes here look it actually displays over multiple lines!", skin,2);
         //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
+        testButton.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
+        testButton2.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         testButton = autoPad(testButton,3);
         testButton2 = autoPad(testButton2, 3);
 
@@ -103,21 +116,25 @@ public class News extends GameState {
                 +stage.getWidth()+
                 "getWidth"
                 +Gdx.graphics.getWidth(),skin);
+        label.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         label.setWrap(true);
 
         newsContent = new Container(label).align(Align.topLeft);
         newsContent.fillX();
+        newsContent.setColor(0.3f,0.4f,0.3f,1f);
 
         header = new Table(skin);
 
         header.align(Align.topLeft);
         table.add(esc).align(Align.left).width(esc.getPrefWidth());
-        Label news = new Label("The NEWS",skin);
-        news.setFontScale(4);
+        Label news = new Label("NEWS",skin);
+        news.setFontScale(Gdx.graphics.getWidth()*4/1810f,Gdx.graphics.getHeight()*4/1080f);
+        //news.setFontScale(4);
         news.setColor(0.6f,0.5f,0.6f,1f);
         header.add(news).align(Align.center);
         Label headlines = new Label("Headlines",skin);
-        headlines.setFontScale(2f);
+        headlines.setFontScale(Gdx.graphics.getWidth()*2/1810f,Gdx.graphics.getHeight()*2/1080f);
+        //headlines.setFontScale(2f);
         headlines.setColor(0.6f,0.5f,0.6f,1f);
         table.add(header).align(Align.center);
         table.add(headlines).align(Align.center);
