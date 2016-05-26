@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
@@ -65,6 +66,7 @@ public class Boat {
         this.traveling = false;
         this.landPolygons = landPolygons;
         this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
+
 
 
 

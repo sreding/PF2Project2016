@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -32,7 +35,7 @@ public class Path{
 
 
     private  ArrayList<Line> left;
-    private Line topLeft;
+    private Line top;
 
     private boolean cameraFlag;
     private boolean cameraFlagLeft;
@@ -67,24 +70,67 @@ public class Path{
     }
 
 
-    private boolean checkCollision(int x, int y){
-        return true;
+
+    public void inputPath4(){
+        Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
+        int cQ = computeQuadrant(); //cq = currentQuadrant
+        Line l;
+
+        if(isEmpty() && notInLand(in)){ // path is empty -> we need to check if we start from inside a country
+            l = new Line(new Vector2(in.x,in.y),new Vector2(in.x,in.y),cQ,cQ);
+            left.add(l);
+        }
+        else if(! isEmpty()){
+            l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
+            checkLandCollision(l);
+            l.addLine(left,c1);
+
+        }
+
+
+
+        //check if line goes over land
+        //
+        if(left.size()>0) {
+            top = left.get(left.size()-1);
+            //System.out.println(l.intersectsWithPolygons(landPolygons));
+        }
+
+
+        prev = cQ;
+    }
+
+
+    // returns true if the line is fine
+    private boolean checkLandCollision(Line l){
+        //if(l.startQuadrant<l.endQuadrant)
+        return false;
+    }
+
+
+    private boolean notInLand(Vector3 in){
+        boolean res =true;
+        for(MapObject o: landPolygons){
+            if(o instanceof PolygonMapObject){
+                Polygon p =((PolygonMapObject) o).getPolygon();
+                if(p.contains(in.x,in.y)){
+                    res =false;
+                }
+            }
+        }
+        return res;
     }
 
 
 
 
+
+/*
     public void inputPath3(){
         int pos=computeQuadrant();
         int q;
         Vector3 vec = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
-       //Vector2 v = new Vector2(vec.x,vec.y);
-        /*
-        System.out.println("left: " + cameraFlagLeft);
-        System.out.println("right: "+cameraFlag);
-        System.out.println("prev: " + prev);
-        System.out.println("now: " + pos);
-        */
+
         int addedLines = 0;
         if(topLeft != null){
             if(false){
@@ -151,11 +197,16 @@ public class Path{
 
         }
         System.out.println("contains too big x  " + containsTooBigX());
+        if(topLeft!=null){
+            System.out.println("input hit not on land " +notInLand(vec));
+        }
 
     }
+    */
+
 
     private int getReverseQ(Vector3 pos, int transitionPoint,int no){
-        Vector2 v = topLeft.getEnd();
+        Vector2 v = top.getEnd();
         Vector2 last;
         if(no == 0){
             last = new Vector2(v.x+transitionPoint,v.y);
@@ -170,7 +221,7 @@ public class Path{
     }
 
     private int getQ2(Vector3 pos, int transitionPoint){
-        Vector2 last = topLeft.getEnd();
+        Vector2 last = top.getEnd();
         last = new Vector2(last.x+transitionPoint,last.y);
         double angle = Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
         double q =  (transitionPoint - last.x ) * Math.tan(angle);
@@ -179,7 +230,7 @@ public class Path{
 
 
     private int getQ(Vector3 pos, int transitionPoint){
-        Vector2 last = topLeft.getEnd();
+        Vector2 last = top.getEnd();
         double angle = Math.atan(((double) (pos.y - last.y))/ ((double)(pos.x -last.x)) );
         double q =  (transitionPoint - last.x ) * Math.tan(angle);
         return (int) (q+ last.y);
@@ -207,8 +258,7 @@ public class Path{
         return quadrant;
     }
 
-    public void drawPath3(){
-        updateCameraTransition();
+    public void drawPath3(int mode){
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
@@ -216,27 +266,31 @@ public class Path{
             l.draw(shapeRenderer);
             l.leftToRight(2*c1).draw(shapeRenderer);
         }
+        if(Gdx.input.isTouched() && !isEmpty() && mode ==1){
+            Vector3 v = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
+            Line current;
+            if(v.x>2*c1 && top.endQuadrant>=2) {
+                current = new Line(new Vector2(top.getEnd().x+2*c1,top.getEnd().y), new Vector2(v.x, v.y), 0, 0);
+            }
+            else{
+                current = new Line(top.getEnd(), new Vector2(v.x, v.y), 0, 0);
+            }
+            current.draw(shapeRenderer);
+        }
         shapeRenderer.setColor(Color.GOLD);
-        if(topLeft!= null) {
-            shapeRenderer.circle(topLeft.getEnd().x, topLeft.getEnd().y, 10);
+        if(top!= null) {
+            shapeRenderer.circle(top.getEnd().x, top.getEnd().y, 10);
             shapeRenderer.setColor(Color.MAGENTA);
-            shapeRenderer.circle(topLeft.getEnd().x+2*c1, topLeft.getEnd().y, 10);
+            shapeRenderer.circle(top.getEnd().x+2*c1, top.getEnd().y, 10);
         }
         shapeRenderer.end();
     }
 
-    private void updateCameraTransition(){
-        Vector3 v = cam.unproject(new Vector3(cam.position.x,cam.position.y,0));
-        if(v.x<c1*2&& previousCameraPosition > c1*2  ){
-            cameraFlag = true;
-            cameraFlagLeft=false;
-        }
-        if(previousCameraPosition <=c1*2 && v.x>=2 *c1 ){
-            cameraFlagLeft = true;
-            cameraFlag = false;
-        }
-        previousCameraPosition = (int) v.x;
 
+    public void notifyPath(){
+        for(Line l: left){
+            l.swqpQuadrants(); //genious but can be tricked if you go around the world twice without setting a path
+        }
     }
 
     public boolean containsTooBigX(){
