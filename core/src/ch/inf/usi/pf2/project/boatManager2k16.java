@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 //import com.badlogic.gdx.Gdx;
 //import com.badlogic.gdx.graphics.GL20;
 //import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ch.inf.usi.pf2.project.gameStates.*;
@@ -28,9 +30,10 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
-		currentState = new Manager(batch);
+		currentState = new News(batch);
 
 	}
+
 
 	// the render method will be called every frame
 	@Override

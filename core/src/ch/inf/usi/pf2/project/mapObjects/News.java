@@ -81,7 +81,7 @@ public class News extends GameState {
 
 
         TxtButton testButton = new TxtButton("Title goes here", skin,1);
-        TxtButton testButton2 = new TxtButton("second title goes here lets see how many characters go here", skin,2);
+        TxtButton testButton2 = new TxtButton("second title goes here look it actually displays over multiple lines!", skin,2);
         //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
         //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
         testButton = autoPad(testButton,3);
