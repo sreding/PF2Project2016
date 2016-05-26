@@ -16,57 +16,55 @@ import java.util.ArrayList;
  * Created by alexandercamenzind on 17/05/16.
  */
 public class Ports {
-    private MapObjects ports;
+    //private MapObjects ports;
     private OrthographicCamera cam;
-    private int WORLD_HEIGHT;
+    private int WORLD_WIDTH;
+    private ArrayList<Port> ports;
 
-    public Ports(MapObjects ports, OrthographicCamera cam, int WORLD_HEIGHT){
+    public Ports(MapObjects ports, OrthographicCamera cam, int WORLD_WIDTH){
         this.cam = cam;
-        this.ports = ports;
-        this.WORLD_HEIGHT = WORLD_HEIGHT;
+        this.ports =new ArrayList<Port>();
+        addPorts(ports);
+        this.WORLD_WIDTH = WORLD_WIDTH;
     }
 
-    public boolean portTouched (){
-        boolean res = false;
-
-
+    public Port portTouched (){
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
-
         Vector3 v = cam.unproject(new Vector3(x,y,0));
         //v.y = (WORLD_HEIGHT - v.y);
+        Port res = null;
+        for(Port p: ports) {
+            Rectangle r = p.getHitBox();
 
-        for(MapObject p:ports){
-            if(p instanceof RectangleMapObject){
-                RectangleMapObject rec =  (RectangleMapObject) p;
-                Rectangle r = rec.getRectangle();
-
-
-                if(r.getX()<v.x && v.x <r.getX()+r.getWidth() &&
-                        r.getY() < v.y && v.y < r.getY() + r.getHeight()){
-                    res =true;
-                    System.out.println(rec.getName());
-               }
-
+            if (r.getX() < v.x && v.x < r.getX() + r.getWidth() &&
+                    r.getY() < v.y && v.y < r.getY() + r.getHeight()) {
+                res = p;
+            } else if (r.getX() < v.x - WORLD_WIDTH / 2 && v.x - WORLD_WIDTH / 2 < r.getX() + r.getWidth() &&
+                    r.getY() < v.y && v.y < r.getY() + r.getHeight()) {
+                res = p;
             }
         }
 
-        System.out.println(res);
         return res;
+        }
+
+    public void handlePortInput(){
+        Port p = portTouched();
+        if(Gdx.input.justTouched()&& p != null){
+            System.out.println("pls display options for port: " + p.getName());
+        }
     }
 
-    public ArrayList<Port> portsToPortS(){
-        ArrayList<Port> Ports = new ArrayList<Port>();
-        for(MapObject p:ports){
-            if(p instanceof RectangleMapObject){
-                RectangleMapObject rec =  (RectangleMapObject) p;
-                int x = (int) ((int) rec.getRectangle().x + rec.getRectangle().width);
-                int y = (int) ((int) rec.getRectangle().y + rec.getRectangle().height);
-                Port port = new Port(rec.getName(),x,y);
-                Ports.add(port);
+    public void addPorts(MapObjects mO){
+        for(MapObject o:mO){
+            if(o instanceof RectangleMapObject){
+                RectangleMapObject rec =  (RectangleMapObject) o;
+                Rectangle r = rec.getRectangle();
+                Port port = new Port(rec.getName(),r);
+                ports.add(port);
             }
         }
-        return Ports;
     }
 
 

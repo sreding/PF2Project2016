@@ -68,7 +68,6 @@ public class Line {
                 if(Intersector.intersectSegmentPolygon(start,end,p)){
                     res =true;
                 }
-
             }
         }
         return res;
@@ -104,11 +103,11 @@ public class Line {
         Line v2;
         if(sq< 2 && eq<2){
             list.add(this);
-            System.out.println("case 1");
+
         }
         else if(sq >=2 && eq >= 2){
             list.add(new Line(new Vector2(start.x,start.y),new Vector2(end.x-2*c,end.y),sq,eq));
-            System.out.println("case 2");
+
         }
         else if(sq<2 && eq>=2){
             int q = computeQ(2*c);
@@ -117,7 +116,7 @@ public class Line {
             v2.addedTwo = true;
             list.add(v1);
             list.add(v2);
-            System.out.println("case 3");
+
         }
         else if(sq>=2 && eq<2){
             v1 = new Line(new Vector2(start.x+2*c,start.y),end,0,0);

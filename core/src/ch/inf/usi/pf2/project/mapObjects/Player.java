@@ -48,6 +48,10 @@ public class Player {
 
     }
 
+    public void addBoat(Boat b){
+        boats.add(b);
+    }
+
     public ArrayList<Article> getArticles() {
         return articles;
     }
