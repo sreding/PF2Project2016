@@ -58,6 +58,7 @@ public class Boat {
         this.vulnerability = (maintenanceCost*distanceLimit)/speed;
         this.WORLD_WIDTH = WORLD_WIDTH;
         this.isVisible = true;
+
         this.lineCount = 0;
 
         this.cam = cam;

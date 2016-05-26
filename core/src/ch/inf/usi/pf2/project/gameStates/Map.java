@@ -155,8 +155,8 @@ public class Map extends GameState {
 
         batch.end();
 
-        //showHitBoxes();
-        showPorts();
+        showHitBoxes();
+        //showPorts();
         showPolygons();
 
 
@@ -201,7 +201,7 @@ public class Map extends GameState {
 
 
         if(Gdx.input.justTouched()){
-           // ports.portTouched();
+            ports.portTouched();
         }
         if(touchUp){
             modeChanged=false;
@@ -218,7 +218,7 @@ public class Map extends GameState {
         Vector3 pos = cam.position;
         if(pos.x + cam.viewportWidth/2 > MAP_WIDTH ){
             cam.position.x = 2*MAP_WIDTH/4 - cam.viewportWidth/2;
-            testBoat.getCurrentPath().notifyPath();
+            testBoat.getCurrentPath().notifyPath(); //tells the path, that we just wrapped around the screen
         }
         else if(pos.x - cam.viewportWidth/2< 0){
             cam.position.x = 2*MAP_WIDTH/4 + cam.viewportWidth/2;

@@ -45,29 +45,16 @@ public class Ports {
                 if(r.getX()<v.x && v.x <r.getX()+r.getWidth() &&
                         r.getY() < v.y && v.y < r.getY() + r.getHeight()){
                     res =true;
+                    System.out.println(rec.getName());
                }
 
             }
         }
 
-        /*
-        System.out.println( v.x + " " + (WORLD_HEIGHT - v.y));
-        // write your stuff in here
-        for(MapObject p : ports){
-            Ellipse elip = ((EllipseMapObject) p).getEllipse();
-            Ellipse e = new Ellipse(elip.x +elip.width/2,elip.y,elip.width,elip.height);
-
-
-            if(e.contains(v.x,WORLD_HEIGHT - v.y)){
-                res=true;
-            }
-
-        }
-        */
-
         System.out.println(res);
         return res;
     }
+
     public ArrayList<Port> portsToPortS(){
         ArrayList<Port> Ports = new ArrayList<Port>();
         for(MapObject p:ports){

@@ -58,6 +58,8 @@ public class Line {
         return direction;
     }
 
+
+    //returns true if the line intersects any of the land
     public boolean intersectsWithPolygons(MapObjects polys){
         boolean res =false;
         for(MapObject o:polys){
@@ -77,9 +79,6 @@ public class Line {
         return (int) (((position - start.x ) * Math.tan(alpha))+start.y);
     }
 
-    public boolean containsTooBigX(int bound){
-        return (start.x > bound || end.x > bound);
-        }
 
     public void swqpQuadrants(){
         if(startQuadrant>=2){
@@ -111,7 +110,7 @@ public class Line {
             list.add(new Line(new Vector2(start.x,start.y),new Vector2(end.x-2*c,end.y),sq,eq));
             System.out.println("case 2");
         }
-        else if(sq<2 && eq>=2){ //needs to be modified such that it doesn't work when we wrapped around the screen
+        else if(sq<2 && eq>=2){
             int q = computeQ(2*c);
             v1 = new Line(start, new Vector2(2*c,q), sq,eq);
             v2 = new Line(new Vector2(0,q), new Vector2(end.x-2*c, end.y),sq,eq);
