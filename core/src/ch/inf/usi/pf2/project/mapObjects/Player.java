@@ -36,14 +36,28 @@ public class Player {
 
     public int money;
     private ArrayList<Boat> boats;
+    private ArrayList<Article> articles;
     //
 
 
     public Player()
     {
         this.money=10000;
+        this.boats = new ArrayList<Boat>();
+        this.articles = new ArrayList<Article>();
 
     }
 
+    public ArrayList<Article> getArticles() {
+        return articles;
+    }
+
+    public ArrayList<Boat> getBoats() {
+        return boats;
+    }
+
+    public void setBoats(ArrayList<Boat> boats) {
+        this.boats = boats;
+    }
 
 }
