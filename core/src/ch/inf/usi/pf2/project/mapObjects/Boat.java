@@ -30,6 +30,7 @@ public class Boat {
     private ShapeRenderer shapeRenderer;
     private boolean isVisible;
     private int WORLD_WIDTH;
+    private String label;
 
     private float x;
     private float y;
@@ -40,11 +41,13 @@ public class Boat {
     private MapObjects landPolygons;
     //int crewMembers?
 
+
+
     public Boat(int capacity, double speed, double
                 distanceLimit, double maintenanceCost,
                 Sprite topBoat, Sprite sideBoat,
                 SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,
-                MapObjects landPolygons){
+                MapObjects landPolygons, String label){
         this.capacity = capacity;
         this.speed = speed;
         this.distanceLimit = distanceLimit;
@@ -67,6 +70,7 @@ public class Boat {
         this.traveling = false;
         this.landPolygons = landPolygons;
         this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
+        this.label = label;
 
 
 
@@ -172,5 +176,9 @@ public class Boat {
 
     public double getVulnerability() {
         return vulnerability;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }
