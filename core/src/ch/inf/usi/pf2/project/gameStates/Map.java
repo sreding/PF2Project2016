@@ -25,12 +25,21 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import ch.inf.usi.pf2.project.mapObjects.Boat;
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
+import ch.inf.usi.pf2.project.mapObjects.Player;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
 import ch.inf.usi.pf2.project.mapObjects.Port;
+import ch.inf.usi.pf2.project.mapObjects.TxtButton;
 
 import java.util.ArrayList;
 /**
@@ -58,19 +67,21 @@ public class Map extends GameState {
     private MapObjects polygonMapObjects;
 
     private Ports ports;
-    private ArrayList<Port> port;
 
     // a list to store all buttons
     private ArrayList<Button> buttons;
 
 
     private int mode; // 0 = moving, 1 = drawing
+    private Player player;
 
     private Boat testBoat;
 
     private boolean touchUp;
     private boolean wasTouched;
     private boolean modeChanged;
+
+    private Stage stage; //
 
 
 
@@ -107,7 +118,28 @@ public class Map extends GameState {
         buttons.add(new Button(0,0,20,new Sprite(new Texture("move.png")),new Sprite(new Texture("move.png"))));
 
 
-        this.ports = new Ports(objects, cam, MAP_HEIGHT);
+        this.ports = new Ports(objects, cam, MAP_WIDTH);
+
+        testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
+        player=new Player();
+        player.addBoat(testBoat);
+
+        //start of stage stuff
+        stage=new Stage(new ScreenViewport(),batch);
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Table table = new Table();
+        table.setFillParent(true);
+        table.align(Align.right| Align.top);
+        VerticalGroup verticalGroup = new VerticalGroup();
+        ScrollPane scrollPane =  new ScrollPane(verticalGroup);
+        table.add(scrollPane).width(Gdx.graphics.getWidth()/5).padTop(4*Gdx.graphics.getHeight()/5);
+
+        TxtButton testButton = new TxtButton("Some text", skin,1);
+        verticalGroup.addActor(testButton);
+
+        stage.addActor(table);
+
 
 
         // i think we might need this
@@ -118,10 +150,9 @@ public class Map extends GameState {
         wasTouched=false;
         modeChanged=false;
 
-        port = ports.portsToPortS();
 
-        testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"");
+
+
 
     }
 
@@ -155,9 +186,15 @@ public class Map extends GameState {
 
         batch.end();
 
+
+        stage.draw();
+
+
+
         showHitBoxes();
         //showPorts();
         showPolygons();
+
 
 
     }
@@ -180,6 +217,8 @@ public class Map extends GameState {
 
 
 
+
+
         if(buttons.get(0).isTouched()){
             //System.out.println("button pressed");
             mode += 1;
@@ -190,23 +229,24 @@ public class Map extends GameState {
             testBoat.startBoat();
         }
 
+
         // moves the camera across the background according to dx and dy
         if(mode == 0) {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && touchUp){
             testBoat.getCurrentPath().inputPath4();
-            System.out.println(Gdx.input.getX());
+
         }
 
+        ports.handlePortInput();
 
-        if(Gdx.input.justTouched()){
-            ports.portTouched();
-        }
+
+
+
         if(touchUp){
             modeChanged=false;
         }
-
         touchUp=false;
         wasTouched=Gdx.input.isTouched();
 
@@ -257,6 +297,7 @@ public class Map extends GameState {
                 shapeRenderer.setColor(Color.RED);
                 Rectangle r = rec.getRectangle();
                 shapeRenderer.rect(r.x, r.y, r.width, r.height);
+                shapeRenderer.rect(r.x+MAP_WIDTH/2,r.y,r.width,r.height);
                 shapeRenderer.end();
             }
         }
