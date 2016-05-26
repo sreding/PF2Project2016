@@ -68,6 +68,10 @@ public class Map extends GameState {
 
     private Boat testBoat;
 
+    private boolean touchUp;
+    private boolean wasTouched;
+    private boolean modeChanged;
+
 
 
 
@@ -110,6 +114,9 @@ public class Map extends GameState {
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
         mode = 0;
+        touchUp=false;
+        wasTouched=false;
+        modeChanged=false;
 
         port = ports.portsToPortS();
 
@@ -130,7 +137,7 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        testBoat.getCurrentPath().drawPath3();
+        testBoat.getCurrentPath().drawPath3(mode);
 
         // batch will draw according to screen coordinates
         batch.begin();
@@ -167,9 +174,12 @@ public class Map extends GameState {
     // handles input events
     @Override
     public void inputHandler(){
+        if(! Gdx.input.isTouched() && wasTouched){
+            touchUp =true;
+        }
 
 
-        boolean modeChanged = false;
+
         if(buttons.get(0).isTouched()){
             //System.out.println("button pressed");
             mode += 1;
@@ -184,15 +194,21 @@ public class Map extends GameState {
         if(mode == 0) {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
-        else if(mode == 1 && !modeChanged && Gdx.input.justTouched()){
-            testBoat.getCurrentPath().inputPath3();
-
+        else if(mode == 1 && !modeChanged && touchUp){
+            testBoat.getCurrentPath().inputPath4();
+            System.out.println(Gdx.input.getX());
         }
 
 
         if(Gdx.input.justTouched()){
            // ports.portTouched();
         }
+        if(touchUp){
+            modeChanged=false;
+        }
+
+        touchUp=false;
+        wasTouched=Gdx.input.isTouched();
 
     }
 
@@ -202,9 +218,11 @@ public class Map extends GameState {
         Vector3 pos = cam.position;
         if(pos.x + cam.viewportWidth/2 > MAP_WIDTH ){
             cam.position.x = 2*MAP_WIDTH/4 - cam.viewportWidth/2;
+            testBoat.getCurrentPath().notifyPath();
         }
         else if(pos.x - cam.viewportWidth/2< 0){
             cam.position.x = 2*MAP_WIDTH/4 + cam.viewportWidth/2;
+            testBoat.getCurrentPath().notifyPath();
         }
 
         // we probably wont need this anymore, but i will leave it in just in case
