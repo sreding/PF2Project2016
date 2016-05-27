@@ -125,9 +125,9 @@ public class Map extends GameState {
 
         this.ports = new Ports(objects, cam, MAP_WIDTH);
 
-        Boat testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+        Boat testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
-        Boat testBoat2 = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+        Boat testBoat2 = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat5.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
         player=new Player();
         player.addBoat(testBoat);

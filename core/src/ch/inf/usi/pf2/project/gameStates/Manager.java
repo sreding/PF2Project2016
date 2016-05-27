@@ -94,6 +94,16 @@ public class Manager extends GameState {
     private Table table;
     private ScrollPane scroll;
     private Boat testBoat;
+    private Boat testBoat2;
+    private Boat testBoat3;
+    private Boat testBoat4;
+    private Boat testBoat5;
+    private Boat testBoat6;
+    private Boat testBoat7;
+    private Boat testBoat8;
+    private Boat testBoat9;
+    private Boat testBoat10;
+
     private Label name;
     private Label capacity;
     private Label speed;
@@ -103,9 +113,12 @@ public class Manager extends GameState {
     private Label boat_stats;
     private Label player_stats;
     private TextButton upgrade1;
-    private TextButton upgrage2;
+    private TextButton upgrade2;
     private TextButton upgrade3;
     private TextButton buy;
+    private Label price;
+    private Label money;
+    private Label boats_owned;
 
 
 
@@ -117,36 +130,84 @@ public class Manager extends GameState {
 
     public Manager(SpriteBatch batch)
     {
+        this.playerObject=new Player();
         this.bool=true;
         this.batch=batch;
         stage = new Stage(new ScreenViewport(),batch);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Gdx.input.setInputProcessor(stage);
-        testBoat = new Boat(1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+        testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, 0, null,"Fascinosa");
         // Gdx.graphics.setVSync(false);
 
         this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+        this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
         this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
         this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
         this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
         this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
         this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
         this.boat_stats = new Label("BOAT STATS:",skin);
-        this.player_stats = new Label("PLAYER STATS",skin);
+
+        this.player_stats = new Label("PLAYER STATS:",skin);
+        this.money = new Label("Current Balance:"+" "+playerObject.money,skin);
+        this.boats_owned = new Label("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned(),skin);
+
+
 
         container = new Table();
         stage.addActor(container);
         container.setFillParent(true);
         //Uprages Buttons implementation:
-        this.upgrade1 = new TextButton("Upgrade1:",skin);
-        this.upgrage2 = new TextButton("upgrade2:",skin);
+        this.upgrade1 = new TextButton("Upgrade1:"+ System.getProperty("line.separator") +"Price:2000" +
+                  System.getProperty("line.separator") + "Capacity:1100"
+                + System.getProperty("line.separator") + "Speed:53"
+                + System.getProperty("line.separator") + "Distance:5 Mkm"
+                + System.getProperty("line.separator") + "Maintenance:2.0",skin);
+        this.upgrade1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                if(playerObject.money>=testBoat.getPrice()) {
+                    buy.remove();
+                    playerObject.addBoat(testBoat);
+                    playerObject.money-=testBoat.getPrice();
+
+                    money.setText("Current Balance:"+" "+playerObject.money);
+                    boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
+
+                    upgrade1.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade1.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade1.setPosition(Gdx.graphics.getWidth()/6,0);
+
+                    upgrade2.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade2.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade2.setPosition(Gdx.graphics.getWidth()/3,0);
+
+                    upgrade3.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade3.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade3.setPosition(Gdx.graphics.getWidth()/2,0);
+
+                    stage.addActor(upgrade1);
+                    stage.addActor(upgrade2);
+                    stage.addActor(upgrade3);
+                }
+                // stage.addActor(upgrade2);
+                // stage.addActor(upgrade3);
+
+            }
+        });
+
+
+        this.upgrade1.getLabel().setAlignment(Align.top);
+        this.upgrade1.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f);
+        this.upgrade2 = new TextButton("Upgrade2:",skin);
         this.upgrade3 = new TextButton("Upgrade3:",skin);
         this.buy = new TextButton("Buy this boat",skin);
 
         this.buy.setHeight(Gdx.graphics.getHeight()/4);
         this.buy.setWidth(Gdx.graphics.getWidth()/6);
-        this.buy.setPosition(Gdx.graphics.getWidth()/6,Gdx.graphics.getHeight()/17);
+        this.buy.setPosition(Gdx.graphics.getWidth()/6,0);
         this.stage.addActor(buy);
 
         this.back = new TextButton("Back",skin);
@@ -155,9 +216,6 @@ public class Manager extends GameState {
         this.back.setPosition(0,0);
         this.stage.addActor(back);
 
-
-
-
         //this.back
         table = new Table(skin);
         System.out.println(Gdx.graphics.getDensity());
@@ -165,18 +223,12 @@ public class Manager extends GameState {
         table.align(Align.right|Align.top);
         table.setPosition(0,container.getHeight());
         this.list_of_boats = new List(skin);
-        this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10","BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
+        this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
         list_of_boats.setPosition(0,Gdx.graphics.getHeight());
-
 
         scroll = new ScrollPane(table, skin);
         table.add(new Label("YOUR BOATS",skin)).row();
         table.add(list_of_boats);
-
-
-
-
-
 
         container.add(scroll).expand().fill().colspan(4);
         var =  list_of_boats.getSelected().toString();
@@ -184,10 +236,39 @@ public class Manager extends GameState {
         region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());//(int)(Gdx.graphics.getWidth()/3.37), (int)(Gdx.graphics.getHeight()/3.9));
         actor = new Image(region);
 
+        this.buy.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                if(playerObject.money>=testBoat.getPrice()) {
+                    buy.remove();
+                    playerObject.addBoat(testBoat);
+                    playerObject.money-=testBoat.getPrice();
 
+                    money.setText("Current Balance:"+" "+playerObject.money);
+                    boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
 
+                    upgrade1.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade1.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade1.setPosition(Gdx.graphics.getWidth()/6,0);
 
+                    upgrade2.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade2.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade2.setPosition(Gdx.graphics.getWidth()/3,0);
 
+                    upgrade3.setHeight(Gdx.graphics.getHeight()/4);
+                    upgrade3.setWidth(Gdx.graphics.getWidth()/6);
+                    upgrade3.setPosition(Gdx.graphics.getWidth()/2,0);
+
+                    stage.addActor(upgrade1);
+                    stage.addActor(upgrade2);
+                    stage.addActor(upgrade3);
+                }
+               // stage.addActor(upgrade2);
+               // stage.addActor(upgrade3);
+
+            }
+        });
 
 
 //        this.batch = new SpriteBatch();
@@ -196,12 +277,7 @@ public class Manager extends GameState {
 //        this.splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        //this.black = new BitmapFont(Gdx.files.internal("font_manager/blackfont.fnt"), false);
-
-
-
-
-
+        //this.black = new BitmapFont(Gdx.files.internal("font_manager/blackfont.fnt"), false)
 
 //
 //        this.stage = new Stage();
@@ -360,12 +436,9 @@ public class Manager extends GameState {
 //        boat_attributes.add(attributes).padBottom(10);
 //        boat_attributes.row();
 //        boat_attributes.debug();
-//
-//
+
 //        this.stage.addActor(boat_attributes);
 //        this.stage.addActor(table);
-
-
 
 //        Gdx.input.setInputProcessor(stage);
 
@@ -380,9 +453,7 @@ public class Manager extends GameState {
 //        BitmapFont font=new BitmapFont();
 //        font.getData().setScale((float) 10, (float) 10);
 
-
     }
-
 
     @Override
     public void renderGameObject(){
@@ -456,30 +527,44 @@ public class Manager extends GameState {
 //            attributes=new Label("MAINTENANCE: 10$/KM",skin);
 //            boat_attributes.add(attributes).padBottom(10);
             this.actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
-            System.out.println(actor.getHeight());
+            System.out.println(Gdx.graphics.getWidth());
             System.out.println(actor.getWidth());
 
             this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
                     Gdx.graphics.getHeight()/2 - actor.getHeight());
 
 
+            this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
+                    Gdx.graphics.getHeight()-boat_stats.getHeight());
+            this.money.setPosition(Gdx.graphics.getWidth()*37/100,
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
+            this.boats_owned.setPosition(Gdx.graphics.getWidth()*37/100,
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
 
             this.boat_stats.setPosition(Gdx.graphics.getWidth()*6/100,
                     Gdx.graphics.getHeight()-boat_stats.getHeight());
             this.name.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
-            this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
+            this.price.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
-            this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
+            this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
-            this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
+            this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
-            this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
+            this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
-            this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
+            this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+            this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7);
 
+            this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
+
+            this.name.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
+            this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
+            this.boats_owned.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.boat_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
+            this.price.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.name.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.capacity.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.speed.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
@@ -488,13 +573,18 @@ public class Manager extends GameState {
             this.vulnerability.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
             this.stage.addActor(this.boat_stats);
+            this.stage.addActor(this.player_stats);
+            this.stage.addActor(this.boats_owned);
+            this.stage.addActor(this.money);
             this.stage.addActor(this.name);
+            this.stage.addActor(this.price);
             this.stage.addActor(this.speed);
             this.stage.addActor(this.capacity);
             this.stage.addActor(this.distanceLimit);
             this.stage.addActor(this.maintenanceCost);
             this.stage.addActor(this.vulnerability);
             this.stage.addActor(this.actor);
+
 
 
 
@@ -511,9 +601,14 @@ public class Manager extends GameState {
             this.distanceLimit.remove();
             this.maintenanceCost.remove();
             this.vulnerability.remove();
+            this.price.remove();
+            this.upgrade1.remove();
+            this.upgrade2.remove();
+            this.upgrade3.remove();
             this.bool=true;
         }
     }
+
 
 
     @Override

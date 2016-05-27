@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class Boat {
     private boolean isVisible;
     private int WORLD_WIDTH;
     private String label;
-
+    private int price;
     private float x;
     private float y;
     private Line currentLine;
@@ -39,15 +40,21 @@ public class Boat {
     private float localDistance;
     private boolean traveling;
     private MapObjects landPolygons;
+    private TextButton upgrade1;
+    private TextButton upgrade2;
+    private TextButton upgrade3;
+
+
     //int crewMembers?
 
 
 
-    public Boat(int capacity, double speed, double
+    public Boat(int price, int capacity, double speed, double
                 distanceLimit, double maintenanceCost,
                 Sprite topBoat, Sprite sideBoat,
                 SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,
                 MapObjects landPolygons, String label){
+        this.price = price;
         this.capacity = capacity;
         this.speed = speed;
         this.distanceLimit = distanceLimit;
@@ -181,4 +188,6 @@ public class Boat {
     public String getLabel() {
         return label;
     }
+
+    public int getPrice(){ return price;}
 }

@@ -51,6 +51,10 @@ public class Player {
     public void addBoat(Boat b){
         boats.add(b);
     }
+    public int numberOfBoatsOwned(){
+        int i = boats.size();
+        return i;
+    }
 
     public ArrayList<Article> getArticles() {
         return articles;
