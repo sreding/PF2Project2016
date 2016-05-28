@@ -115,9 +115,15 @@ public class Path{
         else if(! isEmpty() && notInLand(in)){
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             if(left.size()==1){
-
                 Vector2 offsetStart= new Vector2(l.getStart().x+offset*l.getDirection().x,l.getStart().y+offset*l.getDirection().y);
-                if(checkLandCollision(new Line(offsetStart,l.getEnd(),l.startQuadrant,l.endQuadrant))){
+                Line someV;
+                if(cQ>=2){
+                    someV = new Line(new Vector2(top.getEnd().x+2*c1,top.getEnd().y),new Vector2(in.x,in.y),top.endQuadrant,cQ);
+                    offsetStart=new Vector2(someV.getStart().x+offset*someV.getDirection().x,someV.getStart().y+offset*someV.getDirection().y);
+                }
+
+
+                if(true || checkLandCollision(new Line(offsetStart,l.getEnd(),l.startQuadrant,l.endQuadrant))){
                     l.addLine(left,c1);
                 }
             }

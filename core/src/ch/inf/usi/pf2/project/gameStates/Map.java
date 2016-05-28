@@ -229,6 +229,8 @@ public class Map extends GameState {
         Gdx.input.setInputProcessor(stage);
 
 
+
+
         pushCameraBack();
     }
 
@@ -241,6 +243,8 @@ public class Map extends GameState {
         if(! Gdx.input.isTouched() && wasTouched){
             touchUp =true;
         }
+
+
 
 
 
