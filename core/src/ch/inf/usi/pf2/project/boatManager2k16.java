@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.ArrayList;
+
 import ch.inf.usi.pf2.project.gameStates.*;
 import ch.inf.usi.pf2.project.mapObjects.News;
 
@@ -17,6 +19,7 @@ import ch.inf.usi.pf2.project.mapObjects.News;
 public class BoatManager2k16 extends ApplicationAdapter {
 	SpriteBatch batch;
 	GameState currentState;
+	ArrayList<GameState> gameStates;
 
 
 	//the create method will be called only once, when the aplication is started
@@ -30,8 +33,18 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
-		currentState = new Manager(batch);
+		gameStates = new ArrayList<GameState>();
+		gameStates.add(new Map(batch));
+		gameStates.add(new News(batch));
+		gameStates.add(new Manager(batch));
 
+		currentState = gameStates.get(0);
+
+	}
+
+	public  void changeState(){
+		int n = currentState.nextState();
+		currentState = gameStates.get(n);
 	}
 
 

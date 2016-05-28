@@ -167,9 +167,7 @@ public class News extends GameState {
         if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
             label = new Label(articles.get(button.getIndex()).getContent(), skin);
         }
-        if(esc.isPressed() == true){
-            // IMPLEMENT GOING BACK TO MAP
-        }
+
         //table.debug();
 
 
@@ -181,6 +179,12 @@ public class News extends GameState {
         spriteBatch.end();
         stage.draw();
 
+    }
+    public int nextState(){
+        if(esc.isPressed() == true){
+            return 0;
+        }
+        return 1;
     }
 
 

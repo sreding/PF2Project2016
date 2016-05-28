@@ -609,7 +609,10 @@ public class Manager extends GameState {
         }
     }
 
+    public int nextState(){
 
+        return 0;
+    }
 
     @Override
     public void inputHandler() {

@@ -35,7 +35,10 @@ public class Menu extends GameState {
         batch.end();
 
     }
+    public int nextState(){
 
+        return 0;
+    }
     @Override
     public void update(float dt){
     }

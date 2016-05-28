@@ -89,8 +89,6 @@ public class Map extends GameState {
     private Stage stage; //
 
 
-
-
     public Map(SpriteBatch batch){
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
