@@ -75,7 +75,7 @@ public class News extends GameState {
 
 
         verticalGroup = new VerticalGroup();
-        scrollPane =  new ScrollPane(verticalGroup);
+        scrollPane = new ScrollPane(verticalGroup);
         esc = autoPad(new TxtButton("Back",skin,-3),8);
         esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
 
@@ -164,21 +164,21 @@ public class News extends GameState {
         Gdx.input.setInputProcessor(stage);
         if(!scrollPane.isPanning()){
             for(TxtButton button:txtButtons){
-            if(button.isPressed()) {
-                count++;
-            }
-            /*
-            if(button.isPressed() == true ) {
-                //System.out.println("Button Presserino");
-                //if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
-                index = button.getIndex();
-            }*/
-            if (button.isPressed() == true && count > 5){
+                if(button.isPressed()) {
+                    count++;
+                }
+ /*
+ if(button.isPressed() == true ) {
+ //System.out.println("Button Presserino");
+ //if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
+ index = button.getIndex();
+ }*/
+                if (button.isPressed() == true && count > 5){
 
-                label.setText(articles.get(button.getIndex()).getContent());
-                label.layout();
-            }
-        }}else{
+                    label.setText(articles.get(button.getIndex()).getContent());
+                    label.layout();
+                }
+            }}else{
             count = 0;
         }
 
@@ -196,7 +196,8 @@ public class News extends GameState {
 
     }
     public int nextState(){
-        if(esc.isPressed() == true){
+        if(esc.isPressed() && Gdx.input.justTouched()){
+            esc.toggle();
 
             //System.out.println("return0");
             return 0;
@@ -242,14 +243,15 @@ public class News extends GameState {
         return makeNewButtons(articles,new ArrayList<TextButton>(),0);
     }
     private ArrayList<TextButton> makeNewButtons(ArrayList<Article> articles,
-                                                    ArrayList<TextButton> buttons,
-                                                    int n){
+                                                 ArrayList<TextButton> buttons,
+                                                 int n){
         if(n == articles.size()){
             return buttons;
         }else {
             //Skin buttonSkin = new Skin(Gdx.files.internal("uiskin.json")); //// ENTER PARAMETERS FOR SKIN!!!!!
             TextButton newButton = new TextButton(articles.get(n).getTitle(),skin);
             buttons.add(newButton);
+
             return makeNewButtons(articles,buttons,n++);
         }
 
@@ -292,7 +294,7 @@ public class News extends GameState {
                                                    int numberOfArticles) {
         if(events.size() == n){
             return finishedArticles;
-    }else{
+        }else{
             Random rn = new Random();
             String country = regions.get(rn.nextInt(regions.size()));
             String title = events.get(n)+ " in " +country;
@@ -309,4 +311,4 @@ public class News extends GameState {
 
 
 
-    }
+}
