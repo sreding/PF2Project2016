@@ -173,7 +173,7 @@ public class News extends GameState {
                 //if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
                 index = button.getIndex();
             }*/
-            if (button.isPressed() == true && count > 0) {
+            if (button.isPressed() == true && count > 5){
 
                 label.setText(articles.get(button.getIndex()).getContent());
                 label.layout();
