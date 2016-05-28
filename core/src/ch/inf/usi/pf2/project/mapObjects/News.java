@@ -54,107 +54,93 @@ public class News extends GameState {
 
 
     public News(SpriteBatch batch) {
-        //bitmapFont = new BitmapFont(Gdx.files.internal("cinzel45.fnt"),Gdx.files.internal("cinzel45.png"),false);
+        //initializing basic fields
         spriteBatch = new SpriteBatch();
         backgroundImage = new Sprite(new Texture(Gdx.files.internal("backgroundTexture.png"))
                 ,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        //backgroundImage.setColor(1f,0f,0.4f,1f);
+
         this.articles = new ArrayList<Article>();
         txtButtons = new ArrayList<TxtButton>();
         stage = new Stage(new ScreenViewport(),batch);
-        skin = new Skin(Gdx.files.internal("uiskin.json"));//,Gdx.files.internal("uiskin.atlas"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         numberOfArticles = 0;
-        ///ADD ARRAYLIST OF ARTCLES FROM PLAYER!
 
-        //buttonGroup = new ButtonGroup();
-        //buttonGroup.setMaxCheckCount(1);
+
+        //set up of the big table that will eventually contain all scene2d objects
         table = new Table();
-        table.setWidth(stage.getWidth());//Gdx.graphics.getWidth());
+        table.setWidth(stage.getWidth());
         table.align(Align.left | Align.top);
         table.setPosition(0,Gdx.graphics.getHeight());
 
-
+        //setting up the verticalGroup and scrollPane for the news headlines on the right
         verticalGroup = new VerticalGroup();
+        verticalGroup.fill();
         scrollPane = new ScrollPane(verticalGroup);
         esc = autoPad(new TxtButton("Back",skin,-3),8);
         esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
-
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
 
-
-        TxtButton testButton = new TxtButton("Title goes here", skin,1);
-        //TxtButton testButton2 = new TxtButton("second title goes here look it actually displays over multiple lines!", skin,2);
-        //testButton.setSize(stage.getWidth()/3,stage.getHeight()/3);
-        //testButton2.setSize(stage.getWidth()/3,stage.getHeight()/3;
-        testButton.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
-        //testButton2.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
-        testButton = autoPad(testButton,3);
-        //testButton2 = autoPad(testButton2, 3);
+        //Adding example articles
         addArticles(randomArticles());
 
-        //testButton.setColor(1f,1f,1f,1f);
-        //buttonGroup.add(testButton);//testButton2);
-        verticalGroup.fill();
 
-
-        txtButtons.add(testButton);
-
-        //verticalGroup.padBottom(stage.getHeight()-esc.getHeight());
-        //verticalGroup.addActor(testButton);
-        //verticalGroup.addActor(testButton2);
-
+        //set the initial text with some user guidance and put it in a new container to be added later
         label = new Label("Select a news headline on the right to get more details",skin);
         label.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         label.setWrap(true);
 
         newsContent = new Container(label).align(Align.topLeft);
-        newsContent.pad(Gdx.graphics.getHeight()/40);
+        newsContent.padTop(Gdx.graphics.getHeight()/40);
+        newsContent.padRight(Gdx.graphics.getHeight()/40);
         newsContent.fillX();
-        newsContent.setColor(0.3f,0.4f,0.3f,1f);
 
-        header = new Table(skin);
 
-        header.align(Align.topLeft);
+
+
+        //add the first button in the top left of the table
         table.add(esc).align(Align.topLeft).width(esc.getPrefWidth());
+
+
+        //set the titles
+        header = new Table(skin);
+        header.align(Align.topLeft);
         Label news = new Label("NEWS",skin);
         news.setFontScale(Gdx.graphics.getWidth()*2/1810f,Gdx.graphics.getHeight()*2/1080f);
-        //news.setFontScale(4);
-        news.setColor(1f,1f,1f,1f);
-        //header.setBackground("backgroundTexture.png");
         header.add(news).align(Align.center);
+
         Label headlines = new Label("Headlines",skin);
         headlines.setFontScale(Gdx.graphics.getWidth()*1.5f/1810f,Gdx.graphics.getHeight()*1.5f/1080f);
-        //headlines.setFontScale(2f);
-        headlines.setColor(1f,1f,1f,1f);
 
+
+        //add everything to the table
         table.add(header).align(Align.center);
         table.add(headlines).align(Align.center);
         table.row();
         table.add(new Table(skin));
         table.add(newsContent).width((stage.getWidth())-verticalGroup.getPrefWidth()-(esc.getPrefWidth()))
                 .height((Gdx.graphics.getHeight()-esc.getPrefHeight()));
-        table.add(scrollPane).width(testButton.getPrefWidth());
-        //table.debug();
+        table.add(scrollPane).width(verticalGroup.getPrefWidth());
 
+        //set the pictures in the background
         titleImage = new Sprite(new Texture(Gdx.files.internal("titleTexture.png")),Gdx.graphics.getWidth(),(int)esc.getPrefHeight());
         titleImage.setPosition(0,Gdx.graphics.getHeight()-esc.getPrefHeight());
-        sideTexture = new Sprite(new Texture(Gdx.files.internal("titleTexture.png")),
+        sideTexture = new Sprite(new Texture(Gdx.files.internal("sideTexture.png")),
                 (int)esc.getPrefWidth(),Gdx.graphics.getHeight());
+        sideTexture.setColor(0.1f,0.1f,0.1f,0.05f);
         rightSideTex = new Sprite(new Texture(Gdx.files.internal("sideTexture.png")),
-                (int)testButton.getPrefWidth(),(int)Gdx.graphics.getHeight()-(int)esc.getPrefHeight());
+                (int)verticalGroup.getPrefWidth(),(int)Gdx.graphics.getHeight()-(int)esc.getPrefHeight());
         rightSideTex.setPosition(Gdx.graphics.getWidth()-verticalGroup.getPrefWidth(),0);
-        //table.layout();
-        //table.validate();
+
+
+
+        //finally add the whole table to the stage
         stage.addActor(table);
-        //InputMultiplexer multiplexer = new InputMultiplexer();
-        //multiplexer.addProcessor(scrollPane);
-        //multiplexer.addProcessor(stage);
+        //setting the input Processor so stage can recieve input
         Gdx.input.setInputProcessor(stage);
+
+        //setting count and index to zero, they are used later to check if actions should be executed
         count = 0;
-        index = 0;
-
-
     }
 
 
@@ -167,15 +153,12 @@ public class News extends GameState {
                 if(button.isPressed()) {
                     count++;
                 }
- /*
- if(button.isPressed() == true ) {
- //System.out.println("Button Presserino");
- //if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
- index = button.getIndex();
- }*/
+
                 if (button.isPressed() == true && count > 5){
 
-                    label.setText(articles.get(button.getIndex()).getContent());
+                    label.setText(
+                            articles.get(button.getIndex()).getTitle() +":\n\n"+
+                            articles.get(button.getIndex()).getContent());
                     label.layout();
                 }
             }}else{
