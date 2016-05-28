@@ -43,6 +43,7 @@ public class Path{
     private Color pathColor;
 
     private Port from;
+    private boolean fromOnLeftSide;
 
 
 
@@ -73,6 +74,12 @@ public class Path{
         Rectangle r = p.getHitBox();
         Vector3 in = new Vector3(r.getX()+r.getWidth()/2,r.getY()+r.getHeight()/2,0);
         int cQ = computeQuadrant(portCoordinates); //cq = currentQuadrant
+        if(cQ>=2){
+            fromOnLeftSide=false;
+        }
+        else{
+            fromOnLeftSide=true;
+        }
         Line l;
         l = new Line(new Vector2(in.x, in.y), new Vector2(in.x, in.y), cQ, cQ);
         left.add(l);
@@ -85,7 +92,7 @@ public class Path{
 
         Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
         int cQ = computeQuadrant(in); //cq = currentQuadrant
-        int offset=50;
+        int offset=30;
         Line l;
 
         //last line
@@ -115,15 +122,18 @@ public class Path{
         else if(! isEmpty() && notInLand(in)){
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             if(left.size()==1){
+
+                System.out.println(top.getEnd().toString());
+                System.out.println(from.getHitBox().getWidth());
                 Vector2 offsetStart= new Vector2(l.getStart().x+offset*l.getDirection().x,l.getStart().y+offset*l.getDirection().y);
                 Line someV;
                 if(cQ>=2){
                     someV = new Line(new Vector2(top.getEnd().x+2*c1,top.getEnd().y),new Vector2(in.x,in.y),top.endQuadrant,cQ);
-                    offsetStart=new Vector2(someV.getStart().x+offset*someV.getDirection().x,someV.getStart().y+offset*someV.getDirection().y);
+                    offsetStart=new Vector2(l.getStart().x+offset*someV.getDirection().x,l.getStart().y+offset*someV.getDirection().y);
                 }
 
 
-                if(true || checkLandCollision(new Line(offsetStart,l.getEnd(),l.startQuadrant,l.endQuadrant))){
+                if(checkLandCollision(new Line(offsetStart,l.getEnd(),l.startQuadrant,l.endQuadrant))){
                     l.addLine(left,c1);
                 }
             }
