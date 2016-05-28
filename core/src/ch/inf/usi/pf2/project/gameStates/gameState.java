@@ -14,4 +14,6 @@ public abstract class GameState {
     public void inputHandler(){
     }
 
+    public abstract int nextState();
+
 }

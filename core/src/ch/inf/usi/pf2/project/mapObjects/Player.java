@@ -56,6 +56,10 @@ public class Player {
         return i;
     }
 
+    public void handlePlayerInput(boolean touchUp){
+
+    }
+
     public ArrayList<Article> getArticles() {
         return articles;
     }

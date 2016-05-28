@@ -63,7 +63,10 @@ public class MiniGame extends GameState {
 
     }
 
+    public int nextState(){
 
+        return 0;
+    }
 
     @Override
     public void update(float dt){
