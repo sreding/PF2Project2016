@@ -11,7 +11,7 @@ public class Port {
     private int y;
     private String name;
     private Rectangle hitBox;
-    private int incominig;
+    private int incoming;
     private int outgoing;
 
     public Port(String name, Rectangle r){
@@ -20,7 +20,7 @@ public class Port {
         this.x = (int) r.getX();
         this.y = (int)r.getY();
         Random rn = new Random();
-        this.incominig = rn.nextInt(500);
+        this.incoming = rn.nextInt(500);
         this.outgoing = rn.nextInt(500);
     }//constructor
 
@@ -32,8 +32,8 @@ public class Port {
         return hitBox;
     }
 
-    public int getIncominig() {
-        return incominig;
+    public int getIncoming() {
+        return incoming;
     }
 
     public int getOutgoing() {
