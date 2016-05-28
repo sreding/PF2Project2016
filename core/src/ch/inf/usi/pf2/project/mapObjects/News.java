@@ -28,6 +28,10 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import ch.inf.usi.pf2.project.gameStates.GameState;
 
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+
 /**
  * Created by simonreding on 23/05/16.
  */
@@ -52,6 +56,8 @@ public class News extends GameState {
     //private SpriteBatch batch;
     //private BitmapFont bitmapFont;
     private Sprite backgroundImage;
+    private Sprite titleImage;
+    private Sprite sideTexture;
 
 
 
@@ -60,7 +66,7 @@ public class News extends GameState {
         //bitmapFont = new BitmapFont(Gdx.files.internal("cinzel45.fnt"),Gdx.files.internal("cinzel45.png"),false);
         spriteBatch = new SpriteBatch();
         backgroundImage = new Sprite(new Texture(Gdx.files.internal("backgroundTexture.png")),Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        backgroundImage.setColor(1f,0f,0.4f,1f);
+        //backgroundImage.setColor(1f,0f,0.4f,1f);
         this.articles = new ArrayList<Article>();
         stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));//,Gdx.files.internal("uiskin.atlas"));
@@ -92,7 +98,7 @@ public class News extends GameState {
         testButton = autoPad(testButton,3);
         testButton2 = autoPad(testButton2, 3);
 
-
+        testButton.setColor(1f,1f,1f,1f);
         buttonGroup.add(testButton,testButton2);
         verticalGroup.fill();
 
@@ -114,16 +120,26 @@ public class News extends GameState {
         header = new Table(skin);
 
         header.align(Align.topLeft);
-        table.add(esc).align(Align.left).width(esc.getPrefWidth());
+        table.add(esc).align(Align.topLeft).width(esc.getPrefWidth());
         Label news = new Label("NEWS",skin);
-        news.setFontScale(Gdx.graphics.getWidth()*4/1810f,Gdx.graphics.getHeight()*4/1080f);
+        news.setFontScale(Gdx.graphics.getWidth()*2/1810f,Gdx.graphics.getHeight()*2/1080f);
         //news.setFontScale(4);
         news.setColor(1f,1f,1f,1f);
+        //header.setBackground("backgroundTexture.png");
         header.add(news).align(Align.center);
         Label headlines = new Label("Headlines",skin);
-        headlines.setFontScale(Gdx.graphics.getWidth()*2/1810f,Gdx.graphics.getHeight()*2/1080f);
+        headlines.setFontScale(Gdx.graphics.getWidth()*1.5f/1810f,Gdx.graphics.getHeight()*1.5f/1080f);
         //headlines.setFontScale(2f);
         headlines.setColor(1f,1f,1f,1f);
+
+        ////
+
+        Table backGrnd = new Table(skin);
+        backGrnd.setWidth(stage.getWidth());
+        backGrnd.setPosition(0,Gdx.graphics.getHeight());
+
+
+        /////
         table.add(header).align(Align.center);
         table.add(headlines).align(Align.center);
         table.row();
@@ -133,7 +149,9 @@ public class News extends GameState {
         table.add(scrollPane).width(testButton.getPrefWidth());
         //table.debug();
 
-
+        titleImage = new Sprite(new Texture(Gdx.files.internal("titleTexture.png")),Gdx.graphics.getWidth(),(int)esc.getPrefHeight());
+        titleImage.setPosition(0,Gdx.graphics.getHeight()-esc.getPrefHeight());
+        sideTexture = new Sprite(new Texture(Gdx.files.internal("sideTexture.png")),(int)esc.getPrefWidth(),Gdx.graphics.getHeight());
         //table.layout();
         //table.validate();
         stage.addActor(table);
@@ -152,11 +170,14 @@ public class News extends GameState {
         if(esc.isPressed() == true){
             // IMPLEMENT GOING BACK TO MAP
         }
+        //table.debug();
 
 
         stage.act(Gdx.graphics.getDeltaTime());
         spriteBatch.begin();
         backgroundImage.draw(spriteBatch);
+        sideTexture.draw(spriteBatch);
+        titleImage.draw(spriteBatch);
         spriteBatch.end();
         stage.draw();
 
