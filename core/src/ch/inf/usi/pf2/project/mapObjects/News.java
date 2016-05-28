@@ -2,6 +2,7 @@ package ch.inf.usi.pf2.project.mapObjects;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -45,6 +46,9 @@ public class News extends GameState {
     private Sprite sideTexture;
     private Sprite rightSideTex;
     private ArrayList<TxtButton> txtButtons;
+
+    private int count;
+    private int index;
 
 
 
@@ -143,7 +147,12 @@ public class News extends GameState {
         //table.layout();
         //table.validate();
         stage.addActor(table);
+        //InputMultiplexer multiplexer = new InputMultiplexer();
+        //multiplexer.addProcessor(scrollPane);
+        //multiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(stage);
+        count = 0;
+        index = 0;
 
 
     }
@@ -153,14 +162,25 @@ public class News extends GameState {
     public void renderGameObject(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
-        for(TxtButton button:txtButtons){
-            if(button.isPressed() == true){
+        if(!scrollPane.isPanning()){
+            for(TxtButton button:txtButtons){
+            if(button.isPressed()) {
+                count++;
+            }
+            /*
+            if(button.isPressed() == true ) {
                 //System.out.println("Button Presserino");
                 //if(button.getIndex()<= articles.size()&& button.getIndex() >= 0) {
+                index = button.getIndex();
+            }*/
+            if (button.isPressed() == true && count > 0) {
 
-                    label.setText(articles.get(button.getIndex()).getContent());
-                    label.layout();
-        }}
+                label.setText(articles.get(button.getIndex()).getContent());
+                label.layout();
+            }
+        }}else{
+            count = 0;
+        }
 
         //table.debug();
 

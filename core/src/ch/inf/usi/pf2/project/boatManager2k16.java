@@ -38,7 +38,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		gameStates.add(new News(batch));
 		gameStates.add(new Manager(batch));
 
-		currentState = gameStates.get(0);
+		currentState = gameStates.get(1);
 
 	}
 
@@ -62,9 +62,12 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// -> basically we should always multiply any changes we do every frame by the render time
 		currentState.update(Gdx.graphics.getDeltaTime());
 
+		changeState();
+
 		// in the renderGameObject method we should everything, that has to do with actually displaying
 		// objects, that need to be displayed, like the background or sprites
 		currentState.renderGameObject();
+
 
 	}
 }
