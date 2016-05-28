@@ -392,7 +392,7 @@ public class Map extends GameState {
     }
 
     //@Override
-    public int changeState(){
+    public int nextState(){
         return 0;
     }
 
