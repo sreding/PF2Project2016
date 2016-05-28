@@ -2,6 +2,7 @@ package ch.inf.usi.pf2.project.mapObjects;
 
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -20,6 +21,7 @@ public class Article {
     public Article(String title,String content,int n){
         this.title = title;
         this.content = content;
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         textButton = new TxtButton(title,skin,n);
     }
 
