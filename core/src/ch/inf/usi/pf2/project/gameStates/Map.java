@@ -81,6 +81,8 @@ public class Map extends GameState {
     private Player player;
 
     private Boat courrentBoat;
+    private Port currentPort;
+    private boolean start;
 
     private boolean touchUp;
     private boolean wasTouched;
@@ -120,7 +122,7 @@ public class Map extends GameState {
         // we can add as many buttons as we need to this ArrayList
         buttons = new ArrayList<Button>();
         buttons.add(new Button(100,50,20, new Sprite(new Texture("move.png")), new Sprite(new Texture("draw.png"))));
-        buttons.add(new Button(0,0,20,new Sprite(new Texture("move.png")),new Sprite(new Texture("move.png"))));
+
 
 
         this.ports = new Ports(objects, cam, MAP_WIDTH);
@@ -147,6 +149,8 @@ public class Map extends GameState {
         Gdx.input.setInputProcessor(stage);
         stage=new Stage(new ScreenViewport(),batch);
 
+        start = false;
+
 
 
 
@@ -165,18 +169,24 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
+        /*
         if(courrentBoat != null){
             courrentBoat.getCurrentPath().drawPath3(mode);
+        }
+        */
+        for(Boat b: player.getBoats()){
+            //if(b.getCurrentPath() != null)
+            b.getCurrentPath().drawPath3(mode);
         }
 
         // batch will draw according to screen coordinates
         batch.begin();
         batch.setProjectionMatrix(cam.combined);
 
-
-        if(courrentBoat != null) {
-            courrentBoat.drawBoatOnMap();
+        for(Boat b: player.getBoats()){
+            b.drawBoatOnMap();
         }
+
 
         batch.setProjectionMatrix(initialProjectionMatrix);
 
@@ -199,8 +209,10 @@ public class Map extends GameState {
     // We should write everything that gets updated every frame in here
     @Override
     public void update(float dt){
-        if(courrentBoat != null) {
-            courrentBoat.updateBoat(dt);
+        for(Boat b : player.getBoats()) {
+            if (b != null) {
+                b.updateBoat(dt);
+            }
         }
         stage.act(Gdx.graphics.getDeltaTime());
 
@@ -225,9 +237,7 @@ public class Map extends GameState {
             mode %= 2;
             modeChanged = true;
         }
-        if(buttons.get(1).isTouched()){
-            courrentBoat.startBoat();
-        }
+
 
 
         // moves the camera across the background according to dx and dy
@@ -236,12 +246,15 @@ public class Map extends GameState {
         }
         else if(mode == 1 && !modeChanged && touchUp){
             courrentBoat.getCurrentPath().inputPath4();
+            start=false;
 
         }
 
         Port p = ports.handlePortInput();
         if(p!= null && Gdx.input.justTouched()){
             showBoatButtonList();
+            currentPort = p;
+            start=true;
         }
 
 
@@ -267,16 +280,6 @@ public class Map extends GameState {
             cam.position.x = 2*MAP_WIDTH/4 + cam.viewportWidth/2;
             courrentBoat.getCurrentPath().notifyPath();
         }
-
-        // we probably wont need this anymore, but i will leave it in just in case
-        /*
-        if(cam.position.x - cam.viewportWidth/2 < 0){
-            cam.position.x = cam.viewportWidth/2;
-        }
-        if(cam.position.x + cam.viewportWidth/2 > MAP_WIDTH){
-            cam.position.x = MAP_WIDTH - cam.viewportWidth/2;
-        }
-        */
 
         if(cam.position.y - cam.viewportHeight/2 <0){
             cam.position.y = cam.viewportHeight/2;
@@ -371,9 +374,14 @@ public class Map extends GameState {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println("asidgpiausdbpiuas");
-                    //courrentBoat =player.getBoats().get(i);
                     courrentBoat=tb.getB();
-                    stage.clear();
+                    for(Boat b: player.getBoats()){
+                        b.getCurrentPath().active=false;
+                    }
+                    courrentBoat.getCurrentPath().active=true;
+                    courrentBoat.getCurrentPath().addFirstLine(currentPort);
+                    mode=1;
+                    //stage.clear();
                     //start to draw
                 }
             });}
@@ -383,6 +391,11 @@ public class Map extends GameState {
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
+    }
+
+    //@Override
+    public int changeState(){
+        return 0;
     }
 
 

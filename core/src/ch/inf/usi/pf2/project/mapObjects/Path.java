@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -37,33 +38,43 @@ public class Path{
     private Line top;
 
     private MapObjects landPolygons;
+    public boolean active;
 
 
 
 
     public Path(ShapeRenderer shapeRenderer, OrthographicCamera cam, int MAP_WIDTH, MapObjects landPolygons){
         this.shapeRenderer = shapeRenderer;
-
-
         left = new ArrayList<Line>();
-
         this.cam =cam;
         c1=MAP_WIDTH/4;
-
         this.landPolygons=landPolygons;
-
-
+        active = false;
     }
 
     public boolean isEmpty(){
         return left.size() == 0;
     }
 
+    public void addFirstLine(Port p){
+        Rectangle r = p.getHitBox();
+        Vector3 in = new Vector3(r.getX()+r.getWidth()/2,r.getY()+r.getHeight()/2,0);
+        int cQ = computeQuadrant(in); //cq = currentQuadrant
+        Line l;
+        if(cQ>=2){
+            l = new Line(new Vector2(in.x-2*c1,in.y),new Vector2(in.x-2*c1,in.y),cQ,cQ);
+        }
+        else {
+            l = new Line(new Vector2(in.x, in.y), new Vector2(in.x, in.y), cQ, cQ);
+        }
+        left.add(l);
+        top=l;
+    }
 
 
     public void inputPath4(){
         Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
-        int cQ = computeQuadrant(); //cq = currentQuadrant
+        int cQ = computeQuadrant(in); //cq = currentQuadrant
         Line l;
 
         if(isEmpty() && notInLand(in)){ // path is empty -> we need to check if we start from inside a country
@@ -75,21 +86,23 @@ public class Path{
             }
             left.add(l);
         }
-        else if(! isEmpty()){
+        else if(! isEmpty() && notInLand(in)){
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
-            if(checkLandCollision(l)) {
+            if(left.size()==1){
+                int offset=50;
+                Vector2 offsetStart= new Vector2(l.getStart().x+offset*l.getDirection().x,l.getStart().y+offset*l.getDirection().y);
+                if(checkLandCollision(new Line(offsetStart,l.getEnd(),0,0))){
+                    l.addLine(left,c1);
+                }
+            }
+            else if(checkLandCollision(l)) {
                 l.addLine(left, c1);
             }
 
         }
 
-
-
-        //check if line goes over land
-        //
         if(left.size()>0) {
             top = left.get(left.size()-1);
-            //System.out.println(l.intersectsWithPolygons(landPolygons));
         }
 
     }
@@ -123,8 +136,7 @@ public class Path{
     }
 
 
-    private int computeQuadrant(){
-        Vector3 v= cam.unproject( new Vector3(Gdx.input.getX(),0,0));
+    private int computeQuadrant(Vector3 v){
         int posX =(int) v.x;
         int quadrant;
         if(posX<=c1){
@@ -150,7 +162,7 @@ public class Path{
             l.draw(shapeRenderer);
             l.leftToRight(2*c1).draw(shapeRenderer);
         }
-        if(Gdx.input.isTouched() && !isEmpty() && mode ==1){
+        if(Gdx.input.isTouched() && !isEmpty() && mode ==1 && active){
             Vector3 v = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
             Line current;
             if(top.endQuadrant>=2) {
@@ -172,6 +184,7 @@ public class Path{
 
 
     public void notifyPath() {
+
         for (Line l : left) {
             l.swqpQuadrants();
         }
