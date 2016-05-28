@@ -121,13 +121,6 @@ public class Manager extends GameState {
     private Label boats_owned;
 
 
-
-
-
-
-
-
-
     public Manager(SpriteBatch batch)
     {
         this.playerObject=new Player();
