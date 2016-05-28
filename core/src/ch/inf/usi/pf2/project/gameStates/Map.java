@@ -460,12 +460,12 @@ public class Map extends GameState {
 
     @Override
     public int nextState(){
-        if(newsNext.isPressed()){
+        if(newsNext.isPressed() && Gdx.input.justTouched()){
             stage.clear();
             permanentActors();
             return 1;
         }
-        else if(managerNext.isPressed()){
+        else if(managerNext.isPressed() && Gdx.input.justTouched()){
             stage.clear();
             permanentActors();
             return 2;
