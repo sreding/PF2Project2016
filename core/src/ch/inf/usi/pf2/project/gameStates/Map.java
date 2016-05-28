@@ -36,15 +36,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import ch.inf.usi.pf2.project.mapObjects.Boat;
 import ch.inf.usi.pf2.project.mapObjects.BoatButton;
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Player;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
 import ch.inf.usi.pf2.project.mapObjects.Port;
-
 import java.util.ArrayList;
+
 /**
  * Created by alexandercamenzind on 28/04/16.
  */
