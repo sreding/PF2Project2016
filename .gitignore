@@ -63,5 +63,5 @@ build/
 ## OS Specific
 .DS_Store
 
-.gradle*
+*.gradle/*
 android/android.iml
