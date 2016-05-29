@@ -166,6 +166,7 @@ public class Map extends GameState {
 
 
 
+
     }
 
     @Override
@@ -193,6 +194,7 @@ public class Map extends GameState {
         // batch will draw according to screen coordinates
         batch.begin();
         batch.setProjectionMatrix(cam.combined);
+        ports.drawPorts(batch);
 
         for(Boat b: player.getBoats()){
             b.drawBoatOnMap();
@@ -211,7 +213,7 @@ public class Map extends GameState {
 
         stage.draw();
 
-        showHitBoxes();
+       // showHitBoxes();
         //showPorts();
         showPolygons();
 
