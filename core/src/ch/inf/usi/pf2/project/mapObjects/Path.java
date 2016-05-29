@@ -43,8 +43,6 @@ public class Path{
     private Color pathColor;
 
     private Port from;
-    private boolean fromOnLeftSide;
-
 
 
 
@@ -74,12 +72,7 @@ public class Path{
         Rectangle r = p.getHitBox();
         Vector3 in = new Vector3(r.getX()+r.getWidth()/2,r.getY()+r.getHeight()/2,0);
         int cQ = computeQuadrant(portCoordinates); //cq = currentQuadrant
-        if(cQ>=2){
-            fromOnLeftSide=false;
-        }
-        else{
-            fromOnLeftSide=true;
-        }
+
         Line l;
         l = new Line(new Vector2(in.x, in.y), new Vector2(in.x, in.y), cQ, cQ);
         left.add(l);

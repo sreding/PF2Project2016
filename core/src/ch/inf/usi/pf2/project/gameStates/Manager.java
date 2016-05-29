@@ -129,6 +129,8 @@ public class Manager extends GameState {
         stage = new Stage(new ScreenViewport(),batch);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Gdx.input.setInputProcessor(stage);
+
+        // TEST BOAT !
         testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, 0, null,"Fascinosa");
         // Gdx.graphics.setVSync(false);
@@ -157,39 +159,6 @@ public class Manager extends GameState {
                 + System.getProperty("line.separator") + "Speed:53"
                 + System.getProperty("line.separator") + "Distance:5 Mkm"
                 + System.getProperty("line.separator") + "Maintenance:2.0",skin);
-        this.upgrade1.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y)
-            {
-                if(playerObject.money>=testBoat.getPrice()) {
-                    buy.remove();
-                    playerObject.addBoat(testBoat);
-                    playerObject.money-=testBoat.getPrice();
-
-                    money.setText("Current Balance:"+" "+playerObject.money);
-                    boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
-
-                    upgrade1.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade1.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade1.setPosition(Gdx.graphics.getWidth()/6,0);
-
-                    upgrade2.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade2.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade2.setPosition(Gdx.graphics.getWidth()/3,0);
-
-                    upgrade3.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade3.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade3.setPosition(Gdx.graphics.getWidth()/2,0);
-
-                    stage.addActor(upgrade1);
-                    stage.addActor(upgrade2);
-                    stage.addActor(upgrade3);
-                }
-                // stage.addActor(upgrade2);
-                // stage.addActor(upgrade3);
-
-            }
-        });
 
 
         this.upgrade1.getLabel().setAlignment(Align.top);
@@ -452,7 +421,9 @@ public class Manager extends GameState {
     public void renderGameObject(){
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.input.setInputProcessor(stage);
         stage.act(Gdx.graphics.getDeltaTime());
+
         stage.draw();
 
 //        batch.begin();
@@ -604,7 +575,13 @@ public class Manager extends GameState {
 
     public int nextState(){
 
-        return 0;
+        if(back.isPressed() && Gdx.input.justTouched()){
+            back.toggle();
+
+            //System.out.println("return0");
+            return 0;
+        }
+        return 2;
     }
 
     @Override

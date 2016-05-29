@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="90">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="720" tileheight="720" nextobjectid="93">
  <tileset firstgid="1" name="worldMap" tilewidth="720" tileheight="720" tilecount="2" columns="2">
   <image source="worldMap.png" width="1440" height="720"/>
  </tileset>
@@ -60,9 +60,10 @@
   <object id="78" name="Los Angeles" x="951.635" y="207.558" width="43.0781" height="39.1619"/>
   <object id="80" name="Shanghai" x="464.069" y="231.055" width="45.0362" height="43.0781"/>
   <object id="81" name="Antananarivo" x="180.145" y="422.949" width="39.1619" height="35.2457"/>
-  <object id="84" name="Hamburg" x="7.83239" y="131.192" width="35.2457" height="35.2457"/>
   <object id="87" name="Tokyo" x="546.309" y="195.81" width="41.12" height="35.2457"/>
   <object id="89" name="Mumbai" x="278.05" y="295.673" width="35.2457" height="33.2876"/>
+  <object id="90" name="Cape Town" x="66.5753" y="467.985" width="43.0781" height="43.0781"/>
+  <object id="92" name="Lima" x="1104.37" y="381.829" width="50.9105" height="48.9524"/>
  </objectgroup>
  <objectgroup name="Polygons">
   <object id="41" name="SouthAmerica" x="1168.98" y="577.639">

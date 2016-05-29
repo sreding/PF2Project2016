@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -37,6 +38,7 @@ public class Player {
     public int money;
     private ArrayList<Boat> boats;
     private ArrayList<Article> articles;
+    private ArrayList<Disaster> disasters;
     //
 
 
@@ -45,6 +47,7 @@ public class Player {
         this.money=10000;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
+        this.disasters = DisasterMaker.randomDisasters();
 
     }
 
@@ -58,6 +61,12 @@ public class Player {
 
     public void handlePlayerInput(boolean touchUp){
 
+    }
+    public void addArticles(ArrayList<Article> newA){
+        articles.addAll(newA);
+    }
+    public void newDisasters(){
+        disasters.addAll(DisasterMaker.randomDisasters());
     }
 
     public ArrayList<Article> getArticles() {
