@@ -23,6 +23,11 @@ public class Disaster {
         this.type = type;
         this.gravity = gravity;
     }
+    public Disaster(Place place){
+        this.name = place.getName();
+        x = place.getX();
+        y = place.getY();
+    }
     public Disaster(int x,int y, String name){
         this.x = x;
         this.y =  y;

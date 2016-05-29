@@ -13,7 +13,7 @@ public class DisasterMaker {
         int numberOfDisasters = rn.nextInt(19);
         ArrayList disasters = new ArrayList();
         while(numberOfDisasters > -1){
-            Disaster disaster = new Disaster(rn.nextInt(),rn.nextInt());
+            Disaster disaster = new Disaster(new Place(rn.nextInt(),rn.nextInt(),"random"));//TODO: implement proper name
             disasters.add(disaster);
             numberOfDisasters--;
         }
