@@ -153,6 +153,7 @@ public class Manager extends GameState {
         container = new Table();
         stage.addActor(container);
         container.setFillParent(true);
+
         //Uprages Buttons implementation:
         this.upgrade1 = new TextButton("Upgrade1:"+ System.getProperty("line.separator") +"Price:2000" +
                   System.getProperty("line.separator") + "Capacity:1100"
