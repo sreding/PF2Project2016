@@ -2,6 +2,9 @@ package ch.inf.usi.pf2.project.mapObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -20,12 +23,15 @@ public class Ports {
     private OrthographicCamera cam;
     private int WORLD_WIDTH;
     private ArrayList<Port> ports;
+    private Sprite portSymbol;
 
     public Ports(MapObjects ports, OrthographicCamera cam, int WORLD_WIDTH){
         this.cam = cam;
         this.ports =new ArrayList<Port>();
         addPorts(ports);
         this.WORLD_WIDTH = WORLD_WIDTH;
+        this.portSymbol= new Sprite(new Texture("portIcon.png"));
+        portSymbol.setAlpha(1f);
     }
 
     public Port portTouched (){
@@ -66,6 +72,13 @@ public class Ports {
                 ports.add(port);
             }
         }
+    }
+
+    public void drawPorts(SpriteBatch batch){
+        for(Port p: ports){
+            p.drawPort(batch,portSymbol, WORLD_WIDTH);
+        }
+
     }
 
 

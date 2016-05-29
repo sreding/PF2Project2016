@@ -1,5 +1,8 @@
 package ch.inf.usi.pf2.project.mapObjects;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import java.util.Random;
 
@@ -17,8 +20,8 @@ public class Port {
     public Port(String name, Rectangle r){
         this.name = name;
         this.hitBox=r;
-        this.x = (int) r.getX();
-        this.y = (int)r.getY();
+        this.x = (int) r.getX();// (r.getX() + r.getWidth()/2);
+        this.y = (int) r.getY();//(r.getY() +r.getHeight()/2);
         Random rn = new Random();
         this.incoming = rn.nextInt(500);
         this.outgoing = rn.nextInt(500);
@@ -38,5 +41,13 @@ public class Port {
 
     public int getOutgoing() {
         return outgoing;
+    }
+    public void drawPort(SpriteBatch batch,Sprite portSymbol, int WorldWidth){
+        portSymbol.setSize(hitBox.getWidth(),hitBox.getHeight());
+        portSymbol.setPosition(x,y);
+        portSymbol.draw(batch);
+        portSymbol.setPosition(x+WorldWidth/2,y);
+        portSymbol.draw(batch);
+
     }
 }
