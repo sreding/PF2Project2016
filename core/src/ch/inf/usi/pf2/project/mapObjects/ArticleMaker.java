@@ -51,7 +51,7 @@ public class ArticleMaker {
     }
 
 
-    ///REQUIRES IMPLEMENTATION!!!!!!!!!!
+//    TODO: get the real region
     private static String getRegion(int x, int y){
         return News.portNames().get(1);
     }

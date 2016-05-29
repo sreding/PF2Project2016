@@ -10,6 +10,7 @@ public class Disaster {
     private int x;
     private int y;
     private boolean type;//true if in sea
+    private String name;
 
     //how grave the disaster is, not as is getting pulled down to earth. 9 is worst, 0 best
     private int gravity;
@@ -22,12 +23,13 @@ public class Disaster {
         this.type = type;
         this.gravity = gravity;
     }
-    public Disaster(int x,int y){
+    public Disaster(int x,int y, String name){
         this.x = x;
         this.y =  y;
         this.type = checkWater(x,y);
         Random rn = new Random();
         this.gravity = rn.nextInt(10);
+        this.name = name;
 
     }
 
