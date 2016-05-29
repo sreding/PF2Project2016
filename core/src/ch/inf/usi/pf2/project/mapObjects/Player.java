@@ -37,6 +37,7 @@ public class Player {
 
     public int money;
     private ArrayList<Boat> boats;
+    private ArrayList<Boat> possibleBoats;
     private ArrayList<Article> articles;
     private ArrayList<Disaster> disasters;
     private Ports ports;
@@ -52,6 +53,7 @@ public class Player {
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = DisasterMaker.randomDisasters();
+        possibleBoats = new ArrayList<Boat>();
 
         TiledMap tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
         MapProperties prop = tiledMap.getProperties();
@@ -92,5 +94,13 @@ public class Player {
     public Ports getPorts() {
         return ports;
     }
+    public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
+        possibleBoats.add(new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+                new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"Fascinosa"));
+
+
+
+    }
+
 
 }

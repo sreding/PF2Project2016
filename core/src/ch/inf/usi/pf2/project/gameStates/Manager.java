@@ -121,9 +121,9 @@ public class Manager extends GameState {
     private Label boats_owned;
 
 
-    public Manager(SpriteBatch batch)
+    public Manager(SpriteBatch batch,Player player)
     {
-        this.playerObject=new Player();
+        this.playerObject=player;
         this.bool=true;
         this.batch=batch;
         stage = new Stage(new ScreenViewport(),batch);

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import ch.inf.usi.pf2.project.gameStates.*;
 import ch.inf.usi.pf2.project.mapObjects.News;
+import ch.inf.usi.pf2.project.mapObjects.Player;
 
 //this is our main class
 
@@ -33,12 +34,14 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// Map, Menu, MiniGame
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
-		gameStates = new ArrayList<GameState>();
-		gameStates.add(new Map(batch));
-		gameStates.add(new News(batch));
-		gameStates.add(new Manager(batch));
+		Player player= new Player();
 
-		currentState = gameStates.get(2);
+		gameStates = new ArrayList<GameState>();
+		gameStates.add(new Map(batch,player));
+		gameStates.add(new News(batch,player));
+		gameStates.add(new Manager(batch,player));
+
+		currentState = gameStates.get(0);
 
 	}
 

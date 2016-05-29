@@ -94,7 +94,7 @@ public class Map extends GameState {
     private int nextState;
 
 
-    public Map(SpriteBatch batch){
+    public Map(SpriteBatch batch,Player player){
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
 
@@ -130,7 +130,8 @@ public class Map extends GameState {
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
         Boat testBoat2 = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat5.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"another TestBoat");
-        player=new Player();
+        this.player=player;
+        player.addPossibleBoats(this.batch, this.cam,this.shapeRenderer,this.MAP_WIDTH,polygonMapObjects); // SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,MapObjects landPolygons,
         player.addBoat(testBoat);
         player.addBoat(testBoat2);
 
