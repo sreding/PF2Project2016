@@ -63,11 +63,10 @@ public class Map extends GameState {
     // MAP_HEIGHT is the height of the background in pixel
     private int MAP_WIDTH;
     private int MAP_HEIGHT;
-    private MapObjects objects;
-    private MapObjects portObjects;
+
+
     private MapObjects polygonMapObjects;
 
-    private Ports ports;
 
     // a list to store all buttons
     private ArrayList<Button> buttons;
@@ -116,8 +115,6 @@ public class Map extends GameState {
         MAP_HEIGHT = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
 
-        this.objects = tiledMap.getLayers().get("SquarePorts").getObjects();
-        this.portObjects = tiledMap.getLayers().get("Ports").getObjects();
         this.polygonMapObjects = tiledMap.getLayers().get("Polygons").getObjects();
 
         // set up buttons
@@ -127,7 +124,7 @@ public class Map extends GameState {
 
 
 
-        this.ports = new Ports(objects, cam, MAP_WIDTH);
+
 
         Boat testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
@@ -194,7 +191,7 @@ public class Map extends GameState {
         // batch will draw according to screen coordinates
         batch.begin();
         batch.setProjectionMatrix(cam.combined);
-        ports.drawPorts(batch);
+        player.getPorts().drawPorts(batch);
 
         for(Boat b: player.getBoats()){
             b.drawBoatOnMap();
@@ -258,7 +255,7 @@ public class Map extends GameState {
             modeChanged = true;
         }
 
-        Port p = ports.handlePortInput();
+        Port p = player.getPorts().handlePortInput(cam);
         if(p!= null && Gdx.input.justTouched()){
             if(!drawing){
                 showBoatButtonList();
@@ -326,6 +323,7 @@ public class Map extends GameState {
     }
 
     // this method will draw a red rectangle at the hitboxes defined in the tiled map
+    /*
     private void showHitBoxes(){
         shapeRenderer.setProjectionMatrix(cam.combined);
 
@@ -345,22 +343,9 @@ public class Map extends GameState {
         }
 
     }
+    */
 
 
-    private void showPorts() {
-    for(MapObject p : portObjects){
-        if(p instanceof EllipseMapObject){
-            shapeRenderer.setProjectionMatrix(cam.combined);
-
-            Ellipse elip = ((EllipseMapObject) p).getEllipse();
-
-            shapeRenderer.begin(ShapeType.Filled);
-            shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.ellipse(elip.x,elip.y,elip.width,elip.height);
-            shapeRenderer.end();
-        }
-    }
-    }
 
     private void showPolygons(){
         shapeRenderer.setProjectionMatrix(cam.combined);

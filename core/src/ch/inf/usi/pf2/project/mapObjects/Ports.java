@@ -20,13 +20,13 @@ import java.util.ArrayList;
  */
 public class Ports {
     //private MapObjects ports;
-    private OrthographicCamera cam;
+
     private int WORLD_WIDTH;
     private ArrayList<Port> ports;
     private Sprite portSymbol;
 
-    public Ports(MapObjects ports, OrthographicCamera cam, int WORLD_WIDTH){
-        this.cam = cam;
+    public Ports(MapObjects ports, int WORLD_WIDTH){
+
         this.ports =new ArrayList<Port>();
         addPorts(ports);
         this.WORLD_WIDTH = WORLD_WIDTH;
@@ -34,7 +34,7 @@ public class Ports {
         portSymbol.setAlpha(1f);
     }
 
-    public Port portTouched (){
+    public Port portTouched (OrthographicCamera cam){
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Vector3 v = cam.unproject(new Vector3(x,y,0));
@@ -55,8 +55,8 @@ public class Ports {
         return res;
         }
 
-    public Port handlePortInput(){
-        Port p = portTouched();
+    public Port handlePortInput(OrthographicCamera cam){
+        Port p = portTouched(cam);
         if(Gdx.input.justTouched()&& p != null){
             System.out.println("pls display options for port: " + p.getName());
         }

@@ -39,7 +39,11 @@ public class Player {
     private ArrayList<Boat> boats;
     private ArrayList<Article> articles;
     private ArrayList<Disaster> disasters;
+    private Ports ports;
+    public int MAP_WIDTH;
     //
+
+
 
 
     public Player()
@@ -48,6 +52,11 @@ public class Player {
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = DisasterMaker.randomDisasters();
+
+        TiledMap tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
+        MapProperties prop = tiledMap.getProperties();
+        MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
+        ports=new Ports(tiledMap.getLayers().get("SquarePorts").getObjects(),MAP_WIDTH);
 
     }
 
@@ -79,6 +88,9 @@ public class Player {
 
     public void setBoats(ArrayList<Boat> boats) {
         this.boats = boats;
+    }
+    public Ports getPorts() {
+        return ports;
     }
 
 }
