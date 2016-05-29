@@ -94,6 +94,10 @@ public class Line {
         }
     }
 
+    public boolean addedTwo(){
+        return addedTwo;
+    }
+
     //c should be 1/4 of the worldwidth
     public void addLine(ArrayList<Line> list, int c){
         int sq = startQuadrant;

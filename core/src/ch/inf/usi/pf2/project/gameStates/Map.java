@@ -280,6 +280,8 @@ public class Map extends GameState {
             if(courrentBoat.getCurrentPath().inputPath4(p)){
                 mode = 0;
                 drawing=false;
+                stage.clear();
+                permanentActors();
                 courrentBoat.setVisible(true);
                 courrentBoat.startBoat();
 
@@ -445,6 +447,17 @@ public class Map extends GameState {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Table table = new Table();
         table.setFillParent(true);
+        if(drawing){
+            TextButton undo = new TextButton("undo",skin);
+            undo.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    courrentBoat.getCurrentPath().undo();
+                }
+            });
+            table.add(undo);
+
+        }
         TextButton manager = new TextButton("Manager",skin);
         managerNext =manager;
         TextButton news = new TextButton("News",skin);
