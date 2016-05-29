@@ -4,8 +4,8 @@ package ch.inf.usi.pf2.project.mapObjects;
  * Created by simonreding on 29/05/16.
  */
 public class Place {
-<<<<<<< HEAD
-=======
+
+
     private final int x;
     private final int y;
     private final String name;
@@ -29,5 +29,5 @@ public class Place {
     public String getName() {
         return name;
     }
->>>>>>> 0719cd61572beb7ef9546d20539be077b4f545e2
+
 }

@@ -51,11 +51,11 @@ public class ArticleMaker {
     }
 
 
-<<<<<<< HEAD
+
     ///REQUIRES IMPLEMENTATION!!!!!!!!!!
-=======
+
 //    TODO: get the real region
->>>>>>> 0719cd61572beb7ef9546d20539be077b4f545e2
+
     private static String getRegion(int x, int y){
         return News.portNames().get(1);
     }
