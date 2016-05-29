@@ -80,7 +80,7 @@ public class News extends GameState {
         esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
-
+        //TODO:add existing articles from player
         //Adding example articles
         addArticles(randomArticles());
 

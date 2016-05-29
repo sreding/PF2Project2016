@@ -30,7 +30,8 @@ public class Disaster {
         this.gravity = rn.nextInt(10);
 
     }
-    ////STILL HAS TO BE IMPLEMENTED!!!!!
+
+//    TODO: implement function so that it returns true only if disaster is in water
     private boolean checkWater(int x, int y){
         return true;
     }

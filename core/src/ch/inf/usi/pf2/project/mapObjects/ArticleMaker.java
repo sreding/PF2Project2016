@@ -23,7 +23,7 @@ public class ArticleMaker {
         this.disasters = disasters;
         this.regions = regions;
     }
-
+    //TODO: make articles and send them to player once disasters happen
     public static Article makeArticle(Disaster disaster){
         String dis = "";
         if(disaster.isType()){dis = seaDisaster();}else{dis = landDisaster();}
