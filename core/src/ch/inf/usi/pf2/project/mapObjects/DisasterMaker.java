@@ -15,6 +15,7 @@ public class DisasterMaker {
         while(numberOfDisasters > -1){
             Disaster disaster = new Disaster(rn.nextInt(),rn.nextInt());
             disasters.add(disaster);
+            numberOfDisasters--;
         }
         return disasters;
     }
