@@ -1,4 +1,6 @@
 package ch.inf.usi.pf2.project.mapObjects;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by simonreding on 29/05/16.
@@ -14,4 +16,18 @@ public class Place {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
 }
+

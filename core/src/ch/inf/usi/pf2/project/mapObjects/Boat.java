@@ -143,9 +143,6 @@ public class Boat {
                 //double time = currentLine.getLength() / speed;
             }
 
-
-
-
         }
 
         sideBoat.setPosition(x-sideBoat.getWidth()/2,y-sideBoat.getHeight()/2);

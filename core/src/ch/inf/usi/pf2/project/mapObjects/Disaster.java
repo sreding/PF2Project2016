@@ -12,6 +12,7 @@ public class Disaster {
     private boolean type;//true if in sea
 
     private String name;
+    private String locationName;
 
 
     //how grave the disaster is, not as is getting pulled down to earth. 9 is worst, 0 best
@@ -19,12 +20,13 @@ public class Disaster {
 
 
 
-    public Disaster(int x,int y, boolean type, int gravity, String name){
+    public Disaster(int x,int y, boolean type, int gravity, String name, String locationName){
         this.x = x;
         this.y =  y;
         this.type = type;
         this.gravity = gravity;
         this.name = name;
+
     }
 
 
@@ -67,5 +69,13 @@ public class Disaster {
 
     public boolean isType() {
         return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLocationName() {
+        return locationName;
     }
 }

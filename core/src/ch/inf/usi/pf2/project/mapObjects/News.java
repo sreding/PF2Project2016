@@ -143,6 +143,8 @@ public class News extends GameState {
 
         //setting count and index to zero, they are used later to check if actions should be executed
         count = 0;
+
+        randomDisasters();
     }
 
 
@@ -227,6 +229,7 @@ public class News extends GameState {
     private ArrayList<TextButton> newButtons(ArrayList<Article> articles){
         return makeNewButtons(articles,new ArrayList<TextButton>(),0);
     }
+
     private ArrayList<TextButton> makeNewButtons(ArrayList<Article> articles,
                                                  ArrayList<TextButton> buttons,
                                                  int n){
@@ -272,7 +275,7 @@ public class News extends GameState {
         return makeArticles(countries,disaster,new ArrayList<Article>(),0,0);
     }
     //simple function that generates a list of articles given lists of
-    // strings containing names of regions and desasters
+    // strings containing names of regions and disasters
     private static ArrayList<Article> makeArticles(ArrayList<String> regions,
                                                    ArrayList<String> events,
                                                    ArrayList<Article> finishedArticles, int n,
@@ -283,7 +286,7 @@ public class News extends GameState {
             Random rn = new Random();
             String country = regions.get(rn.nextInt(regions.size()));
             String title = events.get(n)+ " in " +country;
-            String text = "The " + events.get(n) + " that destroyed " + country+" appears to " +
+            String text = "The " + events.get(n) + " that destroyed " + country +" appears to " +
                     " have devastating consequences to the region";
             finishedArticles.add(new Article(title,text,numberOfArticles));
             n++;
@@ -291,6 +294,52 @@ public class News extends GameState {
             return makeArticles(regions,events,finishedArticles,n,numberOfArticles);
         }
 
+    }
+    public Place randomPlace(){
+        Random rn =  new Random();
+        if(rn.nextBoolean()){
+            ArrayList<Oceans> oce = ArticleMaker.getOceans();
+            return oce.get(rn.nextInt(oce.size()));
+        }else{
+            Ports prt = player.getPorts();
+            return prt.getPorts().get(rn.nextInt(prt.getPorts().size()));
+        }
+    }
+    public void randomDisasters(){
+        Random rn = new Random();
+        int numberOfDisasters = rn.nextInt(19);
+        ArrayList disasters = new ArrayList();
+
+        while(numberOfDisasters > -1){
+            Place place = randomPlace();
+            boolean bool = (place instanceof Oceans);
+            String event;
+            if(bool){event=ArticleMaker.seaDisaster();}else{event=ArticleMaker.seaDisaster();};
+            Disaster disaster = new Disaster(place.getX(),place.getY(),bool,rn.nextInt(10),event,place.getName());
+            disasters.add(disaster);
+            numberOfDisasters--;
+        }
+        addArticles(makeArticles(disasters));
+        player.addDisasters(disasters);
+    }
+
+    public static ArrayList<Article> makeArticles(ArrayList<Disaster> dis){
+        ArrayList<Article> articles = new ArrayList<Article>();
+        for(Disaster disaster: dis){
+            articles.add(makeArticle(disaster));
+        }
+        return articles;
+    }
+
+    public static Article makeArticle(Disaster disaster){
+        String dis = "";
+        if(disaster.isType()){dis = ArticleMaker.seaDisaster();}else{dis = ArticleMaker.landDisaster();}
+
+        String region = disaster.getLocationName();
+
+        String title = dis + ArticleMaker.firstArticleText(disaster.getGravity()) + region;
+
+        return new Article(title,title,0);
     }
 
 
