@@ -277,7 +277,13 @@ public class Map extends GameState {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && touchUp && !stageButtonTouched){
-            courrentBoat.getCurrentPath().inputPath4(p);
+            if(courrentBoat.getCurrentPath().inputPath4(p)){
+                mode = 0;
+                drawing=false;
+                courrentBoat.setVisible(true);
+                courrentBoat.startBoat();
+
+            }
             start=false;
 
         }

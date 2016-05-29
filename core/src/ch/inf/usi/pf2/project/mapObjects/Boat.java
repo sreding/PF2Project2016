@@ -151,6 +151,10 @@ public class Boat {
         }
     }
 
+    public void setVisible(boolean b){
+        isVisible = b;
+    }
+
 
     // various getter Methods
     public Path getCurrentPath() {

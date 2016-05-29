@@ -80,8 +80,8 @@ public class Path{
         from =p;
     }
 
-
-    public void inputPath4(Port p){
+    //returns true when the path is finished
+    public boolean inputPath4(Port p){
 
         Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
         int cQ = computeQuadrant(in); //cq = currentQuadrant
@@ -97,7 +97,7 @@ public class Path{
                 l.addLine(left,c1);
                 System.out.println("asdf");
                 top = left.get(left.size()-1);
-                return;
+                return true;
             }
         }
 
@@ -139,6 +139,7 @@ public class Path{
         if(left.size()>0) {
             top = left.get(left.size()-1);
         }
+        return false;
 
     }
 
