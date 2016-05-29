@@ -52,6 +52,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.SnapshotArray;
+import java.util.ArrayList;
+
 
 
 /**
@@ -61,32 +64,12 @@ public class Manager extends GameState {
 
     private Player playerObject;
     private SpriteBatch batch;
-    private TextureAtlas atlas;
-    private OrthographicCamera cam;
-    private ShapeRenderer shapeRenderer;
     private Table container;
-    private Label label;
-    private Actor window;
-    private BitmapFont font;
-    private Texture somebutton;
     private Stage stage;
     private Skin skin;
-    private TextButton startButton;
-    private TextButton quitButton;
-    private Sprite sprite;
-    private Label attributes;
-    private Table table_atrributes;
     private Texture boat;
-    private Table boat_attributes;
-    private ScrollPane scrollPane;
     private List list_of_boats;
-    private Table my_boats;
-    private TextButton play;
     private TextButton back;
-    private Texture background;
-    private Sprite splash;
-    private BitmapFont black;
-    private VerticalGroup verticalGroup;
     private boolean bool;
     private String var;
     private Image actor;
@@ -94,15 +77,6 @@ public class Manager extends GameState {
     private Table table;
     private ScrollPane scroll;
     private Boat testBoat;
-    private Boat testBoat2;
-    private Boat testBoat3;
-    private Boat testBoat4;
-    private Boat testBoat5;
-    private Boat testBoat6;
-    private Boat testBoat7;
-    private Boat testBoat8;
-    private Boat testBoat9;
-    private Boat testBoat10;
 
     private Label name;
     private Label capacity;
@@ -119,18 +93,36 @@ public class Manager extends GameState {
     private Label price;
     private Label money;
     private Label boats_owned;
+    private Dialog dialog;
+    private List list;
+    private TextButton buy_boats;
+    private TextButton your_boats;
+    private ScrollPane scroll1;
+    private ScrollPane scroll2;
+    private boolean scroll1_bool;
+    private boolean scroll2_bool;
+    private boolean buy_bool;
+    private boolean boat_stats_bool;
+    private boolean boat1_bool,boat2_bool;
 
 
     public Manager(SpriteBatch batch,Player player)
     {
+        scroll1_bool=false;
+        scroll2_bool=false;
+        boat1_bool=false;
+        boat1_bool=false;
+        buy_bool = false;
+        boat_stats_bool=false;
         this.playerObject=player;
         this.bool=true;
         this.batch=batch;
         stage = new Stage(new ScreenViewport(),batch);
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
         // TEST BOAT !
+
         testBoat = playerObject.getPossibleBoats().get(0);
         // Gdx.graphics.setVSync(false);
 
@@ -165,12 +157,11 @@ public class Manager extends GameState {
         this.upgrade1.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f);
         this.upgrade2 = new TextButton("Upgrade2:",skin);
         this.upgrade3 = new TextButton("Upgrade3:",skin);
-        this.buy = new TextButton("Buy this boat",skin);
+        this.buy = new TextButton("Buy",skin);
 
         this.buy.setHeight(Gdx.graphics.getHeight()/4);
         this.buy.setWidth(Gdx.graphics.getWidth()/6);
         this.buy.setPosition(Gdx.graphics.getWidth()/6,0);
-        this.stage.addActor(buy);
 
         this.back = new TextButton("Back",skin);
         this.back.setHeight(Gdx.graphics.getHeight()/5);
@@ -180,7 +171,6 @@ public class Manager extends GameState {
 
         //this.back
         table = new Table(skin);
-        System.out.println(Gdx.graphics.getDensity());
         table.getSkin().getFont("default-font").getData().setScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
         table.align(Align.right|Align.top);
         table.setPosition(0,container.getHeight());
@@ -188,14 +178,119 @@ public class Manager extends GameState {
         this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
         list_of_boats.setPosition(0,Gdx.graphics.getHeight());
 
+        this.list = new List(skin);
+        this.list.setItems(new String[] {});
+
+        your_boats =  new TextButton("YOUR BOATS",skin);
+        buy_boats =  new TextButton("BUY BOATS",skin);
+
+
+
+
         scroll = new ScrollPane(table, skin);
-        table.add(new Label("YOUR BOATS",skin)).row();
-        table.add(list_of_boats);
+
+        table.add(your_boats).width(stage.getWidth()/5).height(stage.getHeight()/2);
+        table.row();
+        //table.add(list).row();
+        table.add(buy_boats).width(stage.getWidth()/5).height(stage.getHeight()/2);
+
+        this.buy_boats.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                if(scroll2_bool)
+                {
+                    scroll2.remove();
+                    scroll2_bool=false;
+                }
+
+                your_boats.remove();
+                buy_boats.remove();
+                Table table = new Table(skin);
+                table.getSkin().getFont("default-font").getData().setScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
+                table.align(Align.right|Align.top);
+                table.setPosition(0,container.getHeight());
+
+                scroll1 = new ScrollPane(table, skin);
+                Label label = new Label("Buy Boats" + System.getProperty("line.separator") + "Menu",skin);
+                table.add(label).row();
+                label.setAlignment(Align.center);
+
+                table.add(list_of_boats);
+
+                your_boats.setHeight(Gdx.graphics.getHeight()/4);
+                your_boats.setWidth(Gdx.graphics.getWidth()/6);
+                your_boats.setPosition(Gdx.graphics.getWidth()/2,0);
+                stage.addActor(buy);
+                buy_bool=true;
+                stage.addActor(your_boats);
+
+                container.add(scroll1).fill();
+                scroll1_bool = true;
+                boat_stats_bool = true;
+            }
+        });
+
+
+        this.your_boats.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                if(scroll1_bool)
+                {
+                    scroll1.remove();
+                    scroll1_bool=false;
+                }
+                if(buy_bool)
+                {
+                    buy.remove();
+                    buy_bool=false;
+                }
+                if(boat_stats_bool)
+                {
+                    boat_stats.remove();
+                    actor.remove();
+                    name.remove();
+                    speed.remove();
+                    capacity.remove();
+                    distanceLimit.remove();
+                    maintenanceCost.remove();
+                    vulnerability.remove();
+                    price.remove();
+                    boat_stats_bool=false;
+                    bool = true;
+                }
+                your_boats.remove();
+                buy_boats.remove();
+                Table table = new Table(skin);
+                table.getSkin().getFont("default-font").getData().setScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
+                table.align(Align.right|Align.top);
+                table.setPosition(0,container.getHeight());
+
+                scroll2 = new ScrollPane(table, skin);
+                Label label = new Label("Your Boats" + System.getProperty("line.separator") + "Menu",skin);
+                table.add(label).row();
+                label.setAlignment(Align.center);
+                table.add(list);
+
+                buy_boats.setHeight(Gdx.graphics.getHeight()/4);
+                buy_boats.setWidth(Gdx.graphics.getWidth()/6);
+                buy_boats.setPosition(Gdx.graphics.getWidth()/2,0);
+                stage.addActor(buy_boats);
+
+                container.add(scroll2).fill();
+                scroll2_bool=true;
+            }
+        });
+
+
+       // table.add(list_of_boats);
+
 
         container.add(scroll).expand().fill().colspan(4);
         var =  list_of_boats.getSelected().toString();
         boat = new Sprite(testBoat.getSideBoat()).getTexture();
-        region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());//(int)(Gdx.graphics.getWidth()/3.37), (int)(Gdx.graphics.getHeight()/3.9));
+        region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
         actor = new Image(region);
 
         this.buy.addListener(new ClickListener(){
@@ -203,36 +298,54 @@ public class Manager extends GameState {
             public void clicked(InputEvent event, float x, float y)
             {
                 if(playerObject.money>=testBoat.getPrice()) {
-                    buy.remove();
                     playerObject.addBoat(testBoat);
                     playerObject.money-=testBoat.getPrice();
 
                     money.setText("Current Balance:"+" "+playerObject.money);
                     boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
 
-                    upgrade1.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade1.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade1.setPosition(Gdx.graphics.getWidth()/6,0);
+                }
+                else {
+                    dialog = new Dialog("insufficient" + System.getProperty("line.separator") + "funds",skin);
+                    dialog.getTitleLabel().setFontScale(Gdx.graphics.getDensity()*0.35f);
+                    dialog.pad(stage.getHeight()/11);
+                    dialog.getTitleLabel().setAlignment(Align.center);
+                    dialog.show(stage);
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run()
+                        {
+                            dialog.hide();
+                        }
 
-                    upgrade2.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade2.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade2.setPosition(Gdx.graphics.getWidth()/3,0);
+                    },2);
 
-                    upgrade3.setHeight(Gdx.graphics.getHeight()/4);
-                    upgrade3.setWidth(Gdx.graphics.getWidth()/6);
-                    upgrade3.setPosition(Gdx.graphics.getWidth()/2,0);
+                }
 
-                    stage.addActor(upgrade1);
-                    stage.addActor(upgrade2);
-                    stage.addActor(upgrade3);
                 }
                // stage.addActor(upgrade2);
                // stage.addActor(upgrade3);
 
-            }
+
         });
 
+        this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
+        this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
+        this.boats_owned.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
+        this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
+                Gdx.graphics.getHeight()-boat_stats.getHeight());
+        this.money.setPosition(Gdx.graphics.getWidth()*37/100,
+                Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
+        this.boats_owned.setPosition(Gdx.graphics.getWidth()*37/100,
+                Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
+
+        this.stage.addActor(this.player_stats);
+        this.stage.addActor(this.boats_owned);
+        this.stage.addActor(this.money);
+
+
+        // YOUR BOATS BUTTON
 //        this.batch = new SpriteBatch();
 //        this.background = new Texture("background_manager.png");
 //        this.splash = new Sprite(background);
@@ -474,11 +587,79 @@ public class Manager extends GameState {
     public void update(float dt) {
 
 
-
         var =  list_of_boats.getSelected().toString();
-        if (var.equals("BOAT1") && bool) {
-            bool = false;
+        if(var.equals("BOAT1") && !boat1_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
 
+            testBoat = playerObject.getPossibleBoats().get(0);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool=true;
+            boat2_bool=false;
+        }
+        else if(var.equals("BOAT2") && !boat2_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(1);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = true;
+        }
+        if ((var.equals("BOAT1") || var.equals("BOAT2")) && bool && scroll1_bool) {
+            bool = false;
+            boat_stats_bool=true;
 //            attributes=new Label("NAME: Fascinosa",skin);
 //            boat_attributes.add(attributes).padBottom(10);
 //            boat_attributes.row();
@@ -491,19 +672,10 @@ public class Manager extends GameState {
 //            attributes=new Label("MAINTENANCE: 10$/KM",skin);
 //            boat_attributes.add(attributes).padBottom(10);
             this.actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
-            System.out.println(Gdx.graphics.getWidth());
-            System.out.println(actor.getWidth());
 
             this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
                     Gdx.graphics.getHeight()/2 - actor.getHeight());
 
-
-            this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
-                    Gdx.graphics.getHeight()-boat_stats.getHeight());
-            this.money.setPosition(Gdx.graphics.getWidth()*37/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
-            this.boats_owned.setPosition(Gdx.graphics.getWidth()*37/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
 
             this.boat_stats.setPosition(Gdx.graphics.getWidth()*6/100,
                     Gdx.graphics.getHeight()-boat_stats.getHeight());
@@ -522,11 +694,9 @@ public class Manager extends GameState {
             this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
                     Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7);
 
-            this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
+
 
             this.name.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
-            this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
-            this.boats_owned.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.boat_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
             this.price.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
             this.name.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
@@ -537,9 +707,6 @@ public class Manager extends GameState {
             this.vulnerability.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
             this.stage.addActor(this.boat_stats);
-            this.stage.addActor(this.player_stats);
-            this.stage.addActor(this.boats_owned);
-            this.stage.addActor(this.money);
             this.stage.addActor(this.name);
             this.stage.addActor(this.price);
             this.stage.addActor(this.speed);
@@ -549,28 +716,8 @@ public class Manager extends GameState {
             this.stage.addActor(this.vulnerability);
             this.stage.addActor(this.actor);
 
-
-
-
-
         }
-        else if(var.equals("BOAT1") && !bool) {
-        }
-        else  {
 
-            this.actor.remove();
-            this.name.remove();
-            this.speed.remove();
-            this.capacity.remove();
-            this.distanceLimit.remove();
-            this.maintenanceCost.remove();
-            this.vulnerability.remove();
-            this.price.remove();
-            this.upgrade1.remove();
-            this.upgrade2.remove();
-            this.upgrade3.remove();
-            this.bool=true;
-        }
     }
 
     public int nextState(){
