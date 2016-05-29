@@ -123,7 +123,18 @@ public class Boat {
             localDistance+= Math.sqrt(dx*dx+dy*dy);
             x+= dx;
             y+= dy;
-            if(localDistance>currentLine.getLength()){
+            if(lineCount>currentPath.getPositions().size()-2){
+                if(localDistance>currentLine.getLength()){
+                    traveling=false;
+                    currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
+                    isVisible=false;
+                    lineCount=0;
+                    localDistance=0;
+                }
+
+
+            }
+            else if(localDistance>currentLine.getLength()){
                 lineCount+=1;
                 currentLine=currentPath.getPositions().get(lineCount);
                 localDistance=0;
