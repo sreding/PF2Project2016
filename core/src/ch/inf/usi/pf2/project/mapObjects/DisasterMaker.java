@@ -12,11 +12,10 @@ public class DisasterMaker {
         Random rn = new Random();
         int numberOfDisasters = rn.nextInt(19);
         ArrayList disasters = new ArrayList();
+
         while(numberOfDisasters > -1){
 
-
-
-            Disaster disaster = new Disaster(new Place(rn.nextInt(),rn.nextInt(),"random"));//TODO: implement proper name
+            Disaster disaster = new Disaster(new Oceans(rn.nextInt(),rn.nextInt(),rn.nextInt(),"random"));//TODO: implement proper place
 
             disasters.add(disaster);
             numberOfDisasters--;

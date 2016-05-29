@@ -19,19 +19,20 @@ public class Disaster {
 
 
 
-    public Disaster(int x,int y, boolean type, int gravity){
+    public Disaster(int x,int y, boolean type, int gravity, String name){
         this.x = x;
         this.y =  y;
         this.type = type;
         this.gravity = gravity;
+        this.name = name;
     }
 
 
 
-    public Disaster(Place place){
-        this.name = place.getName();
-        x = place.getX();
-        y = place.getY();
+    public Disaster(Oceans oceans){
+        this.name = oceans.getName();
+        x = oceans.getX();
+        y = oceans.getY();
     }
     public Disaster(int x,int y, String name){
 

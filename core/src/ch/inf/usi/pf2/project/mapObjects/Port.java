@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by simonreding on 18/05/16.
  */
-public class Port {
+public class Port extends Place{
     private int x;
     private int y;
     private String name;
@@ -18,6 +18,7 @@ public class Port {
     private int outgoing;
 
     public Port(String name, Rectangle r){
+        super((int)r.getX(),(int)r.getY(),name);
         this.name = name;
         this.hitBox=r;
         this.x = (int) r.getX();// (r.getX() + r.getWidth()/2);
@@ -25,7 +26,9 @@ public class Port {
         Random rn = new Random();
         this.incoming = rn.nextInt(500);
         this.outgoing = rn.nextInt(500);
+
     }//constructor
+
 
     public String getName() {
         return name;
