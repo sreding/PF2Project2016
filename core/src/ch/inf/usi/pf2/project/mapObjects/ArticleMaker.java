@@ -51,9 +51,6 @@ public class ArticleMaker {
     }
 
 
-
-    ///REQUIRES IMPLEMENTATION!!!!!!!!!!
-
 //    TODO: get the real region
 
     private static String getRegion(int x, int y){
@@ -83,5 +80,17 @@ public class ArticleMaker {
         disasterList.add("War");
         disasterList.add("Corrupt Government");
         return disasterList.get(rn.nextInt(disasterList.size()));
+    }
+
+    private static String getRegions(int i){
+        ArrayList<String> regions = new ArrayList<String>();
+        regions.add("North Atlantic Ocean");
+        regions.add("South Atlantic Ocean");
+        regions.add("North Pacific Ocean");
+        regions.add("South Pacific Ocean");
+        regions.add("Southern Ocean");
+        regions.add("Arctic Ocean");
+        regions.add("Indian Ocean");
+        return regions.get(i);
     }
 }
