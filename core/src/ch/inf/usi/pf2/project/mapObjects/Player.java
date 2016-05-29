@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -58,6 +59,9 @@ public class Player {
 
     public void handlePlayerInput(boolean touchUp){
 
+    }
+    public void addArticles(ArrayList<Article> newA){
+        articles.addAll(newA);
     }
 
     public ArrayList<Article> getArticles() {
