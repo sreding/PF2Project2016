@@ -46,6 +46,7 @@ public class News extends GameState {
     private Sprite sideTexture;
     private Sprite rightSideTex;
     private ArrayList<TxtButton> txtButtons;
+    private Player player;
 
     private int count;
     private int index;
@@ -53,9 +54,10 @@ public class News extends GameState {
 
 
 
-    public News(SpriteBatch batch) {
+    public News(SpriteBatch batch,Player player) {
         //initializing basic fields
         spriteBatch = new SpriteBatch();
+        this.player =player;
         backgroundImage = new Sprite(new Texture(Gdx.files.internal("backgroundTexture.png"))
                 ,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 

@@ -94,6 +94,9 @@ public class Path{
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             Vector2 offsetEnd= new Vector2(l.getEnd().x - offset*l.getDirection().x,l.getEnd().y - offset*l.getDirection().y);
             if(checkLandCollision(new Line(l.getStart(),offsetEnd,l.startQuadrant,l.endQuadrant))){
+                if(cQ<2){
+                   // l =  new Line(top.getEnd(),new Vector2(p.getHitBox().x+p.getHitBox().getWidth()/2,p.getHitBox().y + p.getHitBox().getHeight()/2),top.endQuadrant,cQ);
+                }
                 l.addLine(left,c1);
                 System.out.println("asdf");
                 top = left.get(left.size()-1);
