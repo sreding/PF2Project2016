@@ -131,8 +131,7 @@ public class Manager extends GameState {
         Gdx.input.setInputProcessor(stage);
 
         // TEST BOAT !
-        testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, 0, null,"Fascinosa");
+        testBoat = playerObject.getPossibleBoats().get(0);
         // Gdx.graphics.setVSync(false);
 
         this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);

@@ -49,7 +49,7 @@ public class Player {
 
     public Player()
     {
-        this.money=10000;
+        this.money=100000;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = DisasterMaker.randomDisasters();
@@ -88,6 +88,7 @@ public class Player {
         return boats;
     }
 
+
     public void setBoats(ArrayList<Boat> boats) {
         this.boats = boats;
     }
@@ -95,12 +96,15 @@ public class Player {
         return ports;
     }
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
-        possibleBoats.add(new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
+        possibleBoats.add(new Boat(10450,1200,50.2,100000,0, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"Fascinosa"));
-
+        possibleBoats.add(new Boat(18000,1600,55.2,190000,0, new Sprite(new Texture("topBoat2.png")),
+                new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"Divina"));
 
 
     }
+
+    public ArrayList<Boat> getPossibleBoats(){ return possibleBoats; }
 
 
 }
