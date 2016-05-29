@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.InputAdapter;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import ch.inf.usi.pf2.project.BoatManager2k16;
 import ch.inf.usi.pf2.project.gameStates.Map;
@@ -39,6 +40,10 @@ public class Path{
 
     private MapObjects landPolygons;
     public boolean active;
+    private Color pathColor;
+
+    private Port from;
+    private boolean fromOnLeftSide;
 
 
 
@@ -50,32 +55,60 @@ public class Path{
         c1=MAP_WIDTH/4;
         this.landPolygons=landPolygons;
         active = false;
+
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+
+        pathColor = new Color(r,g,b,1);
+
+
     }
 
     public boolean isEmpty(){
         return left.size() == 0;
     }
 
-    public void addFirstLine(Port p){
+    public void addFirstLine(Port p, Vector3 portCoordinates){
         Rectangle r = p.getHitBox();
         Vector3 in = new Vector3(r.getX()+r.getWidth()/2,r.getY()+r.getHeight()/2,0);
-        int cQ = computeQuadrant(in); //cq = currentQuadrant
-        Line l;
+        int cQ = computeQuadrant(portCoordinates); //cq = currentQuadrant
         if(cQ>=2){
-            l = new Line(new Vector2(in.x-2*c1,in.y),new Vector2(in.x-2*c1,in.y),cQ,cQ);
+            fromOnLeftSide=false;
         }
-        else {
-            l = new Line(new Vector2(in.x, in.y), new Vector2(in.x, in.y), cQ, cQ);
+        else{
+            fromOnLeftSide=true;
         }
+        Line l;
+        l = new Line(new Vector2(in.x, in.y), new Vector2(in.x, in.y), cQ, cQ);
         left.add(l);
         top=l;
+        from =p;
     }
 
 
-    public void inputPath4(){
+    public void inputPath4(Port p){
+
         Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
         int cQ = computeQuadrant(in); //cq = currentQuadrant
+        int offset=30;
         Line l;
+
+        //last line
+        if(p!= null && p != from){
+
+            l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
+            Vector2 offsetEnd= new Vector2(l.getEnd().x - offset*l.getDirection().x,l.getEnd().y - offset*l.getDirection().y);
+            if(checkLandCollision(new Line(l.getStart(),offsetEnd,l.startQuadrant,l.endQuadrant))){
+                l.addLine(left,c1);
+                System.out.println("asdf");
+                top = left.get(left.size()-1);
+                return;
+            }
+        }
+
+
 
         if(isEmpty() && notInLand(in)){ // path is empty -> we need to check if we start from inside a country
             if(cQ>=2){
@@ -89,9 +122,18 @@ public class Path{
         else if(! isEmpty() && notInLand(in)){
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             if(left.size()==1){
-                int offset=50;
+
+                System.out.println(top.getEnd().toString());
+                System.out.println(from.getHitBox().getWidth());
                 Vector2 offsetStart= new Vector2(l.getStart().x+offset*l.getDirection().x,l.getStart().y+offset*l.getDirection().y);
-                if(checkLandCollision(new Line(offsetStart,l.getEnd(),0,0))){
+                Line someV;
+                if(cQ>=2){
+                    someV = new Line(new Vector2(top.getEnd().x+2*c1,top.getEnd().y),new Vector2(in.x,in.y),top.endQuadrant,cQ);
+                    offsetStart=new Vector2(l.getStart().x+offset*someV.getDirection().x,l.getStart().y+offset*someV.getDirection().y);
+                }
+
+
+                if(checkLandCollision(new Line(offsetStart,l.getEnd(),l.startQuadrant,l.endQuadrant))){
                     l.addLine(left,c1);
                 }
             }
@@ -137,6 +179,7 @@ public class Path{
 
 
     private int computeQuadrant(Vector3 v){
+
         int posX =(int) v.x;
         int quadrant;
         if(posX<=c1){
@@ -157,7 +200,7 @@ public class Path{
     public void drawPath3(int mode){
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(pathColor);
         for(Line l : left){
             l.draw(shapeRenderer);
             l.leftToRight(2*c1).draw(shapeRenderer);
@@ -172,11 +215,12 @@ public class Path{
                 current = new Line(top.getEnd(), new Vector2(v.x, v.y), 0, 0);
             }
             current.draw(shapeRenderer);
+            shapeRenderer.setColor(Color.GOLD);
+            shapeRenderer.circle(v.x, v.y, 10);
         }
         shapeRenderer.setColor(Color.GOLD);
-        if(top!= null) {
+        if(top!= null && ((active && ! Gdx.input.isTouched()) || !active)) {
             shapeRenderer.circle(top.getEnd().x, top.getEnd().y, 10);
-            shapeRenderer.setColor(Color.MAGENTA);
             shapeRenderer.circle(top.getEnd().x+2*c1, top.getEnd().y, 10);
         }
         shapeRenderer.end();
