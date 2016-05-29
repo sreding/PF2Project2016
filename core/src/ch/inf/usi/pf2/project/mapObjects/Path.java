@@ -85,7 +85,7 @@ public class Path{
 
         Vector3 in = cam.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(),0));
         int cQ = computeQuadrant(in); //cq = currentQuadrant
-        int offset=30;
+        int offset=40;
         Line l;
 
         //last line
@@ -93,6 +93,18 @@ public class Path{
 
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             Vector2 offsetEnd= new Vector2(l.getEnd().x - offset*l.getDirection().x,l.getEnd().y - offset*l.getDirection().y);
+            System.out.println(checkLandCollision(l));
+            /*
+            Line k;
+            if(cQ>=2){
+                k=new Line(new Vector2(l.getStart().x+2*c1,l.getStart().y),offsetEnd,cQ,cQ);
+            }
+            else {
+                k = new Line(l.getStart(), offsetEnd, l.startQuadrant, l.endQuadrant);
+            }
+            System.out.println(checkLandCollision(k));
+            */
+            // TODO: all ports on the right side of the map only work for the last line when the previous position is left of the port
             if(checkLandCollision(new Line(l.getStart(),offsetEnd,l.startQuadrant,l.endQuadrant))){
                 if(cQ>=2) {
                     l = new Line(top.getEnd(), new Vector2(p.getHitBox().getX()+ p.getHitBox().getWidth() / 2+ 2*c1, p.getHitBox().getY() + p.getHitBox().getHeight() / 2), top.endQuadrant, cQ);
