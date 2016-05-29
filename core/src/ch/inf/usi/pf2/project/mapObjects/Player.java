@@ -79,6 +79,10 @@ public class Player {
     public void newDisasters(){
         disasters.addAll(DisasterMaker.randomDisasters());
     }
+    public void addDisasters(ArrayList<Disaster> dis){
+        System.out.println("disasters added");
+        disasters.addAll(dis);
+    }
 
     public ArrayList<Article> getArticles() {
         return articles;

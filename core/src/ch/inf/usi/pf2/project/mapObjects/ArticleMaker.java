@@ -23,19 +23,9 @@ public class ArticleMaker {
         this.disasters = disasters;
         this.regions = regions;
     }
-    //TODO: make articles and send them to player once disasters happen
-    public static Article makeArticle(Disaster disaster){
-        String dis = "";
-        if(disaster.isType()){dis = seaDisaster();}else{dis = landDisaster();}
 
-        String region = getRegion(disaster.getX(),disaster.getY());
 
-        String title = dis + firstArticleText(disaster.getGravity()) + region;
-
-        return new Article(title,title,0);
-    }
-
-    private static String firstArticleText(int gravity){
+    public static String firstArticleText(int gravity){
         ArrayList<String> textList = new ArrayList<String>();
         textList.add(" that wreaked havoc in ");
         textList.add(" caused problems in ");
@@ -51,13 +41,7 @@ public class ArticleMaker {
     }
 
 
-//    TODO: get the real region
-
-    private static String getRegion(int x, int y){
-        return News.portNames().get(1);
-    }
-
-    private static String seaDisaster(){
+    public static String seaDisaster(){
         Random rn = new Random();
         ArrayList<String> disasterList = new ArrayList<String>();
         disasterList.add("Tsunami");
@@ -69,7 +53,7 @@ public class ArticleMaker {
         disasterList.add("War");
         return disasterList.get(rn.nextInt(disasterList.size()));
     }
-    private static String landDisaster(){
+    public static String landDisaster(){
         Random rn = new Random();
         ArrayList<String> disasterList = new ArrayList<String>();
         disasterList.add("Earthquake");
@@ -82,15 +66,15 @@ public class ArticleMaker {
         return disasterList.get(rn.nextInt(disasterList.size()));
     }
 
-    private static String getRegions(int i){
-        ArrayList<String> regions = new ArrayList<String>();
-        regions.add("North Atlantic Ocean");
-        regions.add("South Atlantic Ocean");
-        regions.add("North Pacific Ocean");
-        regions.add("South Pacific Ocean");
-        regions.add("Southern Ocean");
-        regions.add("Arctic Ocean");
-        regions.add("Indian Ocean");
-        return regions.get(i);
+    public static ArrayList<Oceans> getOceans(){
+        ArrayList<Oceans> oceanses = new ArrayList<Oceans>(); //Sorry for the plural of the plural
+        oceanses.add(new Oceans(12,12,12,"North Atlantic Ocean"));
+        oceanses.add(new Oceans(12,12,12,"South Atlantic Ocean"));
+        oceanses.add(new Oceans(12,12,12,"North Pacific Ocean"));
+        oceanses.add(new Oceans(12,12,12,"South Pacific Ocean"));
+        oceanses.add(new Oceans(12,12,12,"Southern Ocean"));
+        oceanses.add(new Oceans(12,12,12,"Arctic Ocean"));
+        oceanses.add(new Oceans(12,12,12,"Indian Ocean"));
+        return oceanses;
     }
 }

@@ -81,6 +81,7 @@ public class Ports {
 
     }
 
-
-
+    public ArrayList<Port> getPorts() {
+        return ports;
+    }
 }
