@@ -560,7 +560,6 @@ public class Map extends GameState {
         table.add(manager);
         table.add(news);
 
-
         stage.addActor(table);
         Table monaaay = new Table();
         monaaay.setFillParent(true);

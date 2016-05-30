@@ -684,6 +684,7 @@ public class Manager extends GameState {
 
             boat1_bool=true;
             boat2_bool=false;
+            //playerObject.updateDamage();
         }
         else if(var.equals("BOAT2") && !boat2_bool)
         {

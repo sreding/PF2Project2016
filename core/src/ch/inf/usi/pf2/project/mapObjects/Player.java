@@ -115,15 +115,16 @@ public class Player {
     public void updateDamage(){
         for(Disaster dis : disasters){
             for(Boat boat : boats){
-
-                if(dis.getX()-dis.getGravity() < (int)boat.getY()&&
-                       dis.getX()+dis.getGravity() > (int)boat.getX()&&
-                        dis.getY() - dis.getGravity() < (int)boat.getY() &&
-                        dis.getY() + dis.getGravity() > (int)boat.getY()){
+                int dist = dis.getGravity() * 100;
+                if(dis.getX()-dist < (int)boat.getY()&&
+                       dis.getX()+dist > (int)boat.getX()&&
+                        dis.getY() - dist < (int)boat.getY() &&
+                        dis.getY() + dist > (int)boat.getY()){
                     Random rn = new Random();
-                    System.out.println("got the sucker");
-                    if(rn.nextBoolean()){
+
+                    if(rn.nextBoolean()&& boat.getVulnerability() >= 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                        System.out.println("got the sucker");
                     }
                 }
             }
