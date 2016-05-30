@@ -225,7 +225,7 @@ public class Map extends GameState {
             }
         }
         Gdx.input.setInputProcessor(stage);
-
+        player.updateDamage();
         playerMoney.setText("Cash: " + player.money + "$");
         pushCameraBack();
     }
@@ -235,8 +235,6 @@ public class Map extends GameState {
     @Override
     public void inputHandler(){
         //stage.act(Gdx.graphics.getDeltaTime());
-
-
         if(newsNext.isPressed()||managerNext.isPressed()){
             stageButtonTouched=true;
         }

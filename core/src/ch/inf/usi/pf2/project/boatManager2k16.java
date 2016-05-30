@@ -72,5 +72,6 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		currentState.renderGameObject();
 
 
+
 	}
 }

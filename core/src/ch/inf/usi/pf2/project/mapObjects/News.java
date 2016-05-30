@@ -84,7 +84,7 @@ public class News extends GameState {
         esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
-        //TODO:add existing articles from player
+        //TODO:add existing articles from player(if datatbase is implemented)
         //Adding example articles to be deleted
         addArticles(randomArticles());
 
@@ -166,6 +166,9 @@ public class News extends GameState {
     public void renderGameObject(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
+
+        //player.newDisasters();
+        player.updateDamage();
         if(!scrollPane.isPanning()){
             for(TxtButton button:txtButtons){
                 if(button.isPressed()) {

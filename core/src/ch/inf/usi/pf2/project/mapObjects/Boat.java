@@ -217,4 +217,14 @@ public class Boat {
     }
 
     public int getPrice(){ return price;}
+
+    public float getX(){
+        return x;
+    }
+    public float getY(){
+        return y;
+    }
+    public void setVulnerability(int damage){
+        vulnerability = vulnerability - (damage/vulnerability);
+    }
 }
