@@ -177,6 +177,8 @@ public class Manager extends GameState {
         this.list_of_boats = new List(skin);
         this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
         list_of_boats.setPosition(0,Gdx.graphics.getHeight());
+        final Texture texture = new Texture(Gdx.files.internal("sideTexture.png"));
+
 
         this.list = new List(skin);
         this.list.setItems(new String[] {});
@@ -198,6 +200,7 @@ public class Manager extends GameState {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+
                 if(scroll2_bool)
                 {
                     scroll2.remove();
@@ -298,7 +301,8 @@ public class Manager extends GameState {
             public void clicked(InputEvent event, float x, float y)
             {
                 if(playerObject.money>=testBoat.getPrice()) {
-                    playerObject.addBoat(testBoat);
+
+                    playerObject.addBoat(testBoat.copyBoat());
                     playerObject.money-=testBoat.getPrice();
 
                     money.setText("Current Balance:"+" "+playerObject.money);
@@ -328,6 +332,7 @@ public class Manager extends GameState {
 
 
         });
+
 
         this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
         this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
