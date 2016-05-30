@@ -66,15 +66,5 @@ public class ArticleMaker {
         return disasterList.get(rn.nextInt(disasterList.size()));
     }
 
-    public static ArrayList<Oceans> getOceans(){
-        ArrayList<Oceans> oceanses = new ArrayList<Oceans>(); //Sorry for the plural of the plural
-        oceanses.add(new Oceans(12,12,12,"North Atlantic Ocean"));
-        oceanses.add(new Oceans(12,12,12,"South Atlantic Ocean"));
-        oceanses.add(new Oceans(12,12,12,"North Pacific Ocean"));
-        oceanses.add(new Oceans(12,12,12,"South Pacific Ocean"));
-        oceanses.add(new Oceans(12,12,12,"Southern Ocean"));
-        oceanses.add(new Oceans(12,12,12,"Arctic Ocean"));
-        oceanses.add(new Oceans(12,12,12,"Indian Ocean"));
-        return oceanses;
-    }
+
 }

@@ -52,7 +52,7 @@ public class Player {
         this.money=100000;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
-        this.disasters = DisasterMaker.randomDisasters();
+        this.disasters = new ArrayList<Disaster>();
         possibleBoats = new ArrayList<Boat>();
 
         TiledMap tiledMap = new TmxMapLoader().load("tileWorldMap.tmx");
