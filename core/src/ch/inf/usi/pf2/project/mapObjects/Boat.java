@@ -181,7 +181,7 @@ public class Boat {
 
     public Boat copyBoat(){
         return new Boat(price, capacity,  speed, distanceLimit,  maintenanceCost,
-         topBoat, sideBoat, batch,  cam,  shapeRenderer, WORLD_WIDTH,
+         new Sprite(topBoat.getTexture()), new Sprite(sideBoat.getTexture()), batch,  cam,  shapeRenderer, WORLD_WIDTH,
        landPolygons, label);
     }
 

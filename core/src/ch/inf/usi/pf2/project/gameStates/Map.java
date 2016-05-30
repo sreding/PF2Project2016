@@ -104,6 +104,7 @@ public class Map extends GameState {
     private int nextState;
     private Label playerMoney;
     private Skin skin;
+    private ArrayList<BoatButton> boatButtons;
 
 
     public Map(SpriteBatch batch,Player player){
@@ -175,6 +176,7 @@ public class Map extends GameState {
         playerMoney = new Label("$$$$ Money $$$$$: ",skin );
         playerMoney.setColor(Color.GOLDENROD);
         permanentActors();
+        boatButtons=new ArrayList<BoatButton>();
 
 
     }
@@ -405,6 +407,7 @@ public class Map extends GameState {
                 if(boatselected) {
                     courrentBoat.getCurrentPath().addFirstLine(currentPort, portTouchedCoordinates);
                     stage.clear();
+                    boatButtons.clear();
                     mode = 1;
                     drawing=true;
                     selectingBoat=false;
@@ -417,22 +420,28 @@ public class Map extends GameState {
         //table.add(confirm);
         VerticalGroup verticalGroup2 = new VerticalGroup();
         verticalGroup2.addActor(confirm);
-        VerticalGroup verticalGroup = new VerticalGroup();
+        final VerticalGroup verticalGroup = new VerticalGroup();
         ScrollPane scrollPane =  new ScrollPane(verticalGroup);
         for(Boat b: player.getBoats()){
             final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
             tb.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             verticalGroup.addActor(tb);
+            boatButtons.add(tb);
             tb.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     courrentBoat=tb.getB();
+                    int i =0;
                     for(Boat b: player.getBoats()){
                         b.getCurrentPath().active=false;
+                        boatButtons.get(i++).setColor(Color.GOLD);
+
+
                     }
                     courrentBoat.getCurrentPath().active=true;
                     stageButtonTouched =true;
                     boatselected=true;
+                    tb.setColor(Color.GREEN);
                     //stage.clear();
                     //start to draw
                 }
