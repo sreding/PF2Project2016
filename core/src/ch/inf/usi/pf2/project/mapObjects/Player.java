@@ -131,5 +131,11 @@ public class Player {
         }
     }
 
+    public void updateMoney(){
+        for(Boat b: boats){
+            money+=b.updateMoney();
+        }
+    }
+
 
 }
