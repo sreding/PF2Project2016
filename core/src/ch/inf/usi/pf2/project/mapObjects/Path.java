@@ -43,6 +43,7 @@ public class Path{
     private Color pathColor;
 
     private Port from;
+    private Port to;
 
 
 
@@ -110,6 +111,8 @@ public class Path{
                 }
                 l.addLine(left,c1);
                 top = left.get(left.size()-1);
+                to=p;
+                p.distanceBetweenPorts(from,to,c1*4);
                 return true;
             }
         }
