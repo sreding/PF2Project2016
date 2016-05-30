@@ -77,9 +77,7 @@ public class Player {
     public void addArticles(ArrayList<Article> newA){
         articles.addAll(newA);
     }
-    public void newDisasters(){
-        disasters.addAll(DisasterMaker.randomDisasters());
-    }
+
     public void addDisasters(ArrayList<Disaster> dis){
         disasters.addAll(dis);
     }
@@ -100,9 +98,9 @@ public class Player {
         return ports;
     }
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
-        possibleBoats.add(new Boat(10450,1200,50.2,100000,0, new Sprite(new Texture("topBoat1.png")),
+        possibleBoats.add(new Boat(10450,1200,50.2,100000,1110, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT1"));
-        possibleBoats.add(new Boat(18000,1600,55.2,190000,0, new Sprite(new Texture("topBoat2.png")),
+        possibleBoats.add(new Boat(18000,1600,55.2,190000,110, new Sprite(new Texture("topBoat2.png")),
                 new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT2"));
 
 
@@ -115,21 +113,32 @@ public class Player {
     public void updateDamage(){
         for(Disaster dis : disasters){
             for(Boat boat : boats){
-                int dist = dis.getGravity() * 100;
-                if(dis.getX()-dist < (int)boat.getY()&&
-                       dis.getX()+dist > (int)boat.getX()&&
+                int dist = dis.getGravity() * 10;
+                System.out.println(dist);
+                if(dis.getX() - dist < (int)boat.getX()&&
+                        dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY()){
                     Random rn = new Random();
 
-                    if(rn.nextBoolean()&& boat.getVulnerability() >= 0){
+                    if(rn.nextBoolean()&& boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-                        System.out.println("got the sucker");
+                        //System.out.println("got the sucker");
                     }
                 }
             }
         }
     }
+
+    //removes r random disasters
+    public void removeDisasters(int r){
+        Random rn = new Random();
+        while (r >= 0){
+            disasters.remove(rn.nextInt(disasters.size()));
+            r--;
+        }
+    }
+
 
 
 }
