@@ -63,6 +63,14 @@ public class Ports {
         return p;
     }
 
+    public boolean handlePortInputBoolean(OrthographicCamera cam){
+        Port p = portTouched(cam);
+        if(Gdx.input.justTouched()&& p != null){
+            return true;
+        }
+        return false;
+    }
+
     public void addPorts(MapObjects mO){
         for(MapObject o:mO){
             if(o instanceof RectangleMapObject){

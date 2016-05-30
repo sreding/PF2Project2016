@@ -1,6 +1,7 @@
 package ch.inf.usi.pf2.project.gameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -41,12 +43,16 @@ import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Player;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
 import ch.inf.usi.pf2.project.mapObjects.Port;
+import javafx.scene.input.TouchEvent;
+
 import java.util.ArrayList;
 
 /**
  * Created by alexandercamenzind on 28/04/16.
  */
 public class Map extends GameState {
+
+
 
     // all the stuff we need for drawing
     private SpriteBatch batch;
@@ -68,10 +74,6 @@ public class Map extends GameState {
     private MapObjects polygonMapObjects;
 
 
-    // a list to store all buttons
-    private ArrayList<Button> buttons;
-
-
     private int mode; // 0 = moving, 1 = drawing
     private Player player;
 
@@ -86,15 +88,19 @@ public class Map extends GameState {
     private boolean stageButtonTouched;
     private boolean boatselected;
     private boolean drawing;
+    private boolean selectingBoat;
 
     private Stage stage; //
 
     private TextButton managerNext;
     private TextButton newsNext;
     private int nextState;
+    private Label playerMoney;
+    private Skin skin;
 
 
     public Map(SpriteBatch batch,Player player){
+        System.out.println(Gdx.input.getInputProcessor());
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
 
@@ -116,12 +122,6 @@ public class Map extends GameState {
         MAP_WIDTH = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
 
         this.polygonMapObjects = tiledMap.getLayers().get("Polygons").getObjects();
-
-        // set up buttons
-        // we can add as many buttons as we need to this ArrayList
-        buttons = new ArrayList<Button>();
-        buttons.add(new Button(100,50,20, new Sprite(new Texture("move.png")), new Sprite(new Texture("draw.png"))));
-
 
 
 
@@ -150,9 +150,10 @@ public class Map extends GameState {
         touchUp=false;
         wasTouched=false;
         modeChanged=false;
+        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         stage=new Stage(new ScreenViewport(),batch);
-        permanentActors();
+
         Gdx.input.setInputProcessor(stage);
 
         stageButtonTouched =false;
@@ -160,12 +161,13 @@ public class Map extends GameState {
         drawing=false;
 
         start = false;
+        selectingBoat=false;
+
 
         nextState =0;
-
-
-
-
+        playerMoney = new Label("$$$$ Money $$$$$: ",skin );
+        playerMoney.setColor(Color.GOLDENROD);
+        permanentActors();
 
 
     }
@@ -200,9 +202,7 @@ public class Map extends GameState {
 
         batch.setProjectionMatrix(initialProjectionMatrix);
 
-        for(Button b: buttons){
-            b.drawButton(batch);
-        }
+
 
 
 
@@ -226,9 +226,7 @@ public class Map extends GameState {
         }
         Gdx.input.setInputProcessor(stage);
 
-
-
-
+        playerMoney.setText("Cash: " + player.money + "$");
         pushCameraBack();
     }
 
@@ -236,7 +234,12 @@ public class Map extends GameState {
     // handles input events
     @Override
     public void inputHandler(){
-        stage.act(Gdx.graphics.getDeltaTime());
+        //stage.act(Gdx.graphics.getDeltaTime());
+
+
+        if(newsNext.isPressed()||managerNext.isPressed()){
+            stageButtonTouched=true;
+        }
 
         if(! Gdx.input.isTouched() && wasTouched){
             touchUp =true;
@@ -247,16 +250,9 @@ public class Map extends GameState {
 
 
 
-
-        if(buttons.get(0).isTouched()){
-            //System.out.println("button pressed");
-            mode += 1;
-            mode %= 2;
-            modeChanged = true;
-        }
-
         Port p = player.getPorts().handlePortInput(cam);
-        if(p!= null && Gdx.input.justTouched() && !stageButtonTouched){
+        if(p!= null && Gdx.input.justTouched() && !selectingBoat){
+            System.out.println("wut");
             if(!drawing){
                 showBoatButtonList();
             }
@@ -269,7 +265,7 @@ public class Map extends GameState {
 
 
         // moves the camera across the background according to dx and dy
-        if(mode == 0) {
+        if(mode == 0 && !selectingBoat) {
             cam.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
         }
         else if(mode == 1 && !modeChanged && touchUp && !stageButtonTouched){
@@ -378,8 +374,9 @@ public class Map extends GameState {
     }
 
     public void showBoatButtonList(){
+        selectingBoat=true;
 
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
         Table table = new Table();
        // table.setFillParent(true);
         table.align(Align.center| Align.center);
@@ -391,6 +388,7 @@ public class Map extends GameState {
 
 
         final TextButton confirm = new TextButton("Confirm",skin);
+        confirm.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
 
         confirm.addListener(new ClickListener() {
             @Override
@@ -402,7 +400,9 @@ public class Map extends GameState {
                     stage.clear();
                     mode = 1;
                     drawing=true;
+                    selectingBoat=false;
                     permanentActors();
+
 
                 }
             }
@@ -414,6 +414,7 @@ public class Map extends GameState {
         ScrollPane scrollPane =  new ScrollPane(verticalGroup);
         for(Boat b: player.getBoats()){
             final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
+            tb.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             verticalGroup.addActor(tb);
             tb.addListener(new ClickListener() {
                 @Override
@@ -437,32 +438,43 @@ public class Map extends GameState {
         confirm.setWidth(Gdx.graphics.getWidth()/4);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
+
     }
 
     private void permanentActors(){
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
         Table table = new Table();
         table.setFillParent(true);
         if(drawing){
             TextButton undo = new TextButton("undo",skin);
+            undo.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             undo.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     courrentBoat.getCurrentPath().undo();
+                    stageButtonTouched=true;
                 }
             });
             table.add(undo);
 
+
         }
         TextButton manager = new TextButton("Manager",skin);
+        manager.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         managerNext =manager;
         TextButton news = new TextButton("News",skin);
+        news.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         newsNext=news;
 
         table.align(Align.bottom| Align.left);
         table.add(manager);
         table.add(news);
         stage.addActor(table);
+        Table monaaay = new Table();
+        monaaay.setFillParent(true);
+        monaaay.align(Align.topLeft);
+        monaaay.add(playerMoney);
+        stage.addActor(monaaay);
         Gdx.input.setInputProcessor(stage);
 
     }
@@ -470,11 +482,13 @@ public class Map extends GameState {
     @Override
     public int nextState(){
         if(newsNext.isPressed() && Gdx.input.justTouched()){
+            selectingBoat=false;
             stage.clear();
             permanentActors();
             return 1;
         }
         else if(managerNext.isPressed() && Gdx.input.justTouched()){
+            selectingBoat=false;
             stage.clear();
             permanentActors();
             return 2;

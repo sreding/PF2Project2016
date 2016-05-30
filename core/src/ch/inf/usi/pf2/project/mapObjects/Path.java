@@ -232,11 +232,11 @@ public class Path{
     }
 
     public void undo(){
-        if(top.addedTwo()){
+        if(top.addedTwo()&& left.size()>1){
             left.remove(left.size()-1);
             left.remove(left.size()-1);
         }
-        else {
+        else if(left.size()>1) {
             left.remove(left.size()-1);
         }
         top = left.get(left.size()-1);

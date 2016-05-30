@@ -23,6 +23,7 @@ public class Boat {
     private double vulnerability;
     private final Sprite topBoat;
     private final Sprite sideBoat;
+    private  Sprite sideBoatMirrored;
     private double distFromOrigin;
     private Port origin;
     private Path currentPath;
@@ -79,6 +80,10 @@ public class Boat {
         this.currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
         this.label = label;
 
+        sideBoatMirrored=new Sprite(sideBoat.getTexture());
+        sideBoatMirrored.setSize(150,150/ratio);
+        sideBoatMirrored.setFlip(true,false);
+
 
 
 
@@ -108,11 +113,19 @@ public class Boat {
 
     public void drawBoatOnMap(){
         if(isVisible) {
-            //TODO: make boat look in the right direction
-            sideBoat.draw(batch);
-            sideBoat.setX(sideBoat.getX() + WORLD_WIDTH/2);
-            sideBoat.draw(batch);
-            sideBoat.setX(sideBoat.getX() - WORLD_WIDTH/2);
+            if(currentLine.getDirection().x>0){
+                sideBoat.draw(batch);
+                sideBoat.setX(sideBoat.getX() + WORLD_WIDTH/2);
+                sideBoat.draw(batch);
+                sideBoat.setX(sideBoat.getX() - WORLD_WIDTH/2);
+            }
+            else {
+                //TODO: make boat look in the right direction
+                sideBoatMirrored.draw(batch);
+                sideBoatMirrored.setX(sideBoat.getX() + WORLD_WIDTH / 2);
+                sideBoatMirrored.draw(batch);
+                sideBoatMirrored.setX(sideBoat.getX() - WORLD_WIDTH / 2);
+            }
         }
     }
 
@@ -147,6 +160,7 @@ public class Boat {
         }
 
         sideBoat.setPosition(x-sideBoat.getWidth()/2,y-sideBoat.getHeight()/2);
+        sideBoatMirrored.setPosition(sideBoat.getX(),sideBoat.getY());
 
 
     }
