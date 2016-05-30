@@ -29,6 +29,7 @@ import ch.inf.usi.pf2.project.mapObjects.Ports;
 import ch.inf.usi.pf2.project.mapObjects.Port;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by ilijagjorgjiev on 5/19/16.
@@ -49,7 +50,7 @@ public class Player {
 
     public Player()
     {
-        this.money=100000;
+        this.money=10000000;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = new ArrayList<Disaster>();
@@ -108,6 +109,26 @@ public class Player {
     }
 
     public ArrayList<Boat> getPossibleBoats(){ return possibleBoats; }
+
+
+    //checks if a boat overlaps with a disaster area, reduces vulnerability if true
+    public void updateDamage(){
+        for(Disaster dis : disasters){
+            for(Boat boat : boats){
+
+                if(dis.getX()-dis.getGravity() < (int)boat.getY()&&
+                       dis.getX()+dis.getGravity() > (int)boat.getX()&&
+                        dis.getY() - dis.getGravity() < (int)boat.getY() &&
+                        dis.getY() + dis.getGravity() > (int)boat.getY()){
+                    Random rn = new Random();
+                    System.out.println("got the sucker");
+                    if(rn.nextBoolean()){
+                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                    }
+                }
+            }
+        }
+    }
 
 
 }
