@@ -24,7 +24,10 @@ public class Disaster {
         this.x = x;
         this.y =  y;
         this.type = type;
-        this.gravity = gravity;
+        if(gravity < 10) {
+            this.gravity = gravity;
+        }else{Random rn = new Random();
+            gravity = rn.nextInt(10);}
         this.name = name;
         this.locationName = locationName;
     }

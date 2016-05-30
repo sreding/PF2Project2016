@@ -1,8 +1,8 @@
 package ch.inf.usi.pf2.project.mapObjects;
-
+import java.util.Random;
 /**
  * Created by simonreding on 29/05/16.
- * Remark: This classs should in fact be called ocean since it only represent one.
+ * Remark: This class should in fact be called ocean since it only represent one but it is not.
  */
 public class Oceans extends Place{
 
@@ -13,8 +13,11 @@ public class Oceans extends Place{
     private final int radius;
     public Oceans(int x, int y,int radius, String name){
         super(x,y,name);
-        this.x = x;
-        this.y = y;
+        Random rn = new Random();
+        int displ = rn.nextInt(radius) - (radius/2) -1;
+        this.x = x + displ;
+        displ = rn.nextInt(radius) - (radius/2) -1;
+        this.y = y + displ;
         this.name = name;
         this.radius = radius;
     }

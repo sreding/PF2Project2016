@@ -79,6 +79,7 @@ public class News extends GameState {
         verticalGroup = new VerticalGroup();
         verticalGroup.fill();
         scrollPane = new ScrollPane(verticalGroup);
+        verticalGroup.addActor(new TxtButton("TestButton for width", skin,4));
         esc = autoPad(new TxtButton("Back",skin,-3),8);
         esc.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
@@ -135,6 +136,7 @@ public class News extends GameState {
                 (int)verticalGroup.getPrefWidth(),(int)Gdx.graphics.getHeight()-(int)esc.getPrefHeight());
         rightSideTex.setPosition(Gdx.graphics.getWidth()-verticalGroup.getPrefWidth(),0);
 
+        verticalGroup.clearChildren();
 
 
         //finally add the whole table to the stage
@@ -222,7 +224,7 @@ public class News extends GameState {
         button.padTop(Gdx.graphics.getHeight()/(2*pad));
         StringBuilder sb = new StringBuilder(button.getText());
         int i = 0;
-        while ((i = sb.indexOf(" ", i + 12)) != -1) {
+        while ((i = sb.indexOf(" ", i + 10)) != -1) {
             sb.replace(i, i + 1, "\n");
         }
         button.setText(sb.toString());
@@ -315,7 +317,7 @@ public class News extends GameState {
     public Place randomPlace(){
         Random rn =  new Random();
         if(rn.nextBoolean()){
-            ArrayList<Oceans> oce = ArticleMaker.getOceans();
+            ArrayList<Oceans> oce = getOceans();
             return oce.get(rn.nextInt(oce.size()));
         }else{
             Ports prt = player.getPorts();
@@ -425,6 +427,17 @@ public class News extends GameState {
         connector.add("still clueless");
         connector.add("making enquiries");
         return connector.get(rn.nextInt(connector.size()));
+    }
+    public static ArrayList<Oceans> getOceans(){
+        ArrayList<Oceans> oceanses = new ArrayList<Oceans>(); //Sorry for the plural of the plural
+        oceanses.add(new Oceans(1239,300,30,"North Atlantic Ocean"));
+        oceanses.add(new Oceans(1235,450,30,"South Atlantic Ocean"));
+        oceanses.add(new Oceans(950,270,25,"North Pacific Ocean"));
+        oceanses.add(new Oceans(950,370,25,"South Pacific Ocean"));
+        oceanses.add(new Oceans(1100,600,20,"Southern Ocean"));
+        oceanses.add(new Oceans(546,20,10,"Arctic Ocean"));
+        oceanses.add(new Oceans(278,327,12,"Indian Ocean"));
+        return oceanses;
     }
 
 
