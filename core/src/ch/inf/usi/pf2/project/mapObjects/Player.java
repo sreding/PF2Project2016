@@ -130,6 +130,7 @@ public class Player {
         }
     }
 
+
     //removes r random disasters
     public void removeDisasters(int r){
         Random rn = new Random();
@@ -139,6 +140,11 @@ public class Player {
         }
     }
 
+    public void updateMoney(){
+        for(Boat b: boats){
+            money+=b.updateMoney();
+        }
+    }
 
 
 }

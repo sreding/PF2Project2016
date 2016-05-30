@@ -44,6 +44,7 @@ public class Path{
 
     private Port from;
     private Port to;
+    public int distanceFromTo;
 
 
 
@@ -100,7 +101,7 @@ public class Path{
                 k = new Line(l.getStart(), l.getEnd(), l.startQuadrant, l.endQuadrant);
             }
             Vector2 offsetEnd=new Vector2(l.getEnd().x - offset*k.getDirection().x,l.getEnd().y - offset*k.getDirection().y);
-            // TODO: all ports on the right side of the map only work for the last line when the previous position is left of the port
+
             if(checkLandCollision(new Line(l.getStart(),offsetEnd,l.startQuadrant,l.endQuadrant))){
                 //sets the line in the middle of the port
                 if(cQ>=2) {
@@ -112,7 +113,7 @@ public class Path{
                 l.addLine(left,c1);
                 top = left.get(left.size()-1);
                 to=p;
-                p.distanceBetweenPorts(from,to,c1*4);
+                distanceFromTo=p.distanceBetweenPorts(from,to,c1*4);
                 return true;
             }
         }

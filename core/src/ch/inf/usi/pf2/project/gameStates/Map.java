@@ -235,6 +235,7 @@ public class Map extends GameState {
         }
         Gdx.input.setInputProcessor(stage);
         player.updateDamage();
+        player.updateMoney();
         playerMoney.setText("Cash: " + player.money + "$");
         pushCameraBack();
     }
@@ -399,7 +400,7 @@ public class Map extends GameState {
         table.align(Align.top| Align.center);
         table.setWidth(stage.getWidth());
         table.setHeight(stage.getHeight());
-        table.debug();
+        //table.debug();
 
 
 
