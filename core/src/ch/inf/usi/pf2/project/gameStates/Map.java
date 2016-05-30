@@ -53,6 +53,13 @@ import java.util.ArrayList;
 public class Map extends GameState {
 
 
+    //TODO: make boat not selectable if it is already driving
+    //TODO: Add money to player class for completed task(?)
+    //TODO: Reset button, such that you can cancel making a path
+    //TODO: Add a button that allows you to switch from drawing to moving, while in drawing mode
+    //TODO: format the buttons nicely
+    //TODO: maybe add dialogs for stuff
+
 
     // all the stuff we need for drawing
     private SpriteBatch batch;
