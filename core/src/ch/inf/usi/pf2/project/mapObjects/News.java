@@ -55,6 +55,7 @@ public class News extends GameState {
 
 
     public News(SpriteBatch batch,Player player) {
+
         //initializing basic fields
         spriteBatch = new SpriteBatch();
         this.player =player;
@@ -143,8 +144,9 @@ public class News extends GameState {
 
         //setting count and index to zero, they are used later to check if actions should be executed
         count = 0;
-
         randomDisasters();
+
+
     }
 
 
@@ -254,7 +256,10 @@ public class News extends GameState {
         }
         return portList;
     }
+
+    //TODO randommze order of random articles in whole list of articles
     private static ArrayList<Article> randomArticles(){
+
         ArrayList<String> countries = new ArrayList<String>();
         countries.add("Namibia");
         countries.add("Singapore");
@@ -264,16 +269,27 @@ public class News extends GameState {
         //countries.add("Los Angeles");
         countries.addAll(portNames());
 
+        ArrayList<String> disaster = retEvt();
+
+        return makeArticles(countries,disaster,new ArrayList<Article>(),0,0);
+    }
+    private static ArrayList<String> retEvt(){
+        Random rn = new Random();
         ArrayList<String> disaster = new ArrayList<String>();
         disaster.add("earthquake");
         disaster.add("tsunami");
         disaster.add("pirates");
         disaster.add("Something Dangerous");
 
-
-
-        return makeArticles(countries,disaster,new ArrayList<Article>(),0,0);
+        ArrayList<String> disasters = new ArrayList<String>();
+        int i =  rn.nextInt(2)+1;
+        while (i >=0 ){
+            disasters.add(disaster.get(rn.nextInt(disaster.size())));
+            i--;
+        }
+        return disasters;
     }
+
     //simple function that generates a list of articles given lists of
     // strings containing names of regions and disasters
     private static ArrayList<Article> makeArticles(ArrayList<String> regions,
@@ -348,7 +364,7 @@ public class News extends GameState {
         String cons;
         String e = " ";
         if(sea){cons = returnSeaConsequences();}else{cons = returnLandConsequences();}
-        return returnReporters()+e+returnSynReport()+e+cons+". The "+returnAuthority()+" of "+place
+        return returnReporters()+e+returnSynReport()+e+cons+". The "+returnAuthority()+" in "+place
                 +e+returnSynInvestigate()+".";
     }
 
