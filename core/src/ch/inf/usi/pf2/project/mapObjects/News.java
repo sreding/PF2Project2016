@@ -85,8 +85,9 @@ public class News extends GameState {
         scrollPane.setHeight(stage.getHeight()-esc.getHeight());
 
         //TODO:add existing articles from player
-        //Adding example articles
+        //Adding example articles to be deleted
         addArticles(randomArticles());
+
 
 
         //set the initial text with some user guidance and put it in a new container to be added later
@@ -139,6 +140,7 @@ public class News extends GameState {
         verticalGroup.clearChildren();
 
 
+
         //finally add the whole table to the stage
         stage.addActor(table);
         //setting the input Processor so stage can recieve input
@@ -149,6 +151,14 @@ public class News extends GameState {
         randomDisasters();
 
 
+    }
+    @Override
+    public void update(float dt){
+        for(Boat b : player.getBoats()) {
+            if (b != null) {
+                b.updateBoat(dt);
+            }
+        }
     }
 
 
@@ -173,7 +183,7 @@ public class News extends GameState {
             count = 0;
         }
 
-        table.debug();
+        //table.debug();
 
 
         stage.act(Gdx.graphics.getDeltaTime());
