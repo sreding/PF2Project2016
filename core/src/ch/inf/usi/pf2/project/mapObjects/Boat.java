@@ -42,9 +42,7 @@ public class Boat {
     private float totalDistance;
     private boolean traveling;
     private MapObjects landPolygons;
-    private TextButton upgrade1;
-    private TextButton upgrade2;
-    private TextButton upgrade3;
+    private int counter_upgrage;
 
 
     //int crewMembers?
@@ -56,6 +54,8 @@ public class Boat {
                 Sprite topBoat, Sprite sideBoat,
                 SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,
                 MapObjects landPolygons, String label){
+
+        this.counter_upgrage=0;
         this.price = price;
         this.capacity = capacity;
         this.speed = speed;
@@ -179,10 +179,10 @@ public class Boat {
 
 
 
-    public Boat copyBoat(){
+    public Boat copyBoat(int counter){
         return new Boat(price, capacity,  speed, distanceLimit,  maintenanceCost,
          new Sprite(topBoat.getTexture()), new Sprite(sideBoat.getTexture()), batch,  cam,  shapeRenderer, WORLD_WIDTH,
-       landPolygons, label);
+       landPolygons, label+counter);
     }
 
     public void setVisible(boolean b){

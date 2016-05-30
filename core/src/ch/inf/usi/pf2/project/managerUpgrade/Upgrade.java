@@ -2,6 +2,8 @@ package ch.inf.usi.pf2.project.managerUpgrade;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import ch.inf.usi.pf2.project.gameStates.Manager;
+
 /**
  * Created by ilijagjorgjiev on 5/27/16.
  */
@@ -14,15 +16,12 @@ public class Upgrade {
     private double maintenanceCost;
     private double vulnerability;
 
-    public Upgrade(int price, int capacity, double speed, double distanceLimit,
-                   double maintenanceCost, double vulnerability)
+    public Upgrade(int price, int capacity, double speed)
     {
         this.price = price;
         this.capacity = capacity;
         this.speed = speed;
-        this.distanceLimit = distanceLimit;
-        this.maintenanceCost = maintenanceCost;
-        this.vulnerability = vulnerability;
+
     }
 
 
