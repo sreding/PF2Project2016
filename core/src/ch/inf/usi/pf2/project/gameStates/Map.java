@@ -142,8 +142,8 @@ public class Map extends GameState {
         this.player=player;
         player.addPossibleBoats(this.batch, this.cam,this.shapeRenderer,this.MAP_WIDTH,polygonMapObjects); // SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,MapObjects landPolygons,
 
-        player.addBoat(testBoat);
-        player.addBoat(testBoat2);
+        //player.addBoat(testBoat);
+        //player.addBoat(testBoat2);
 
 
 
@@ -425,6 +425,9 @@ public class Map extends GameState {
         for(Boat b: player.getBoats()){
             final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
             tb.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
+            if(b.isTraveling()){
+
+            }
             verticalGroup.addActor(tb);
             boatButtons.add(tb);
             tb.addListener(new ClickListener() {
@@ -434,7 +437,11 @@ public class Map extends GameState {
                     int i =0;
                     for(Boat b: player.getBoats()){
                         b.getCurrentPath().active=false;
-                        boatButtons.get(i++).setColor(Color.GOLD);
+                        BoatButton bb = boatButtons.get(i++);
+                        bb.setColor(Color.GOLD);
+                        if(bb.getB().isTraveling()){
+                            bb.setColor(Color.ORANGE);
+                        }
 
 
                     }

@@ -188,6 +188,7 @@ public class Boat {
     public void setVisible(boolean b){
         isVisible = b;
     }
+    public boolean isTraveling(){return traveling;}
 
 
     // various getter Methods
