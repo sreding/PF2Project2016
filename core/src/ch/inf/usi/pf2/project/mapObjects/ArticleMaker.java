@@ -57,7 +57,7 @@ public class ArticleMaker {
         Random rn = new Random();
         ArrayList<String> disasterList = new ArrayList<String>();
         disasterList.add("Earthquake");
-        disasterList.add("Coup d'état");
+        disasterList.add("Coup d'etat");
         disasterList.add("Typhoon");
         disasterList.add("Hurricane");
         disasterList.add("Storm");

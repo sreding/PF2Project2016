@@ -80,7 +80,6 @@ public class Player {
         disasters.addAll(DisasterMaker.randomDisasters());
     }
     public void addDisasters(ArrayList<Disaster> dis){
-        System.out.println("disasters added");
         disasters.addAll(dis);
     }
 

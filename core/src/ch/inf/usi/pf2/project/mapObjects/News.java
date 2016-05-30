@@ -169,7 +169,7 @@ public class News extends GameState {
             count = 0;
         }
 
-        //table.debug();
+        table.debug();
 
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -309,12 +309,13 @@ public class News extends GameState {
         Random rn = new Random();
         int numberOfDisasters = rn.nextInt(19);
         ArrayList disasters = new ArrayList();
-
+        //TODO Fix bug where place name is null
         while(numberOfDisasters > -1){
             Place place = randomPlace();
             boolean bool = (place instanceof Oceans);
             String event;
-            if(bool){event=ArticleMaker.seaDisaster();}else{event=ArticleMaker.seaDisaster();};
+            if(bool){event = ArticleMaker.seaDisaster();}else{event=ArticleMaker.seaDisaster();};
+
             Disaster disaster = new Disaster(place.getX(),place.getY(),bool,rn.nextInt(10),event,place.getName());
             disasters.add(disaster);
             numberOfDisasters--;
@@ -322,6 +323,7 @@ public class News extends GameState {
         addArticles(makeArticles(disasters));
         player.addDisasters(disasters);
     }
+
 
     public static ArrayList<Article> makeArticles(ArrayList<Disaster> dis){
         ArrayList<Article> articles = new ArrayList<Article>();
@@ -336,12 +338,77 @@ public class News extends GameState {
         if(disaster.isType()){dis = ArticleMaker.seaDisaster();}else{dis = ArticleMaker.landDisaster();}
 
         String region = disaster.getLocationName();
-
         String title = dis + ArticleMaker.firstArticleText(disaster.getGravity()) + region;
+        String text = makeContent(region,dis,disaster.getGravity(),disaster.isType());
 
-        return new Article(title,title,0);
+        return new Article(title,text,0);
+
+    }
+    public static String makeContent(String place, String event, int gravity,boolean sea){
+        String cons;
+        String e = " ";
+        if(sea){cons = returnSeaConsequences();}else{cons = returnLandConsequences();}
+        return returnReporters()+e+returnSynReport()+e+cons+". The "+returnAuthority()+" of "+place
+                +e+returnSynInvestigate()+".";
     }
 
+    public static String returnAuthority(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("military");
+        connector.add("fire department");
+        connector.add("police");
+        connector.add("ministry for the environment");
+        return connector.get(rn.nextInt(connector.size()));
+    }
+
+    public static String returnSeaConsequences(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("boats sinking");
+        connector.add("coastlines damaged");
+        connector.add("ships missing");
+        connector.add("several ships lost radio contact");
+        connector.add("small islands destroyed");
+        return connector.get(rn.nextInt(connector.size()));
+    }
+    public static String returnLandConsequences(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("fires in the city");
+        connector.add("houses collapsing");
+        connector.add("people crushed by collapsing buildings");
+        connector.add("trees falling");
+        connector.add("heavy winds destroying property");
+        return connector.get(rn.nextInt(connector.size()));
+    }
+    public static String returnReporters(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("reporters");
+        connector.add("the New York Times");
+        connector.add("the radio");
+        connector.add("a local newspaper");
+        return connector.get(rn.nextInt(connector.size()));
+    }
+    public static String returnSynReport(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("disclosed");
+        connector.add("claims");
+        connector.add("reports");
+        connector.add("gave an account of the event");
+        return connector.get(rn.nextInt(connector.size()));
+    }
+    public static String returnSynInvestigate(){
+        Random rn = new Random();
+        ArrayList<String> connector = new ArrayList<String>();
+        connector.add("investigating");
+        connector.add("looking into the matter");
+        connector.add("still clueless");
+        connector.add("making enquiries");
+        return connector.get(rn.nextInt(connector.size()));
+    }
 
 
 

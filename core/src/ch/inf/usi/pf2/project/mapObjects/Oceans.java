@@ -2,6 +2,7 @@ package ch.inf.usi.pf2.project.mapObjects;
 
 /**
  * Created by simonreding on 29/05/16.
+ * Remark: This classs should in fact be called ocean since it only represent one.
  */
 public class Oceans extends Place{
 

@@ -26,7 +26,7 @@ public class Disaster {
         this.type = type;
         this.gravity = gravity;
         this.name = name;
-
+        this.locationName = locationName;
     }
 
 
