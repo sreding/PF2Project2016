@@ -54,8 +54,8 @@ public class Map extends GameState {
 
 
 
-    //TODO: Add money to player class for completed task(?)
-    //TODO: Reset button, such that you can cancel making a path
+    //TODO: Add money to player class for completed task(?) (now have a function to calculate the air distance between two ports)
+    //TODO: Reset button, such that you can cancel making a path (at least it cancels the selection now)
     //TODO: Add a button that allows you to switch from drawing to moving, while in drawing mode
     //TODO: format the buttons nicely
     //TODO: maybe add dialogs for stuff
@@ -426,6 +426,7 @@ public class Map extends GameState {
             }
         });
         final TextButton cancel = new TextButton("cancel",skin);
+        cancel.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         cancel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -526,11 +527,25 @@ public class Map extends GameState {
             undo.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+
                     courrentBoat.getCurrentPath().undo();
                     stageButtonTouched=true;
                 }
             });
+
+            TextButton moveDraw = new TextButton("move/draw",skin);
+            moveDraw.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
+            moveDraw.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    mode+=1;
+                    mode%=2;
+                    stageButtonTouched=true;
+                }
+            });
+
             table.add(undo);
+            table.add(moveDraw);
 
 
         }
