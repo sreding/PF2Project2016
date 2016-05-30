@@ -39,6 +39,7 @@ public class Boat {
     private Line currentLine;
     private int lineCount;
     private float localDistance;
+    private float totalDistance;
     private boolean traveling;
     private MapObjects landPolygons;
     private TextButton upgrade1;
@@ -83,6 +84,7 @@ public class Boat {
         sideBoatMirrored=new Sprite(sideBoat.getTexture());
         sideBoatMirrored.setSize(150,150/ratio);
         sideBoatMirrored.setFlip(true,false);
+        totalDistance=0;
 
 
 
@@ -120,7 +122,6 @@ public class Boat {
                 sideBoat.setX(sideBoat.getX() - WORLD_WIDTH/2);
             }
             else {
-                //TODO: make boat look in the right direction
                 sideBoatMirrored.draw(batch);
                 sideBoatMirrored.setX(sideBoat.getX() + WORLD_WIDTH / 2);
                 sideBoatMirrored.draw(batch);
@@ -135,6 +136,7 @@ public class Boat {
             double dx= direction.x * speed *dt;
             double dy= direction.y * speed *dt;
             localDistance+= Math.sqrt(dx*dx+dy*dy);
+            totalDistance+= Math.sqrt(dx*dx+dy*dy);
             x+= dx;
             y+= dy;
             if(lineCount>currentPath.getPositions().size()-2){
@@ -144,6 +146,7 @@ public class Boat {
                     isVisible=false;
                     lineCount=0;
                     localDistance=0;
+                    totalDistance=0;
                 }
 
 
@@ -174,9 +177,18 @@ public class Boat {
         }
     }
 
+
+
+    public Boat copyBoat(){
+        return new Boat(price, capacity,  speed, distanceLimit,  maintenanceCost,
+         new Sprite(topBoat.getTexture()), new Sprite(sideBoat.getTexture()), batch,  cam,  shapeRenderer, WORLD_WIDTH,
+       landPolygons, label);
+    }
+
     public void setVisible(boolean b){
         isVisible = b;
     }
+    public boolean isTraveling(){return traveling;}
 
 
     // various getter Methods
