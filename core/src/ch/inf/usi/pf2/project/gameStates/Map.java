@@ -53,7 +53,7 @@ import java.util.ArrayList;
 public class Map extends GameState {
 
 
-    //TODO: make boat not selectable if it is already driving
+
     //TODO: Add money to player class for completed task(?)
     //TODO: Reset button, such that you can cancel making a path
     //TODO: Add a button that allows you to switch from drawing to moving, while in drawing mode
@@ -243,7 +243,7 @@ public class Map extends GameState {
     // handles input events
     @Override
     public void inputHandler(){
-        //stage.act(Gdx.graphics.getDeltaTime());
+        stage.act(Gdx.graphics.getDeltaTime());
 
 
         if(newsNext.isPressed()||managerNext.isPressed()){
@@ -385,15 +385,19 @@ public class Map extends GameState {
     public void showBoatButtonList(){
         selectingBoat=true;
 
+        Table table2 = new Table();
+        table2.align(Align.top | Align.center);
+        table2.setFillParent(true);
+
+
 
         Table table = new Table();
        // table.setFillParent(true);
-        table.align(Align.center| Align.center);
+        table.align(Align.top| Align.center);
         table.setWidth(stage.getWidth());
         table.setHeight(stage.getHeight());
         table.debug();
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.setMaxCheckCount(1);
+
 
 
         final TextButton confirm = new TextButton("Confirm",skin);
@@ -412,54 +416,98 @@ public class Map extends GameState {
                     drawing=true;
                     selectingBoat=false;
                     permanentActors();
+                    boatselected=false;
 
 
                 }
             }
         });
+        final TextButton cancel = new TextButton("cancel",skin);
+        cancel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stage.clear();
+                boatButtons.clear();
+                mode=0;
+                drawing =false;
+                selectingBoat=false;
+                permanentActors();
+                boatselected=false;
+
+            }
+        });
+
+
+
         //table.add(confirm);
         VerticalGroup verticalGroup2 = new VerticalGroup();
+        verticalGroup2.setWidth(Gdx.graphics.getWidth()/4);
+        verticalGroup2.fill();
         verticalGroup2.addActor(confirm);
-        final VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup2.addActor(cancel);
+        TextButton text  =new TextButton("select boat",skin);
+        text.setColor(Color.BLACK);
+        verticalGroup2.addActor(text);
+        verticalGroup2.padTop(Gdx.graphics.getHeight()/2 - verticalGroup2.getPrefHeight());
+        confirm.setWidth(Gdx.graphics.getWidth()/4);
+
+
+        //verticalGroup2.fill();
+        table2.add(verticalGroup2).width(Gdx.graphics.getWidth()/4);//.width(Gdx.graphics.getWidth()/4).padTop();
+
+
+
+        VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup.fill();
+
+
         ScrollPane scrollPane =  new ScrollPane(verticalGroup);
+        scrollPane.setHeight(stage.getHeight()/2);
+        scrollPane.setWidth(Gdx.graphics.getWidth()/4);
+
         for(Boat b: player.getBoats()){
             final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
             tb.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             if(b.isTraveling()){
-
+                tb.setColor(Color.RED);
             }
             verticalGroup.addActor(tb);
             boatButtons.add(tb);
             tb.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    courrentBoat=tb.getB();
+                    if(!tb.getB().isTraveling()) {
+                        courrentBoat = tb.getB();
+                    }
                     int i =0;
                     for(Boat b: player.getBoats()){
                         b.getCurrentPath().active=false;
                         BoatButton bb = boatButtons.get(i++);
                         bb.setColor(Color.GOLD);
                         if(bb.getB().isTraveling()){
-                            bb.setColor(Color.ORANGE);
+                            bb.setColor(Color.RED);
                         }
 
 
                     }
-                    courrentBoat.getCurrentPath().active=true;
-                    stageButtonTouched =true;
-                    boatselected=true;
-                    tb.setColor(Color.GREEN);
+                    if(!tb.getB().isTraveling()) {
+                        courrentBoat.getCurrentPath().active = true;
+                        boatselected = true;
+                        tb.setColor(Color.GREEN);
+                    }
+                    stageButtonTouched = true;
                     //stage.clear();
                     //start to draw
                 }
             });}
-        verticalGroup2.addActor(scrollPane);
-        verticalGroup2.fill();
-        verticalGroup.fill();
 
-        table.add(verticalGroup2).width(Gdx.graphics.getWidth()/4);//.padTop(4*Gdx.graphics.getHeight()/5);
-        confirm.setWidth(Gdx.graphics.getWidth()/4);
+
+
+
+        table.add(scrollPane).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/2).padTop(Gdx.graphics.getHeight()/2);//.padTop(4*Gdx.graphics.getHeight()/5);
+
         stage.addActor(table);
+        stage.addActor(table2);
         Gdx.input.setInputProcessor(stage);
 
     }
@@ -467,6 +515,7 @@ public class Map extends GameState {
     private void permanentActors(){
 
         Table table = new Table();
+
         table.setFillParent(true);
         if(drawing){
             TextButton undo = new TextButton("undo",skin);
@@ -492,6 +541,8 @@ public class Map extends GameState {
         table.align(Align.bottom| Align.left);
         table.add(manager);
         table.add(news);
+
+
         stage.addActor(table);
         Table monaaay = new Table();
         monaaay.setFillParent(true);
