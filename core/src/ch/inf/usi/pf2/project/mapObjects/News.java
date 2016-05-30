@@ -209,6 +209,7 @@ public class News extends GameState {
             txtButtons.add(button);
             verticalGroup.addActor(button);
             this.articles.add(a);
+            player.addArticles(newA);
             numberOfArticles++;
         }
 
