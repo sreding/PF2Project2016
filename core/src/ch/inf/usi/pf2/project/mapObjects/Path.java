@@ -90,22 +90,18 @@ public class Path{
 
         //last line
         if(p!= null && p != from){
-
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
-            Vector2 offsetEnd= new Vector2(l.getEnd().x - offset*l.getDirection().x,l.getEnd().y - offset*l.getDirection().y);
-            System.out.println(checkLandCollision(l));
-            /*
             Line k;
             if(cQ>=2){
-                k=new Line(new Vector2(l.getStart().x+2*c1,l.getStart().y),offsetEnd,cQ,cQ);
+                k=new Line(new Vector2(l.getStart().x+2*c1,l.getStart().y),l.getEnd(),0,0);
             }
             else {
-                k = new Line(l.getStart(), offsetEnd, l.startQuadrant, l.endQuadrant);
+                k = new Line(l.getStart(), l.getEnd(), l.startQuadrant, l.endQuadrant);
             }
-            System.out.println(checkLandCollision(k));
-            */
+            Vector2 offsetEnd=new Vector2(l.getEnd().x - offset*k.getDirection().x,l.getEnd().y - offset*k.getDirection().y);
             // TODO: all ports on the right side of the map only work for the last line when the previous position is left of the port
             if(checkLandCollision(new Line(l.getStart(),offsetEnd,l.startQuadrant,l.endQuadrant))){
+                //sets the line in the middle of the port
                 if(cQ>=2) {
                     l = new Line(top.getEnd(), new Vector2(p.getHitBox().getX()+ p.getHitBox().getWidth() / 2+ 2*c1, p.getHitBox().getY() + p.getHitBox().getHeight() / 2), top.endQuadrant, cQ);
                 }
@@ -113,7 +109,6 @@ public class Path{
                     l = new Line(top.getEnd(), new Vector2(p.getHitBox().getX()+ p.getHitBox().getWidth() / 2 , p.getHitBox().getY() + p.getHitBox().getHeight() / 2), top.endQuadrant, cQ);
                 }
                 l.addLine(left,c1);
-                System.out.println("asdf");
                 top = left.get(left.size()-1);
                 return true;
             }
@@ -134,8 +129,6 @@ public class Path{
             l = new Line(top.getEnd(),new Vector2(in.x,in.y),top.endQuadrant,cQ);
             if(left.size()==1){
 
-                System.out.println(top.getEnd().toString());
-                System.out.println(from.getHitBox().getWidth());
                 Vector2 offsetStart= new Vector2(l.getStart().x+offset*l.getDirection().x,l.getStart().y+offset*l.getDirection().y);
                 Line someV;
                 if(cQ>=2){
@@ -260,4 +253,5 @@ public class Path{
     public ArrayList<Line> getPositions(){
         return left;
     }
+    public Line getTop(){return top;}
 }

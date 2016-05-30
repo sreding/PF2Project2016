@@ -108,6 +108,7 @@ public class Boat {
 
     public void drawBoatOnMap(){
         if(isVisible) {
+            //TODO: make boat look in the right direction
             sideBoat.draw(batch);
             sideBoat.setX(sideBoat.getX() + WORLD_WIDTH/2);
             sideBoat.draw(batch);

@@ -182,11 +182,7 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        /*
-        if(courrentBoat != null){
-            courrentBoat.getCurrentPath().drawPath3(mode);
-        }
-        */
+
         for(Boat b: player.getBoats()){
             //if(b.getCurrentPath() != null)
             b.getCurrentPath().drawPath3(mode);
@@ -260,7 +256,7 @@ public class Map extends GameState {
         }
 
         Port p = player.getPorts().handlePortInput(cam);
-        if(p!= null && Gdx.input.justTouched()){
+        if(p!= null && Gdx.input.justTouched() && !stageButtonTouched){
             if(!drawing){
                 showBoatButtonList();
             }
