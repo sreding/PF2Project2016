@@ -38,6 +38,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import ch.inf.usi.pf2.project.NativeFunctions;
 import ch.inf.usi.pf2.project.mapObjects.Boat;
 import ch.inf.usi.pf2.project.mapObjects.BoatButton;
 import ch.inf. usi.pf2.project.mapObjects.Button;
@@ -107,7 +109,8 @@ public class Map extends GameState {
     private ArrayList<BoatButton> boatButtons;
 
 
-    public Map(SpriteBatch batch,Player player){
+
+    public Map(SpriteBatch batch, Player player){
         System.out.println(Gdx.input.getInputProcessor());
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
@@ -134,16 +137,12 @@ public class Map extends GameState {
 
 
 
-        Boat testBoat = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"test boat");
-        Boat testBoat2 = new Boat(9000,1000,50,99999,0, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat5.png")),this.batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects ,"another TestBoat");
 
         this.player=player;
         player.addPossibleBoats(this.batch, this.cam,this.shapeRenderer,this.MAP_WIDTH,polygonMapObjects); // SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,MapObjects landPolygons,
 
-        //player.addBoat(testBoat);
-        //player.addBoat(testBoat2);
+
+
 
 
 

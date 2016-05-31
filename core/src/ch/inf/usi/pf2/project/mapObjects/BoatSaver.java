@@ -6,12 +6,14 @@ package ch.inf.usi.pf2.project.mapObjects;
 public class BoatSaver {
     private int capacity;
     public String label;
+    public int boatVal;
 
     public BoatSaver(){
     }
     public BoatSaver(Boat b){
         capacity=b.getCapacity();
         label = b.getLabel();
+        boatVal=b.type_boat;
     }
 
 }
