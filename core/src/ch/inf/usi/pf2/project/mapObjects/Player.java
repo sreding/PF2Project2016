@@ -98,9 +98,9 @@ public class Player {
         return ports;
     }
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
-        possibleBoats.add(new Boat(10450,1200,50.2,10000,1110, new Sprite(new Texture("topBoat1.png")),
+        possibleBoats.add(new Boat(10450,1200,50.2,100,1110, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT1"));
-        possibleBoats.add(new Boat(18000,1600,55.2,19000,110, new Sprite(new Texture("topBoat2.png")),
+        possibleBoats.add(new Boat(18000,1600,55.2,190,110, new Sprite(new Texture("topBoat2.png")),
                 new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT2"));
 
 
@@ -115,7 +115,7 @@ public class Player {
         for(Disaster dis : disasters){
             for(Boat boat : boats){
                 int dist = dis.getGravity() * 10;
-
+                if(boat.isTraveling()){System.out.println(dist);}
                 if(dis.getX() - dist < (int)boat.getX()&&
                         dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&

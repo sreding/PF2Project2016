@@ -15,7 +15,7 @@ public class Disaster {
     private String locationName;
 
 
-    //how grave the disaster is, not as is getting pulled down to earth. 9 is worst, 0 best
+    //how grave the disaster is, not as is getting pulled down to earth. 10 is worst, 1 best
     private int gravity;
 
 
@@ -24,10 +24,10 @@ public class Disaster {
         this.x = x;
         this.y =  y;
         this.type = type;
-        if(gravity > 10) {
+        if(gravity < 10 && gravity != 0) {
             this.gravity = gravity;
         }else{Random rn = new Random();
-            gravity = rn.nextInt(10);}
+            gravity = rn.nextInt(10)+1;}
         this.name = name;
         this.locationName = locationName;
     }
@@ -39,7 +39,7 @@ public class Disaster {
         x = oceans.getX();
         y = oceans.getY();
         Random rn = new Random();
-        this.gravity = rn.nextInt(10);
+        this.gravity = rn.nextInt(10)+1;
     }
     public Disaster(int x,int y, String name){
 
@@ -47,7 +47,7 @@ public class Disaster {
         this.y =  y;
         //this.type = checkWater(x,y);
         Random rn = new Random();
-        this.gravity = rn.nextInt(10);
+        this.gravity = rn.nextInt(10)+1;
 
 
         this.name = name;
