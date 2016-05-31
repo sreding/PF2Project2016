@@ -101,31 +101,31 @@ public class Player {
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
 
         possibleBoats.add(new Boat(10450,1200,50.2,10000,1110, new Sprite(new Texture("topBoat1.png")),
-                new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"apollo"));
+                new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"apollo",1));
 
         possibleBoats.add(new Boat(18000,1600,55.2,19000,110, new Sprite(new Texture("topBoat2.png")),
-                new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"echo"));
+                new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"echo",2));
 
         possibleBoats.add(new Boat(23000,2000,60.2,19000,110, new Sprite(new Texture("topBoat3.png")),
-                new Sprite(new Texture("sideBoat3.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"frejus"));
+                new Sprite(new Texture("sideBoat3.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"frejus",3));
 
         possibleBoats.add(new Boat(25000,2200,65.2,19000,110, new Sprite(new Texture("topBoat3.png")),
-                new Sprite(new Texture("sideBoat4.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"helena"));
+                new Sprite(new Texture("sideBoat4.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"helena",4));
 
         possibleBoats.add(new Boat(30000,3000,61.2,19000,110, new Sprite(new Texture("topBoat5.png")),
-                new Sprite(new Texture("sideBoat5.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"jester"));
+                new Sprite(new Texture("sideBoat5.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"jester",5));
 
         possibleBoats.add(new Boat(40100,3500,57.2,19000,110, new Sprite(new Texture("topBoat6.png")),
-                new Sprite(new Texture("sideBoat6.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"luna"));
+                new Sprite(new Texture("sideBoat6.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"luna",6));
 
         possibleBoats.add(new Boat(70000,7000,60.2,19000,110, new Sprite(new Texture("topBoat7.png")),
-                new Sprite(new Texture("sideBoat7.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"aria"));
+                new Sprite(new Texture("sideBoat7.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"aria",7));
 
         possibleBoats.add(new Boat(100000,12000,55.3,19000,110, new Sprite(new Texture("topBoat8.png")),
-                new Sprite(new Texture("sideBoat8.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"nicas"));
+                new Sprite(new Texture("sideBoat8.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"nicas",8));
 
         possibleBoats.add(new Boat(150000,25000,60.2,19000,110, new Sprite(new Texture("topBoat9.png")),
-                new Sprite(new Texture("sideBoat9.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"titanic"));
+                new Sprite(new Texture("sideBoat9.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"titanic",9));
 
 
     }
