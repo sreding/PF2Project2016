@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
 
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
@@ -146,6 +147,34 @@ public class Player {
         for(Boat b: boats){
             money+=b.updateMoney();
         }
+    }
+
+    public void buildPlayerFromDb(String s){
+        //System.out.println(s);
+        Json json =  new Json();
+        SaveState saveState = json.fromJson(SaveState.class,s);
+        System.out.println(saveState.playerMoney);
+
+        for(BoatSaver b:saveState.bs){
+            System.out.println(b.label);
+        }
+
+
+        //Boat b = json.fromJson(Boat.class,s);
+        //ArrayList<Boat> b = json.fromJson(ArrayList<Boat.class>,)
+        //boats.add(b);
+    }
+
+    public String buildDatabaseFromPlayer(){
+        SaveState saveState = new SaveState(money);
+        for(Boat b:boats){
+            saveState.add(new BoatSaver(b));
+        }
+
+        Json json =  new Json();
+        String s = json.toJson(saveState);
+        return s;
+
     }
 
 

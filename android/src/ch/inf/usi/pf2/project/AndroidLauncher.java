@@ -37,7 +37,7 @@ public class AndroidLauncher extends AndroidApplication implements NativeFunctio
 
 		try {
 			FileOutputStream outputStream = openFileOutput("db.json", Context.MODE_PRIVATE);
-			outputStream.write("asdfg".getBytes());
+			outputStream.write(s.getBytes());
 			outputStream.close();
 		}catch (Exception e){
 			e.printStackTrace();
@@ -64,7 +64,6 @@ public class AndroidLauncher extends AndroidApplication implements NativeFunctio
 
 			while ((line = bufferedReader.readLine()) != null) {
 				sb.append(line);
-				System.out.println(line);
 			}
 		}catch (Exception e){
 			e.printStackTrace();

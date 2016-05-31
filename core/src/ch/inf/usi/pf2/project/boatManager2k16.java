@@ -25,6 +25,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	ArrayList<GameState> gameStates;
 	int i;
 	NativeFunctions nf;
+	Player player;
 
 	public BoatManager2k16(NativeFunctions nf){
 		this.nf=nf;
@@ -43,6 +44,10 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
 		Player player= new Player();
+		this.player=player;
+		String s = nf.getDataFromDB();
+		player.buildPlayerFromDb(s);
+
 
 		gameStates = new ArrayList<GameState>();
 		gameStates.add(new Map(batch,player));
@@ -51,18 +56,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 
 		currentState = gameStates.get(0);
 
-		 class PhoneNumber {
-			private String name;
-			private String number;
-			 PhoneNumber(String a, String b){
-				 name =a;
-				 number = b;
-			 }
-		}
-		ArrayList numbers = new ArrayList();
-		numbers.add(new PhoneNumber("Home", "206-555-1234"));
-		numbers.add(new PhoneNumber("Work", "425-555-4321"));
-
+		/*
 		Json json = new Json();
 		System.out.println(json.toJson(numbers));
 		System.out.println( Gdx.files.isLocalStorageAvailable());
@@ -70,6 +64,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		String text = file.readString();
 		System.out.println(text+"aaa");
 		//file.writeString("abc",false);
+		*/
 
 	}
 
@@ -110,6 +105,9 @@ public class BoatManager2k16 extends ApplicationAdapter {
 
 	@Override
 	public void dispose () {
+		nf.storeStringInDb(player.buildDatabaseFromPlayer());
+		System.out.println("abc");
+		super.dispose();
 
 	}
 }
