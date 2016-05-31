@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
 
 import ch.inf. usi.pf2.project.mapObjects.Button;
 import ch.inf.usi.pf2.project.mapObjects.Path;
@@ -98,6 +99,7 @@ public class Player {
         return ports;
     }
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
+
         possibleBoats.add(new Boat(10450,1200,50.2,10000,1110, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"apollo"));
 
@@ -126,7 +128,6 @@ public class Player {
                 new Sprite(new Texture("sideBoat9.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"titanic"));
 
 
-
     }
 
     public ArrayList<Boat> getPossibleBoats(){ return possibleBoats; }
@@ -138,15 +139,16 @@ public class Player {
         for(Disaster dis : disasters){
             for(Boat boat : boats){
                 int dist = dis.getGravity() * 10;
-
+                if(boat.isTraveling()){System.out.println(dist);}
                 if(dis.getX() - dist < (int)boat.getX()&&
                         dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
-                    System.out.println(dist);
-                    if(rn.nextBoolean()&& boat.getVulnerability() > 0){
+                    System.out.println("dist"+dist);
+                    if(boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                        System.out.println("Vul: " +boat.getVulnerability());
 
                     }
                 }
@@ -156,19 +158,68 @@ public class Player {
 
 
 
-    //removes r random disasters
-    public void removeDisasters(int r){
+    //removes disasters
+    public void removeDisasters(){
         Random rn = new Random();
-        while (r >= 0){
-            disasters.remove(rn.nextInt(disasters.size()));
-            r--;
+        while (disasters.size() > 5){
+            disasters.remove(disasters.size()-1);
         }
+        //System.out.println(disasters.size());
+    }
+    //removes articles
+    public void removeArticle(){
+        Random rn = new Random();
+        while (articles.size() > 20){
+            articles.remove(articles.size()-1);
+        }
+        //System.out.println(articles.size());
     }
 
     public void updateMoney(){
         for(Boat b: boats){
             money+=b.updateMoney();
         }
+    }
+
+
+    public void buildPlayerFromDb(String s){
+        //System.out.println(s);
+        Json json =  new Json();
+        SaveState saveState = json.fromJson(SaveState.class,s);
+        System.out.println(saveState.playerMoney);
+
+        for(BoatSaver b:saveState.bs){
+            System.out.println(b.label);
+        }
+
+
+        //Boat b = json.fromJson(Boat.class,s);
+        //ArrayList<Boat> b = json.fromJson(ArrayList<Boat.class>,)
+        //boats.add(b);
+    }
+
+    public String buildDatabaseFromPlayer() {
+        SaveState saveState = new SaveState(money);
+        for (Boat b : boats) {
+            saveState.add(new BoatSaver(b));
+        }
+
+        Json json = new Json();
+        String s = json.toJson(saveState);
+        return s;
+    }
+
+
+    public void rmBoat(){
+        for (Boat boat:boats){
+            int i = 0;
+            if (boat.getVulnerability() <=0){
+                boats.remove(i);
+                i++;
+                System.out.println("removed Boat");
+            }
+        }
+
     }
 
 

@@ -6,8 +6,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 //import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,12 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	GameState currentState;
 	ArrayList<GameState> gameStates;
 	int i;
+	NativeFunctions nf;
+	Player player;
+
+	public BoatManager2k16(NativeFunctions nf){
+		this.nf=nf;
+	}
 
 
 	//the create method will be called only once, when the aplication is started
@@ -36,6 +44,10 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// we start off with the Map at the moment -> we store a Map instance in currentState
 
 		Player player= new Player();
+		this.player=player;
+		String s = nf.getDataFromDB();
+		player.buildPlayerFromDb(s);
+
 
 		gameStates = new ArrayList<GameState>();
 		gameStates.add(new Map(batch,player));
@@ -43,6 +55,16 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		gameStates.add(new Manager(batch,player));
 
 		currentState = gameStates.get(0);
+
+		/*
+		Json json = new Json();
+		System.out.println(json.toJson(numbers));
+		System.out.println( Gdx.files.isLocalStorageAvailable());
+		FileHandle file = Gdx.files.internal("db.json");
+		String text = file.readString();
+		System.out.println(text+"aaa");
+		//file.writeString("abc",false);
+		*/
 
 	}
 
@@ -73,11 +95,23 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		currentState.renderGameObject();
 
 		i++;
-		if(i > 50000 && gameStates.get(1) instanceof News){
+		if(i > 10000 && gameStates.get(1) instanceof News){
+			int number;
 			((News) gameStates.get(1)).randomDisasters();
+			((News) gameStates.get(1)).rmDisasters();
+
 			System.out.println("new news");
+
 			i = 0;
 		}
+
+	}
+
+	@Override
+	public void dispose () {
+		nf.storeStringInDb(player.buildDatabaseFromPlayer());
+		System.out.println("abc");
+		super.dispose();
 
 	}
 }

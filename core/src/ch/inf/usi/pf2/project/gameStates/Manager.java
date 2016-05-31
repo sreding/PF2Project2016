@@ -790,8 +790,8 @@ public class Manager extends GameState {
 
     @Override
     public void update(float dt) {
-
-
+        playerObject.rmBoat();
+        playerObject.updateDamage();
         var =  list_of_boats.getSelected().toString();
         if(var.equals("apollo") && !boat1_bool)
         {
