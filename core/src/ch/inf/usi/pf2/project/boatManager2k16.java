@@ -6,8 +6,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 //import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,26 @@ public class BoatManager2k16 extends ApplicationAdapter {
 
 		currentState = gameStates.get(0);
 
+		 class PhoneNumber {
+			private String name;
+			private String number;
+			 PhoneNumber(String a, String b){
+				 name =a;
+				 number = b;
+			 }
+		}
+		ArrayList numbers = new ArrayList();
+		numbers.add(new PhoneNumber("Home", "206-555-1234"));
+		numbers.add(new PhoneNumber("Work", "425-555-4321"));
+
+		Json json = new Json();
+		System.out.println(json.toJson(numbers));
+		System.out.println( Gdx.files.isLocalStorageAvailable());
+		FileHandle file = Gdx.files.internal("db.json");
+		String text = file.readString();
+		System.out.println(text+"aaa");
+		//file.writeString("abc",false);
+
 	}
 
 	public  void changeState(){
@@ -78,6 +100,11 @@ public class BoatManager2k16 extends ApplicationAdapter {
 			System.out.println("new news");
 			i = 0;
 		}
+
+	}
+
+	@Override
+	public void dispose () {
 
 	}
 }
