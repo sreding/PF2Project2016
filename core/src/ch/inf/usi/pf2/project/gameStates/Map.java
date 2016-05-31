@@ -199,6 +199,7 @@ public class Map extends GameState {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
+        player.updateDamage();
 
         for(Boat b: player.getBoats()){
             //if(b.getCurrentPath() != null)
@@ -239,8 +240,9 @@ public class Map extends GameState {
                 b.updateBoat(dt);
             }
         }
+        player.rmBoat();
         Gdx.input.setInputProcessor(stage);
-        player.updateDamage();
+
         player.updateMoney();
         playerMoney.setText("Cash: " + player.money + "$");
         pushCameraBack();

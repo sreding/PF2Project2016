@@ -99,9 +99,9 @@ public class Player {
         return ports;
     }
     public void addPossibleBoats(SpriteBatch batch ,OrthographicCamera cam,ShapeRenderer shapeRenderer,int MAP_WIDTH,MapObjects polygonMapObjects){
-        possibleBoats.add(new Boat(10450,1200,50.2,10000,1110, new Sprite(new Texture("topBoat1.png")),
+        possibleBoats.add(new Boat(10450,1200,50.2,100,1110, new Sprite(new Texture("topBoat1.png")),
                 new Sprite(new Texture("sideBoat1.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT1"));
-        possibleBoats.add(new Boat(18000,1600,55.2,19000,110, new Sprite(new Texture("topBoat2.png")),
+        possibleBoats.add(new Boat(18000,1600,55.2,190,110, new Sprite(new Texture("topBoat2.png")),
                 new Sprite(new Texture("sideBoat2.png")),batch,cam,shapeRenderer, MAP_WIDTH, polygonMapObjects,"BOAT2"));
 
 
@@ -116,15 +116,16 @@ public class Player {
         for(Disaster dis : disasters){
             for(Boat boat : boats){
                 int dist = dis.getGravity() * 10;
-
+                if(boat.isTraveling()){System.out.println(dist);}
                 if(dis.getX() - dist < (int)boat.getX()&&
                         dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
-                    System.out.println(dist);
-                    if(rn.nextBoolean()&& boat.getVulnerability() > 0){
+                    System.out.println("dist"+dist);
+                    if(boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                        System.out.println("Vul: " +boat.getVulnerability());
 
                     }
                 }
@@ -134,13 +135,21 @@ public class Player {
 
 
 
-    //removes r random disasters
-    public void removeDisasters(int r){
+    //removes disasters
+    public void removeDisasters(){
         Random rn = new Random();
-        while (r >= 0){
-            disasters.remove(rn.nextInt(disasters.size()));
-            r--;
+        while (disasters.size() > 5){
+            disasters.remove(disasters.size()-1);
         }
+        //System.out.println(disasters.size());
+    }
+    //removes articles
+    public void removeArticle(){
+        Random rn = new Random();
+        while (articles.size() > 20){
+            articles.remove(articles.size()-1);
+        }
+        //System.out.println(articles.size());
     }
 
     public void updateMoney(){
@@ -148,6 +157,7 @@ public class Player {
             money+=b.updateMoney();
         }
     }
+
 
     public void buildPlayerFromDb(String s){
         //System.out.println(s);
@@ -165,15 +175,27 @@ public class Player {
         //boats.add(b);
     }
 
-    public String buildDatabaseFromPlayer(){
+    public String buildDatabaseFromPlayer() {
         SaveState saveState = new SaveState(money);
-        for(Boat b:boats){
+        for (Boat b : boats) {
             saveState.add(new BoatSaver(b));
         }
 
-        Json json =  new Json();
+        Json json = new Json();
         String s = json.toJson(saveState);
         return s;
+    }
+
+
+    public void rmBoat(){
+        for (Boat boat:boats){
+            int i = 0;
+            if (boat.getVulnerability() <=0){
+                boats.remove(i);
+                i++;
+                System.out.println("removed Boat");
+            }
+        }
 
     }
 

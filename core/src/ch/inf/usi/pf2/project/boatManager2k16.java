@@ -95,9 +95,13 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		currentState.renderGameObject();
 
 		i++;
-		if(i > 50000 && gameStates.get(1) instanceof News){
+		if(i > 10000 && gameStates.get(1) instanceof News){
+			int number;
 			((News) gameStates.get(1)).randomDisasters();
+			((News) gameStates.get(1)).rmDisasters();
+
 			System.out.println("new news");
+
 			i = 0;
 		}
 
