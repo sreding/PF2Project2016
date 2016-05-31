@@ -225,7 +225,7 @@ public class Map extends GameState {
 
         stage.draw();
 
-       // showHitBoxes();
+        // showHitBoxes();
         //showPorts();
         showPolygons();
 
@@ -402,7 +402,7 @@ public class Map extends GameState {
 
 
         Table table = new Table();
-       // table.setFillParent(true);
+        // table.setFillParent(true);
         table.align(Align.top| Align.center);
         table.setWidth(stage.getWidth());
         table.setHeight(stage.getHeight());
