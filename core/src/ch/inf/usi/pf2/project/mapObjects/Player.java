@@ -51,7 +51,7 @@ public class Player {
 
     public Player()
     {
-        this.money=10000000;
+        this.money=100000;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = new ArrayList<Disaster>();

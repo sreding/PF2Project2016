@@ -521,15 +521,26 @@ public class Manager extends GameState {
                     money.setText("Current Balance:"+" "+playerObject.money);
                     boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
                 }
+                else {
+                    dialog = new Dialog("insufficient" + System.getProperty("line.separator") + "funds",skin);
+                    dialog.getTitleLabel().setFontScale(Gdx.graphics.getDensity()*0.35f);
+                    dialog.pad(stage.getHeight()/11);
+                    dialog.getTitleLabel().setAlignment(Align.center);
+                    dialog.show(stage);
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run()
+                        {
+                            dialog.hide();
+                        }
+
+                    },2);
+
+                }
 
 
             }
         });
-
-
-
-
-
 
         this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
                 Gdx.graphics.getHeight()-player_stats.getHeight());
@@ -1199,17 +1210,6 @@ public class Manager extends GameState {
                 var.equals("luna") || var.equals("aria") || var.equals("nicas") || var.equals("titanic")) && bool && scroll1_bool) {
             bool = false;
             boat_stats_bool=true;
-//            attributes=new Label("NAME: Fascinosa",skin);
-//            boat_attributes.add(attributes).padBottom(10);
-//            boat_attributes.row();
-//            attributes=new Label("SPEED: 14KNOTS",skin);
-//            boat_attributes.add(attributes).padBottom(10);
-//            boat_attributes.row();
-//            attributes=new Label("CAPACITY: 1400PAX",skin);
-//            boat_attributes.add(attributes).padBottom(10);
-//            boat_attributes.row();
-//            attributes=new Label("MAINTENANCE: 10$/KM",skin);
-//            boat_attributes.add(attributes).padBottom(10);
             this.actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
             if(var.equals("titanic"))
             {
