@@ -321,7 +321,7 @@ public class Manager extends GameState {
                 stage.addActor(buy);
                 buy_bool=true;
 
-
+                scroll1.setScrollingDisabled(true,false);
                 container.add(scroll1).fill();
                 scroll1_bool = true;
                 boat_stats_bool = true;
