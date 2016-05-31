@@ -337,7 +337,7 @@ public class News extends GameState {
             return prt.getPorts().get(rn.nextInt(prt.getPorts().size()));
         }
     }
-    public void randomDisasters(){
+    public int randomDisasters(){
         Random rn = new Random();
         int numberOfDisasters = rn.nextInt(19);
         ArrayList disasters = new ArrayList();
@@ -353,6 +353,7 @@ public class News extends GameState {
         }
         addArticles(makeArticles(disasters));
         player.addDisasters(disasters);
+        return numberOfDisasters;
     }
 
 

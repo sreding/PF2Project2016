@@ -131,13 +131,13 @@ public class Player {
     }
 
 
-    //removes r random disasters
-    public void removeDisasters(int r){
+    //removes disasters if exceed limit
+    public void removeDisasters(){
         Random rn = new Random();
-        while (r >= 0){
-            disasters.remove(rn.nextInt(disasters.size()));
-            r--;
+        while (disasters.size() > 20){
+            disasters.remove(disasters.size()-1);
         }
+        System.out.println(disasters.size());
     }
 
     public void updateMoney(){
