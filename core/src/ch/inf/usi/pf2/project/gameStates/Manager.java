@@ -1435,12 +1435,12 @@ public class Manager extends GameState {
 
                 if(your_boat.type_boat == 9)
                 {
-                    this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
-                            Gdx.graphics.getHeight()/2 - actor.getHeight()/1.4f);
+                    this.your_actor.setPosition(Gdx.graphics.getWidth()/2 - your_actor.getWidth(),
+                            Gdx.graphics.getHeight()/2 - your_actor.getHeight()/1.4f);
                 }
                 else {
-                    this.actor.setPosition(Gdx.graphics.getWidth() / 2 - actor.getWidth(),
-                            Gdx.graphics.getHeight() / 2 - actor.getHeight());
+                    this.your_actor.setPosition(Gdx.graphics.getWidth() / 2 - your_actor.getWidth(),
+                            Gdx.graphics.getHeight() / 2 - your_actor.getHeight());
                 }
 
                 this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);

@@ -57,7 +57,7 @@ public class Boat {
                 distanceLimit, double maintenanceCost,
                 Sprite topBoat, Sprite sideBoat,
                 SpriteBatch batch, OrthographicCamera cam, ShapeRenderer shapeRenderer, int WORLD_WIDTH,
-                MapObjects landPolygons, String label){
+                MapObjects landPolygons, String label, int type_boat){
 
         this.counter_upgrage=0;
         this.price = price;
@@ -90,37 +90,7 @@ public class Boat {
         sideBoatMirrored.setFlip(true,false);
         totalDistance=0;
         moneyEarned=0;
-        if(label.equals("apollo"))
-        {
-            type_boat=1;
-        }
-        else if(label.equals("echo"))
-        {
-            type_boat=2;
-        }
-        else if(label.equals("frejus"))
-        {
-            type_boat=3;
-        }
-        else if(label.equals("helena"))
-        {
-            type_boat=4;
-        }else if(label.equals("jester"))
-        {
-            type_boat=5;
-        }else if(label.equals("luna"))
-        {
-            type_boat=6;
-        }else if(label.equals("aria"))
-        {
-            type_boat=7;
-        }else if(label.equals("nicas"))
-        {
-            type_boat=8;
-        }else if(label.equals("titanic"))
-        {
-            type_boat=9;
-        }
+        this.type_boat = type_boat;
 
 
     }
@@ -216,7 +186,7 @@ public class Boat {
     public Boat copyBoat(int counter, int type_boat){
         return new Boat(price, capacity,  speed, distanceLimit,  maintenanceCost,
          new Sprite(topBoat.getTexture()), new Sprite(sideBoat.getTexture()), batch,  cam,  shapeRenderer, WORLD_WIDTH,
-       landPolygons, label+counter);
+       landPolygons, label+counter, type_boat);
     }
 
     public int updateMoney(){
