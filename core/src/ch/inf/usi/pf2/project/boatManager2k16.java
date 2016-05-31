@@ -24,6 +24,11 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	GameState currentState;
 	ArrayList<GameState> gameStates;
 	int i;
+	NativeFunctions nf;
+
+	public BoatManager2k16(NativeFunctions nf){
+		this.nf=nf;
+	}
 
 
 	//the create method will be called only once, when the aplication is started
