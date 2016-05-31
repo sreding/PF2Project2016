@@ -29,6 +29,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -38,6 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 
 import ch.inf.usi.pf2.project.NativeFunctions;
 import ch.inf.usi.pf2.project.mapObjects.Boat;
@@ -101,8 +103,8 @@ public class Map extends GameState {
 
     private Stage stage; //
 
-    private TextButton managerNext;
-    private TextButton newsNext;
+    private com.badlogic.gdx.scenes.scene2d.ui.Button managerNext;
+    private com.badlogic.gdx.scenes.scene2d.ui.Button newsNext;
     private int nextState;
     private Label playerMoney;
     private Skin skin;
@@ -194,6 +196,7 @@ public class Map extends GameState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // we have to update the camera, before we can render
+        showPolygons();
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
@@ -227,7 +230,7 @@ public class Map extends GameState {
 
         // showHitBoxes();
         //showPorts();
-        showPolygons();
+
 
     }
 
@@ -368,7 +371,7 @@ public class Map extends GameState {
     private void showPolygons(){
         shapeRenderer.setProjectionMatrix(cam.combined);
         shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.setColor(Color.CLEAR);
         for(MapObject o : polygonMapObjects){
             if(o instanceof PolygonMapObject){
                 Polygon p = ((PolygonMapObject) o).getPolygon();
@@ -537,8 +540,24 @@ public class Map extends GameState {
         Table table = new Table();
 
         table.setFillParent(true);
+
+        TextButton manager = new TextButton("Manager",skin);
+        manager.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
+        manager.pad(Gdx.graphics.getHeight()/20);
+        managerNext = manager;
+        TextButton news = new TextButton("News",skin);
+        news.pad(Gdx.graphics.getHeight()/20);
+        news.align(Align.bottomRight);
+        news.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
+        newsNext=news;
+        table.setWidth(Gdx.graphics.getWidth());
+        table.align(Align.bottom| Align.left);
+        table.add(manager);
+
         if(drawing){
             TextButton undo = new TextButton("undo",skin);
+            undo.pad(Gdx.graphics.getHeight()/20);
+            undo.setColor(0.4f,0.3f,0.2f,1f);
             undo.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             undo.addListener(new ClickListener() {
                 @Override
@@ -550,6 +569,8 @@ public class Map extends GameState {
             });
 
             TextButton moveDraw = new TextButton("move/draw",skin);
+            moveDraw.pad(Gdx.graphics.getHeight()/20);
+            moveDraw.setColor(0.4f,0.3f,0.2f,1f);
             moveDraw.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             moveDraw.addListener(new ClickListener() {
                 @Override
@@ -562,19 +583,16 @@ public class Map extends GameState {
 
             table.add(undo);
             table.add(moveDraw);
+            table.add().width(Gdx.graphics.getWidth()-manager.getPrefWidth()-news.getPrefWidth()-undo.getPrefWidth()
+            -moveDraw.getPrefWidth());
 
 
+        }else{
+            table.add().width(Gdx.graphics.getWidth()-manager.getPrefWidth()-news.getPrefWidth());
         }
-        TextButton manager = new TextButton("Manager",skin);
-        manager.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
-        managerNext =manager;
-        TextButton news = new TextButton("News",skin);
-        news.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
-        newsNext=news;
 
-        table.align(Align.bottom| Align.left);
-        table.add(manager);
         table.add(news);
+
 
         stage.addActor(table);
         Table monaaay = new Table();

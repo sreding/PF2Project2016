@@ -191,8 +191,13 @@ public class Player {
             money = saveState.playerMoney;
 
             for (BoatSaver b : saveState.bs) {
+                Boat boat = possibleBoats.get(b.boatVal-1).copyBoat(0, b.boatVal);
+                boat.setLabel(b.label);
+                boat.counter_upgrage=b.upgradeCount;
+                boat.capacity=b.capacity;
+                boat.speed=b.speed;
 
-                boats.add(possibleBoats.get(b.boatVal).copyBoat(0, b.boatVal));
+                boats.add(boat);
 
             }
         }catch (Exception e){
