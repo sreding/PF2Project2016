@@ -229,7 +229,7 @@ public class Map extends GameState {
 
         // showHitBoxes();
         //showPorts();
-        //showPolygons();
+        showPolygons();
 
     }
 
@@ -370,7 +370,7 @@ public class Map extends GameState {
     private void showPolygons(){
         shapeRenderer.setProjectionMatrix(cam.combined);
         shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.setColor(Color.CLEAR);
         for(MapObject o : polygonMapObjects){
             if(o instanceof PolygonMapObject){
                 Polygon p = ((PolygonMapObject) o).getPolygon();
