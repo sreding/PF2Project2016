@@ -192,7 +192,7 @@ public class Player {
                 boat.setLabel(b.label);
                 boat.counter_upgrage=b.upgradeCount;
                 boat.capacity=b.capacity;
-                boat.speed=b.speed;
+
 
                 boats.add(boat);
 
