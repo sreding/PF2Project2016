@@ -341,7 +341,6 @@ public class News extends GameState {
         Random rn = new Random();
         int numberOfDisasters = rn.nextInt(19);
         ArrayList disasters = new ArrayList();
-        //TODO Fix bug where place name is null
         while(numberOfDisasters > -1){
             Place place = randomPlace();
             boolean bool = (place instanceof Oceans);

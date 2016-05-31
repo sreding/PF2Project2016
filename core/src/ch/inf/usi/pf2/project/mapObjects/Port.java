@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.Random;
 
 /**
@@ -42,6 +44,10 @@ public class Port extends Place{
         return incoming;
     }
 
+    public Vector2 getCoordinates(){
+        return new Vector2(x,y);
+    }
+
     public int getOutgoing() {
         return outgoing;
     }
@@ -52,5 +58,22 @@ public class Port extends Place{
         portSymbol.setPosition(x+WorldWidth/2,y);
         portSymbol.draw(batch);
 
+    }
+
+    public int distanceBetweenPorts(Port p1, Port p2, int WorldWidth){
+        Vector2 left;
+        Vector2 right;
+        if(p1.getCoordinates().x>p2.getCoordinates().x){
+            left = p2.getCoordinates();
+            right = p1.getCoordinates();
+        }
+        else{
+            left= p1.getCoordinates();
+            right=p2.getCoordinates();
+        }
+        int val1 =(int) right.dst(left);
+        int val2 = (int) right.dst(new Vector2(left.x+WorldWidth/2,left.y));
+        System.out.println(Math.min(val1,val2));
+        return Math.min(val1,val2);
     }
 }

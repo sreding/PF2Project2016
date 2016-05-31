@@ -42,7 +42,10 @@ public class Boat {
     private float totalDistance;
     private boolean traveling;
     private MapObjects landPolygons;
+
     public int counter_upgrage;
+
+    private int moneyEarned;
 
 
     //int crewMembers?
@@ -85,6 +88,7 @@ public class Boat {
         sideBoatMirrored.setSize(150,150/ratio);
         sideBoatMirrored.setFlip(true,false);
         totalDistance=0;
+        moneyEarned=0;
 
 
 
@@ -142,6 +146,8 @@ public class Boat {
             if(lineCount>currentPath.getPositions().size()-2){
                 if(localDistance>currentLine.getLength()){
                     traveling=false;
+                    int airDistance=currentPath.distanceFromTo;
+                    moneyEarned = airDistance*capacity - (int)totalDistance;
                     currentPath = new Path(shapeRenderer,cam, WORLD_WIDTH, this.landPolygons);
                     isVisible=false;
                     lineCount=0;
@@ -183,6 +189,12 @@ public class Boat {
         return new Boat(price, capacity,  speed, distanceLimit,  maintenanceCost,
          new Sprite(topBoat.getTexture()), new Sprite(sideBoat.getTexture()), batch,  cam,  shapeRenderer, WORLD_WIDTH,
        landPolygons, label+counter);
+    }
+
+    public int updateMoney(){
+        int ret= moneyEarned;
+        moneyEarned=0;
+        return ret;
     }
 
     public void setVisible(boolean b){

@@ -21,12 +21,13 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	SpriteBatch batch;
 	GameState currentState;
 	ArrayList<GameState> gameStates;
+	int i;
 
 
 	//the create method will be called only once, when the aplication is started
 	@Override
 	public void create () {
-
+		i=0;
 		// Sprite batch allows us to draw sprites (pictures) on the screen
 		batch = new SpriteBatch();
 
@@ -71,7 +72,12 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		// objects, that need to be displayed, like the background or sprites
 		currentState.renderGameObject();
 
-
+		i++;
+		if(i > 50000 && gameStates.get(1) instanceof News){
+			((News) gameStates.get(1)).randomDisasters();
+			System.out.println("new news");
+			i = 0;
+		}
 
 	}
 }
