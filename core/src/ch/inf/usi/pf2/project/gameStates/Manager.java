@@ -288,10 +288,6 @@ public class Manager extends GameState {
                     scroll2.remove();
                     scroll2_bool=false;
                 }
-                if(sell_bool)
-                {
-                    sell.remove();
-                }
                 if(upgrade_bool && playerObject.getBoats().size()>0)
                 {
                     upgrade.remove();
@@ -396,8 +392,6 @@ public class Manager extends GameState {
                 stage.addActor(buy_boats);
                 if(playerObject.getBoats().size()>0)
                 {
-                    stage.addActor(sell);
-                    sell_bool = true;
                     var =  list.getSelected().toString();
                     boatArrayList = playerObject.getBoats();
                     for(Boat b: boatArrayList)
@@ -563,45 +557,7 @@ public class Manager extends GameState {
             }
         });
 
-        sell.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                var = list.getSelected().toString();
-                boatArrayList = playerObject.getBoats();
-                if (playerObject.getBoats().size() > 0) {
-                    for (Boat b : boatArrayList) {
-                        if (var.equals(b.getLabel())) {
-                            your_boat = b;
-                            break;
-                        }
-                    }
 
-                    boatArrayList = new ArrayList<Boat>();
-                    playerObject.money += your_boat.getPrice();
-                    playerObject.boats.remove(your_boat);
-                    boatArrayList = playerObject.getBoats();
-                    array = new ArrayList<String>();
-                    for (Boat b : boatArrayList) {
-                        array.add(b.getLabel());
-                    }
-                    list.setItems(array.toArray());
-                    money.setText("Current Balance:" + " " + playerObject.money);
-                    boats_owned.setText("Boats Owned:" + " " + playerObject.numberOfBoatsOwned());
-                    if(playerObject.getBoats().size()==0)
-                    {
-                        boat_stats.remove();
-                        your_actor.remove();
-                        name.remove();
-                        speed.remove();
-                        capacity.remove();
-                        distanceLimit.remove();
-                        maintenanceCost.remove();
-                        vulnerability.remove();
-
-                    }
-                }
-            }
-        });
 
         this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
                 Gdx.graphics.getHeight()-player_stats.getHeight());
