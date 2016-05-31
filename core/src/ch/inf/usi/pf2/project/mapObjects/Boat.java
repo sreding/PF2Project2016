@@ -229,6 +229,9 @@ public class Boat {
         isVisible = b;
     }
     public boolean isTraveling(){return traveling;}
+    public void setLabel(String s){
+        this.label=s;
+    }
 
 
     // various getter Methods

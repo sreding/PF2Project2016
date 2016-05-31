@@ -46,11 +46,12 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		Player player= new Player();
 		this.player=player;
 		String s = nf.getDataFromDB();
-		player.buildPlayerFromDb(s);
+
 
 
 		gameStates = new ArrayList<GameState>();
 		gameStates.add(new Map(batch,player));
+		player.buildPlayerFromDb(s);
 		gameStates.add(new News(batch,player));
 		gameStates.add(new Manager(batch,player));
 
@@ -110,7 +111,6 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		nf.storeStringInDb(player.buildDatabaseFromPlayer());
-		System.out.println("abc");
 		super.dispose();
 
 	}

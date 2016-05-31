@@ -186,10 +186,13 @@ public class Player {
         //System.out.println(s);
         Json json =  new Json();
         SaveState saveState = json.fromJson(SaveState.class,s);
-        System.out.println(saveState.playerMoney);
+
+        money=saveState.playerMoney;
 
         for(BoatSaver b:saveState.bs){
-            System.out.println(b.label);
+
+            boats.add(possibleBoats.get(b.boatVal).copyBoat(0,b.boatVal));
+
         }
 
 
