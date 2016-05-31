@@ -184,15 +184,18 @@ public class Player {
 
     public void buildPlayerFromDb(String s){
         //System.out.println(s);
-        Json json =  new Json();
-        SaveState saveState = json.fromJson(SaveState.class,s);
+        try {
+            Json json = new Json();
+            SaveState saveState = json.fromJson(SaveState.class, s);
 
-        money=saveState.playerMoney;
+            money = saveState.playerMoney;
 
-        for(BoatSaver b:saveState.bs){
+            for (BoatSaver b : saveState.bs) {
 
-            boats.add(possibleBoats.get(b.boatVal).copyBoat(0,b.boatVal));
+                boats.add(possibleBoats.get(b.boatVal).copyBoat(0, b.boatVal));
 
+            }
+        }catch (Exception e){
         }
 
 
