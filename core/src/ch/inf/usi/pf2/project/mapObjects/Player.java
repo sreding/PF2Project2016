@@ -109,7 +109,8 @@ public class Player {
     public ArrayList<Boat> getPossibleBoats(){ return possibleBoats; }
 
 
-    //checks if a boat overlaps with a disaster area, reduces vulnerability if true
+
+
     public void updateDamage(){
         for(Disaster dis : disasters){
             for(Boat boat : boats){
@@ -123,7 +124,7 @@ public class Player {
                     System.out.println(dist);
                     if(rn.nextBoolean()&& boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-                        //System.out.println("got the sucker");
+
                     }
                 }
             }
@@ -131,8 +132,9 @@ public class Player {
     }
 
 
-    //removes disasters if exceed limit
-    public void removeDisasters(){
+
+    //removes r random disasters
+    public void removeDisasters(int r){
         Random rn = new Random();
         while (disasters.size() > 20){
             disasters.remove(disasters.size()-1);

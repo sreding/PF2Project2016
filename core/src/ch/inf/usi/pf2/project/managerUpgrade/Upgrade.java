@@ -43,4 +43,7 @@ public class Upgrade {
 
     public int getPrice(){ return price;}
 
+    public int getCapacity(){ return capacity;}
+
+
 }
