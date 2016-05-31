@@ -196,6 +196,7 @@ public class Map extends GameState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // we have to update the camera, before we can render
+        showPolygons();
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
@@ -229,7 +230,7 @@ public class Map extends GameState {
 
         // showHitBoxes();
         //showPorts();
-        showPolygons();
+
 
     }
 
