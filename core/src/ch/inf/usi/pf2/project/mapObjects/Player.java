@@ -38,7 +38,7 @@ import java.util.Random;
 public class Player {
 
     public int money;
-    private ArrayList<Boat> boats;
+    public ArrayList<Boat> boats;
     private ArrayList<Boat> possibleBoats;
     private ArrayList<Article> articles;
     private ArrayList<Disaster> disasters;
