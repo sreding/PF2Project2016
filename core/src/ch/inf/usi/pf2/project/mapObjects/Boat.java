@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * Created by alexandercamenzind on 17/05/16.
  */
 public class Boat {
-    private int capacity;
-    private double speed;
+    public int capacity;
+    public double speed;
     private double distanceLimit;
     private double maintenanceCost;
     private double vulnerability;
@@ -33,7 +33,7 @@ public class Boat {
     private boolean isVisible;
     private int WORLD_WIDTH;
     private String label;
-    private int price;
+    public int price;
     private float x;
     private float y;
     private Line currentLine;
@@ -42,7 +42,9 @@ public class Boat {
     private float totalDistance;
     private boolean traveling;
     private MapObjects landPolygons;
-    private int counter_upgrage;
+
+    public int counter_upgrage;
+
     private int moneyEarned;
 
 
@@ -249,4 +251,5 @@ public class Boat {
     public void setVulnerability(int damage){
         vulnerability = vulnerability - (damage/vulnerability);
     }
+    public int getCounter_upgrage(){ return counter_upgrage;}
 }
