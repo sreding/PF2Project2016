@@ -229,7 +229,7 @@ public class Map extends GameState {
 
         // showHitBoxes();
         //showPorts();
-        showPolygons();
+        //showPolygons();
 
     }
 
