@@ -112,23 +112,23 @@ public class Player {
 
 
     //checks if a boat overlaps with a disaster area, reduces vulnerability if true
-    public void updateDamage(){
-        for(Disaster dis : disasters){
-            for(Boat boat : boats){
-
-                if(dis.getX()-dis.getGravity() < (int)boat.getY()&&
-                       dis.getX()+dis.getGravity() > (int)boat.getX()&&
-                        dis.getY() - dis.getGravity() < (int)boat.getY() &&
-                        dis.getY() + dis.getGravity() > (int)boat.getY()){
-                    Random rn = new Random();
-                    System.out.println("got the sucker");
-                    if(rn.nextBoolean()){
-                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-                    }
-                }
-            }
-        }
-    }
+//    public void updateDamage(){
+//        for(Disaster dis : disasters){
+//            for(Boat boat : boats){
+//
+//                if(dis.getX()-dis.getGravity() < (int)boat.getY()&&
+//                       dis.getX()+dis.getGravity() > (int)boat.getX()&&
+//                        dis.getY() - dis.getGravity() < (int)boat.getY() &&
+//                        dis.getY() + dis.getGravity() > (int)boat.getY()){
+//                    Random rn = new Random();
+//                    System.out.println("got the sucker");
+//                    if(rn.nextBoolean()){
+//                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
 }

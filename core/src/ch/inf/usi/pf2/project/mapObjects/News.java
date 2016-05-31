@@ -168,7 +168,7 @@ public class News extends GameState {
         Gdx.input.setInputProcessor(stage);
 
         //player.newDisasters();
-        player.updateDamage();
+       // player.updateDamage();
         if(!scrollPane.isPanning()){
             for(TxtButton button:txtButtons){
                 if(button.isPressed()) {

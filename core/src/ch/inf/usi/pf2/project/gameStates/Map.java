@@ -234,7 +234,7 @@ public class Map extends GameState {
             }
         }
         Gdx.input.setInputProcessor(stage);
-        player.updateDamage();
+      //  player.updateDamage();
         playerMoney.setText("Cash: " + player.money + "$");
         pushCameraBack();
     }
