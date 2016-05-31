@@ -1301,10 +1301,40 @@ public class Manager extends GameState {
                 this.vulnerability = new Label("Vulnerability:"+ " "+ (int)your_boat.getVulnerability(),skin);
                 this.boat_stats = new Label("BOAT STATS:",skin);
 
+                if(your_boat.type_boat == 1 || your_boat.type_boat == 2 || your_boat.type_boat == 3 || your_boat.type_boat == 8)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+                }
+                else if(your_boat.type_boat == 4)
+                {
+                    your_actor.setHeight(fixed_height*1.4f*Gdx.graphics.getDensity());
+                    your_actor.setWidth(fixed_width*1.2f*Gdx.graphics.getDensity());
+                }
+                else if(your_boat.type_boat == 5 || your_boat.type_boat == 6
+                    || your_boat.type_boat == 7)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.1f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.1f);
+                }
+                else if (your_boat.type_boat == 9)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+                }
+
+                if(your_boat.type_boat == 9)
+                {
+                    this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
+                            Gdx.graphics.getHeight()/2 - actor.getHeight()/1.4f);
+                }
+                else {
+                    this.actor.setPosition(Gdx.graphics.getWidth() / 2 - actor.getWidth(),
+                            Gdx.graphics.getHeight() / 2 - actor.getHeight());
+                }
+
                 this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
 
-                this.your_actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
-                        Gdx.graphics.getHeight()/2 - actor.getHeight());
 
 
 
@@ -1381,10 +1411,39 @@ public class Manager extends GameState {
                 this.vulnerability = new Label("Vulnerability:"+ " "+ (int)your_boat.getVulnerability(),skin);
                 this.boat_stats = new Label("BOAT STATS:",skin);
 
-                this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
+                if(your_boat.type_boat == 1 || your_boat.type_boat == 2 || your_boat.type_boat == 3 || your_boat.type_boat == 8)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+                }
+                else if(your_boat.type_boat == 4)
+                {
+                    your_actor.setHeight(fixed_height*1.4f*Gdx.graphics.getDensity());
+                    your_actor.setWidth(fixed_width*1.2f*Gdx.graphics.getDensity());
+                }
+                else if(your_boat.type_boat == 5 || your_boat.type_boat == 6
+                        || your_boat.type_boat == 7)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.1f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.1f);
+                }
+                else if (your_boat.type_boat == 9)
+                {
+                    your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+                }
 
-                this.your_actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
-                        Gdx.graphics.getHeight()/2 - actor.getHeight());
+                if(your_boat.type_boat == 9)
+                {
+                    this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
+                            Gdx.graphics.getHeight()/2 - actor.getHeight()/1.4f);
+                }
+                else {
+                    this.actor.setPosition(Gdx.graphics.getWidth() / 2 - actor.getWidth(),
+                            Gdx.graphics.getHeight() / 2 - actor.getHeight());
+                }
+
+                this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
 
 
 
