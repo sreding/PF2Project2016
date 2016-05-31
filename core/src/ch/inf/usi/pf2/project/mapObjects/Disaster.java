@@ -24,7 +24,7 @@ public class Disaster {
         this.x = x;
         this.y =  y;
         this.type = type;
-        if(gravity < 10) {
+        if(gravity > 10) {
             this.gravity = gravity;
         }else{Random rn = new Random();
             gravity = rn.nextInt(10);}
@@ -38,12 +38,14 @@ public class Disaster {
         this.name = oceans.getName();
         x = oceans.getX();
         y = oceans.getY();
+        Random rn = new Random();
+        this.gravity = rn.nextInt(10);
     }
     public Disaster(int x,int y, String name){
 
         this.x = x;
         this.y =  y;
-        this.type = checkWater(x,y);
+        //this.type = checkWater(x,y);
         Random rn = new Random();
         this.gravity = rn.nextInt(10);
 
@@ -53,10 +55,6 @@ public class Disaster {
 
     }
 
-//    TODO: implement function so that it returns true only if disaster is in water
-    private boolean checkWater(int x, int y){
-        return true;
-    }
 
     public int getGravity() {
         return gravity;
