@@ -139,7 +139,7 @@ public class Player {
         for(Disaster dis : disasters){
             for(Boat boat : boats){
                 int dist = dis.getGravity() * 10;
-                if(boat.isTraveling()){System.out.println(dist);}
+                //if(boat.isTraveling()){System.out.println(dist);}
                 if(dis.getX() - dist < (int)boat.getX()&&
                         dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&
@@ -147,7 +147,6 @@ public class Player {
                     Random rn = new Random();
                     if(boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-
                     }
                 }
             }
