@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -44,6 +45,7 @@ import ch.inf.usi.pf2.project.mapObjects.Player;
 import ch.inf.usi.pf2.project.mapObjects.Ports;
 import ch.inf.usi.pf2.project.mapObjects.Port;
 import javafx.scene.input.TouchEvent;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -54,9 +56,7 @@ public class Map extends GameState {
 
 
 
-    //TODO: Add money to player class for completed task(?) (now have a function to calculate the air distance between two ports)
     //TODO: Reset button, such that you can cancel making a path (at least it cancels the selection now)
-    //TODO: Add a button that allows you to switch from drawing to moving, while in drawing mode
     //TODO: format the buttons nicely
     //TODO: maybe add dialogs for stuff
 
@@ -173,8 +173,13 @@ public class Map extends GameState {
 
 
         nextState =0;
+        NinePatch temp = new NinePatch(new Texture("titleTexture.png"), 10, 10, 10, 10);
+        Skin skin2 = new Skin();
+        skin.add("background",temp);
         playerMoney = new Label("$$$$ Money $$$$$: ",skin );
-        playerMoney.setColor(Color.GOLDENROD);
+        Label.LabelStyle l = playerMoney.getStyle();
+        l.background= skin.getDrawable("background");
+        playerMoney.setColor(Color.WHITE);
         permanentActors();
         boatButtons=new ArrayList<BoatButton>();
 
@@ -183,6 +188,7 @@ public class Map extends GameState {
 
     @Override
     public void renderGameObject(){
+
 
 
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // im not sure what that does but i'll leave it in case we need it
@@ -405,6 +411,9 @@ public class Map extends GameState {
 
 
         final TextButton confirm = new TextButton("Confirm",skin);
+        float pad=Gdx.graphics.getHeight()/45;
+        confirm.padTop(pad);
+        confirm.padBottom(pad);
         confirm.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
 
         confirm.addListener(new ClickListener() {
@@ -421,12 +430,12 @@ public class Map extends GameState {
                     selectingBoat=false;
                     permanentActors();
                     boatselected=false;
-
-
                 }
             }
         });
         final TextButton cancel = new TextButton("cancel",skin);
+        cancel.padTop(pad);
+        cancel.padBottom(pad);
         cancel.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         cancel.addListener(new ClickListener() {
             @Override
@@ -451,13 +460,14 @@ public class Map extends GameState {
         verticalGroup2.addActor(confirm);
         verticalGroup2.addActor(cancel);
         TextButton text  =new TextButton("select boat",skin);
+        text.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         text.setColor(Color.BLACK);
         verticalGroup2.addActor(text);
         verticalGroup2.padTop(Gdx.graphics.getHeight()/2 - verticalGroup2.getPrefHeight());
         confirm.setWidth(Gdx.graphics.getWidth()/4);
 
 
-        //verticalGroup2.fill();
+        //verticalGroup2.fill()
         table2.add(verticalGroup2).width(Gdx.graphics.getWidth()/4);//.width(Gdx.graphics.getWidth()/4).padTop();
 
 
@@ -470,12 +480,16 @@ public class Map extends GameState {
         scrollPane.setHeight(stage.getHeight()/2);
         scrollPane.setWidth(Gdx.graphics.getWidth()/4);
 
+        float buttonPad = Gdx.graphics.getHeight()/60;
+
         for(Boat b: player.getBoats()){
             final BoatButton tb = new BoatButton(b.getLabel(),skin,b);
             tb.getLabel().setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
             if(b.isTraveling()){
                 tb.setColor(Color.RED);
             }
+            tb.padTop(buttonPad);
+            tb.padBottom(buttonPad);
             verticalGroup.addActor(tb);
             boatButtons.add(tb);
             tb.addListener(new ClickListener() {
