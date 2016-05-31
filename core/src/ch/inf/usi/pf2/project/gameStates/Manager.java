@@ -381,10 +381,12 @@ public class Manager extends GameState {
                 table.setPosition(0,container.getHeight());
 
                 scroll2 = new ScrollPane(table, skin);
+                scroll2.setScrollingDisabled(true,false);
                 Label label = new Label("Your Boats" + System.getProperty("line.separator") + "Menu",skin);
                 table.add(label).row();
                 label.setAlignment(Align.center);
                 table.add(list);
+
 
                 buy_boats.setHeight(Gdx.graphics.getHeight()/4);
                 buy_boats.setWidth(Gdx.graphics.getWidth()/6);
