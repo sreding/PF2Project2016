@@ -166,7 +166,7 @@ public class News extends GameState {
     public void renderGameObject(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(stage);
-
+        player.rmBoat();
         //player.newDisasters();
        // player.updateDamage();
         if(!scrollPane.isPanning()){
@@ -273,7 +273,7 @@ public class News extends GameState {
         return portList;
     }
 
-    //TODO randommze order of random articles in whole list of articles
+    //TODO randomize order of random articles in whole list of articles
     private static ArrayList<Article> randomArticles(){
 
         ArrayList<String> countries = new ArrayList<String>();
@@ -451,6 +451,10 @@ public class News extends GameState {
         oceanses.add(new Oceans(546,20,10,"Arctic Ocean"));
         oceanses.add(new Oceans(278,327,12,"Indian Ocean"));
         return oceanses;
+    }
+    public void rmDisasters(){
+        player.removeDisasters();
+        player.removeArticle();
     }
 
 

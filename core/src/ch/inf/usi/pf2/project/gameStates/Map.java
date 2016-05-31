@@ -233,6 +233,7 @@ public class Map extends GameState {
                 b.updateBoat(dt);
             }
         }
+        player.rmBoat();
         Gdx.input.setInputProcessor(stage);
         player.updateDamage();
         player.updateMoney();

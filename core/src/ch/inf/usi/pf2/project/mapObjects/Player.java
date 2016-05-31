@@ -121,9 +121,10 @@ public class Player {
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
-                    System.out.println(dist);
-                    if(rn.nextBoolean()&& boat.getVulnerability() > 0){
+                    System.out.println("dist"+dist);
+                    if(boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                        System.out.println("Vul: " +boat.getVulnerability());
 
                     }
                 }
@@ -133,18 +134,37 @@ public class Player {
 
 
 
-    //removes r random disasters
-    public void removeDisasters(int r){
+    //removes disasters
+    public void removeDisasters(){
         Random rn = new Random();
-        while (disasters.size() > 20){
+        while (disasters.size() > 5){
             disasters.remove(disasters.size()-1);
         }
-        System.out.println(disasters.size());
+        //System.out.println(disasters.size());
+    }
+    //removes articles
+    public void removeArticle(){
+        Random rn = new Random();
+        while (articles.size() > 20){
+            articles.remove(articles.size()-1);
+        }
+        //System.out.println(articles.size());
     }
 
     public void updateMoney(){
         for(Boat b: boats){
             money+=b.updateMoney();
+        }
+    }
+
+    public void rmBoat(){
+        for (Boat boat:boats){
+            int i = 0;
+            if (boat.getVulnerability() <=0){
+                boats.remove(i);
+                i++;
+                System.out.println("removed Boat");
+            }
         }
     }
 
