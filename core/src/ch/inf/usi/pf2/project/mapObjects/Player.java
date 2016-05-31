@@ -145,10 +145,8 @@ public class Player {
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
-                    System.out.println("dist"+dist);
                     if(boat.getVulnerability() > 0){
                         boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-                        System.out.println("Vul: " +boat.getVulnerability());
 
                     }
                 }
