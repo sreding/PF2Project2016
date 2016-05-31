@@ -86,9 +86,6 @@ public class Manager extends GameState {
     private Label vulnerability;
     private Label boat_stats;
     private Label player_stats;
-    private TextButton upgrade1;
-    private TextButton upgrade2;
-    private TextButton upgrade3;
     private TextButton buy;
     private Label price;
     private Label money;
@@ -103,9 +100,16 @@ public class Manager extends GameState {
     private boolean scroll2_bool;
     private boolean buy_bool;
     private boolean boat_stats_bool;
-    private boolean boat1_bool,boat2_bool;
+    private boolean boat1_bool,boat2_bool,boat3_bool,boat4_bool,boat5_bool,boat6_bool,boat7_bool,boat8_bool,boat9_bool;
     private int counter1;
     private int counter2;
+    private int counter3;
+    private int counter4;
+    private int counter5;
+    private int counter6;
+    private int counter7;
+    private int counter8;
+    private int counter9;
     private ArrayList<String> array;
     private TextButton upgrade;
     private Upgrade upgrade_stats;
@@ -121,21 +125,41 @@ public class Manager extends GameState {
     private boolean label_boolean;
     private Label label;
     private double height;
+    private float fixed_width;
+    private float fixed_height;
+    private Boat someBoat;
+    private Texture someTexture;
+    private Sprite someSprite;
 
 
     public Manager(SpriteBatch batch,Player player)
     {
+
         already_displayed=false;
         upgrade_bool = false;
         label_boolean=false;
         first_time_enter=true;
         counter1=0;
         counter2=0;
+        counter3=0;
+        counter4=0;
+        counter5=0;
+        counter6=0;
+        counter7=0;
+        counter8=0;
+        counter9=0;
         scroll1_bool=false;
         scroll2_bool=false;
         your_boats_bool=false;
         boat1_bool=false;
-        boat1_bool=false;
+        boat2_bool=false;
+        boat3_bool=false;
+        boat4_bool=false;
+        boat5_bool=false;
+        boat6_bool=false;
+        boat7_bool=false;
+        boat8_bool=false;
+        boat9_bool=false;
         buy_bool = false;
         boat_stats_bool=false;
         this.playerObject=player;
@@ -143,6 +167,10 @@ public class Manager extends GameState {
         this.batch=batch;
         stage = new Stage(new ScreenViewport(),batch);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        someBoat  = playerObject.getPossibleBoats().get(2);
+        someSprite =  new Sprite(someBoat.getSideBoat());
+        fixed_width = someSprite.getWidth();
+        fixed_height = someSprite.getHeight();
         Gdx.input.setInputProcessor(stage);
 
         // TEST BOAT !
@@ -156,7 +184,7 @@ public class Manager extends GameState {
         this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
         this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
         this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
-        this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
+        this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
         this.boat_stats = new Label("BOAT STATS:",skin);
 
         this.player_stats = new Label("PLAYER STATS:",skin);
@@ -196,7 +224,7 @@ public class Manager extends GameState {
         table.align(Align.right|Align.top);
         table.setPosition(0,container.getHeight());
         this.list_of_boats = new List(skin);
-        this.list_of_boats.setItems(new String[] {"BOAT1", "BOAT2", "BOAT3", "BOAT4", "BOAT5", "BOAT6", "BOAT7","BOAT8", "BOAT9", "BOAT10"});
+        this.list_of_boats.setItems(new String[] {"apollo", "echo", "frejus", "helena", "jester", "luna", "aria","nicas", "titanic"});
         list_of_boats.setPosition(0,Gdx.graphics.getHeight());
         final Texture texture = new Texture(Gdx.files.internal("sideTexture.png"));
 
@@ -395,15 +423,50 @@ public class Manager extends GameState {
             {
                 if(playerObject.money>=testBoat.getPrice()) {
 
-                    if(testBoat.getLabel().equals("BOAT1"))
+                    if(testBoat.getLabel().equals("apollo"))
                     {
                         counter1+=1;
-                        playerObject.addBoat(testBoat.copyBoat(counter1));
+                        playerObject.addBoat(testBoat.copyBoat(counter1,1));
                     }
-                    else if (testBoat.getLabel().equals("BOAT2"))
+                    else if (testBoat.getLabel().equals("echo"))
                     {
                         counter2+=1;
-                        playerObject.addBoat(testBoat.copyBoat(counter2));
+                        playerObject.addBoat(testBoat.copyBoat(counter2,2));
+                    }
+                    else if (testBoat.getLabel().equals("frejus"))
+                    {
+                        counter3+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter3,3));
+                    }
+                    else if (testBoat.getLabel().equals("helena"))
+                    {
+                        counter4+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter4,4));
+                    }
+                    else if (testBoat.getLabel().equals("jester"))
+                    {
+                        counter5+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter5,5));
+                    }
+                    else if (testBoat.getLabel().equals("luna"))
+                    {
+                        counter6+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter6,6));
+                    }
+                    else if (testBoat.getLabel().equals("aria"))
+                    {
+                        counter7+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter7,7));
+                    }
+                    else if (testBoat.getLabel().equals("nicas"))
+                    {
+                        counter8+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter8,8));
+                    }
+                    else if (testBoat.getLabel().equals("titanic"))
+                    {
+                        counter9+=1;
+                        playerObject.addBoat(testBoat.copyBoat(counter9,9));
                     }
 
                     playerObject.money-=testBoat.getPrice();
@@ -458,6 +521,7 @@ public class Manager extends GameState {
                     money.setText("Current Balance:"+" "+playerObject.money);
                     boats_owned.setText("Boats Owned:"+ " "+playerObject.numberOfBoatsOwned());
                 }
+
 
             }
         });
@@ -729,7 +793,7 @@ public class Manager extends GameState {
 
 
         var =  list_of_boats.getSelected().toString();
-        if(var.equals("BOAT1") && !boat1_bool)
+        if(var.equals("apollo") && !boat1_bool)
         {
             if(boat_stats_bool)
             {
@@ -752,20 +816,31 @@ public class Manager extends GameState {
             region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
             actor = new Image(region);
 
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+
+
             this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
             this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
             this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
             this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
             this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
             this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
-            this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
             this.boat_stats = new Label("BOAT STATS:",skin);
 
-            boat1_bool=true;
-            boat2_bool=false;
-            //playerObject.updateDamage();
+            boat1_bool = true;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
+
         }
-        else if(var.equals("BOAT2") && !boat2_bool)
+        else if(var.equals("echo") && !boat2_bool)
         {
             if(boat_stats_bool)
             {
@@ -787,19 +862,341 @@ public class Manager extends GameState {
             region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
             actor = new Image(region);
 
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+
             this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
             this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
             this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
             this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
             this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
             this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
-            this.vulnerability = new Label("Vulnerability:"+ " "+ testBoat.getVulnerability(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
             this.boat_stats = new Label("BOAT STATS:",skin);
 
             boat1_bool = false;
             boat2_bool = true;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
         }
-        if ((var.equals("BOAT1") || var.equals("BOAT2")) && bool && scroll1_bool) {
+        else if(var.equals("frejus") && !boat3_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(2);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = true;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
+
+        }
+        else if(var.equals("helena") && !boat4_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(3);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*1.4f*Gdx.graphics.getDensity());
+            actor.setWidth(fixed_width*1.2f*Gdx.graphics.getDensity());
+
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = true;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
+        }
+        else if(var.equals("jester") && !boat5_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(4);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.1f);
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.1f);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = true;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
+
+        }
+        else if(var.equals("luna") && !boat6_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(5);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.1f);
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.1f);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = true;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = false;
+        }
+        else if(var.equals("aria") && !boat7_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(6);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.1f);
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.1f);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = true;
+            boat8_bool = false;
+            boat9_bool = false;
+        }
+        else if(var.equals("nicas") && !boat8_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(7);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity());
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity());
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = true;
+            boat9_bool = false;
+        }
+        else if(var.equals("titanic") && !boat9_bool)
+        {
+            if(boat_stats_bool)
+            {
+                boat_stats.remove();
+                actor.remove();
+                name.remove();
+                speed.remove();
+                capacity.remove();
+                distanceLimit.remove();
+                maintenanceCost.remove();
+                vulnerability.remove();
+                price.remove();
+                boat_stats_bool=false;
+                bool = true;
+            }
+            testBoat = playerObject.getPossibleBoats().get(8);
+
+            boat = new Sprite(testBoat.getSideBoat()).getTexture();
+            region = new TextureRegion(boat,boat.getWidth(),boat.getHeight());
+            actor = new Image(region);
+
+            actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+
+            this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
+            this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
+            this.capacity = new Label("Capacity:"+" "+ testBoat.getCapacity(),skin);
+            this.speed = new Label("Speed:"+" "+ testBoat.getSpeed(),skin);
+            this.distanceLimit = new Label("Distance Limit:"+ " "+ testBoat.getDistanceLimit(),skin);
+            this.maintenanceCost = new Label("Maintenance:"+ " "+ testBoat.getMaintenanceCost(),skin);
+            this.vulnerability = new Label("Vulnerability:"+ " "+ (int)testBoat.getVulnerability(),skin);
+            this.boat_stats = new Label("BOAT STATS:",skin);
+
+            boat1_bool = false;
+            boat2_bool = false;
+            boat3_bool = false;
+            boat4_bool = false;
+            boat5_bool = false;
+            boat6_bool = false;
+            boat7_bool = false;
+            boat8_bool = false;
+            boat9_bool = true;
+        }
+        if ((var.equals("apollo") || var.equals("echo") || var.equals("frejus") || var.equals("helena") || var.equals("jester") ||
+                var.equals("luna") || var.equals("aria") || var.equals("nicas") || var.equals("titanic")) && bool && scroll1_bool) {
             bool = false;
             boat_stats_bool=true;
 //            attributes=new Label("NAME: Fascinosa",skin);
@@ -814,9 +1211,15 @@ public class Manager extends GameState {
 //            attributes=new Label("MAINTENANCE: 10$/KM",skin);
 //            boat_attributes.add(attributes).padBottom(10);
             this.actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
-
-            this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
-                    Gdx.graphics.getHeight()/2 - actor.getHeight());
+            if(var.equals("titanic"))
+            {
+                this.actor.setPosition(Gdx.graphics.getWidth()/2 - actor.getWidth(),
+                        Gdx.graphics.getHeight()/2 - actor.getHeight()/1.4f);
+            }
+            else {
+                this.actor.setPosition(Gdx.graphics.getWidth() / 2 - actor.getWidth(),
+                        Gdx.graphics.getHeight() / 2 - actor.getHeight());
+            }
 
 
 
@@ -895,7 +1298,7 @@ public class Manager extends GameState {
                 this.speed = new Label("Speed:"+" "+ your_boat.getSpeed(),skin);
                 this.distanceLimit = new Label("Distance Limit:"+ " "+ your_boat.getDistanceLimit(),skin);
                 this.maintenanceCost = new Label("Maintenance:"+ " "+ your_boat.getMaintenanceCost(),skin);
-                this.vulnerability = new Label("Vulnerability:"+ " "+ your_boat.getVulnerability(),skin);
+                this.vulnerability = new Label("Vulnerability:"+ " "+ (int)your_boat.getVulnerability(),skin);
                 this.boat_stats = new Label("BOAT STATS:",skin);
 
                 this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
@@ -975,7 +1378,7 @@ public class Manager extends GameState {
                 this.speed = new Label("Speed:"+" "+ your_boat.getSpeed(),skin);
                 this.distanceLimit = new Label("Distance Limit:"+ " "+ your_boat.getDistanceLimit(),skin);
                 this.maintenanceCost = new Label("Maintenance:"+ " "+ your_boat.getMaintenanceCost(),skin);
-                this.vulnerability = new Label("Vulnerability:"+ " "+ your_boat.getVulnerability(),skin);
+                this.vulnerability = new Label("Vulnerability:"+ " "+ (int)your_boat.getVulnerability(),skin);
                 this.boat_stats = new Label("BOAT STATS:",skin);
 
                 this.your_actor.setScale(Gdx.graphics.getDensity()*0.5f,Gdx.graphics.getDensity()*0.5f);
@@ -1044,8 +1447,6 @@ public class Manager extends GameState {
                     label_boolean=false;
                 }
             }
-
-
 
     }
 
