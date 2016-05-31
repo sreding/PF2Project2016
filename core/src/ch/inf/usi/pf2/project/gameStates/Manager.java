@@ -920,18 +920,16 @@ public class Manager extends GameState {
                 System.out.print(boat_stats.getHeight());
                 this.name.setPosition(Gdx.graphics.getWidth()*3/100,
                         Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
-                this.price.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
                 this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
                 this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
                 this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
                 this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
                 this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
 
                 this.stage.addActor(this.boat_stats);
                 this.stage.addActor(this.name);
@@ -1003,18 +1001,16 @@ public class Manager extends GameState {
                 System.out.print(boat_stats.getHeight());
                 this.name.setPosition(Gdx.graphics.getWidth()*3/100,
                         Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
-                this.price.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
                 this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
                 this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
                 this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
                 this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
                 this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
 
                 this.stage.addActor(this.boat_stats);
                 this.stage.addActor(this.name);
