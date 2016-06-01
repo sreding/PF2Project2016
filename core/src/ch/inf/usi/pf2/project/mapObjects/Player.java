@@ -146,8 +146,10 @@ public class Player {
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
+
                     if(boat.getVulnerability() > 0){
-                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
+                        System.out.println("boat in distress");
+                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5)/8);
                     }
                 }
             }
@@ -222,7 +224,7 @@ public class Player {
     public void rmBoat(){
         for (Boat boat:boats){
             int i = 0;
-            if (boat.getVulnerability() <=0){
+            if (boat.getVulnerability() <= 1){
                 boats.remove(i);
                 i++;
                 System.out.println("removed Boat");

@@ -203,6 +203,7 @@ public class Map extends GameState {
         tiledMapRenderer.render();
 
         player.updateDamage();
+        player.rmBoat();
 
         for(Boat b: player.getBoats()){
             //if(b.getCurrentPath() != null)
