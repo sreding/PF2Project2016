@@ -59,7 +59,7 @@ public class Pause extends GameState{
                 "Andrea P: Database, Interface\n" +
                 "Ilija G: Java\n" +
                 "Gianmarco P: Artwork\n" +
-                "Simon R: Java,Interface,Idea\n" +
+                "Simon R: Java,Interface,Idea\n\n" +
                 "An HCI Project under guidance of Omar J.",skin);
         instructionContent.setColor(1f,1f,1f,1f);
         instructionContent.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
