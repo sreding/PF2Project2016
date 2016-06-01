@@ -54,6 +54,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		player.buildPlayerFromDb(s);
 		gameStates.add(new News(batch,player));
 		gameStates.add(new Manager(batch,player));
+		gameStates.add(new Pause(batch,player));
 
 		currentState = gameStates.get(0);
 

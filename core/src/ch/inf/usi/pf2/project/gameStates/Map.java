@@ -105,6 +105,7 @@ public class Map extends GameState {
 
     private com.badlogic.gdx.scenes.scene2d.ui.Button managerNext;
     private com.badlogic.gdx.scenes.scene2d.ui.Button newsNext;
+    private com.badlogic.gdx.scenes.scene2d.ui.Button pauseNext;
     private int nextState;
     private Label playerMoney;
     private Skin skin;
@@ -553,6 +554,7 @@ public class Map extends GameState {
         table.setWidth(Gdx.graphics.getWidth());
         table.align(Align.bottom| Align.left);
         table.add(manager);
+        TextButton pause = new TextButton("Pause",skin);
 
         if(drawing){
             TextButton undo = new TextButton("undo",skin);
@@ -591,14 +593,26 @@ public class Map extends GameState {
             table.add().width(Gdx.graphics.getWidth()-manager.getPrefWidth()-news.getPrefWidth());
         }
 
+        Table tbl = new Table(skin);
+        tbl.align(Align.topRight);
+        tbl.setWidth(Gdx.graphics.getWidth());
+        tbl.setHeight(Gdx.graphics.getHeight());
+        pause.pad(Gdx.graphics.getHeight()/20);
+        tbl.add(pause);
+
         table.add(news);
 
-
+        stage.addActor(tbl);
         stage.addActor(table);
         Table monaaay = new Table();
         monaaay.setFillParent(true);
+        monaaay.setWidth(Gdx.graphics.getWidth());
         monaaay.align(Align.topLeft);
         monaaay.add(playerMoney);
+        pauseNext = pause;
+
+        pause.align(Align.topRight);
+
         stage.addActor(monaaay);
         Gdx.input.setInputProcessor(stage);
 
@@ -617,7 +631,11 @@ public class Map extends GameState {
             stage.clear();
             permanentActors();
             return 2;
-        }
+        }else if(pauseNext.isPressed() && Gdx.input.justTouched()){
+            selectingBoat=false;
+            stage.clear();
+            permanentActors();
+            return 3;}
         else {
             return 0;
         }
