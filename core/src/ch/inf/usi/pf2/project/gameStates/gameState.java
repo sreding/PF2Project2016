@@ -15,5 +15,7 @@ public abstract class GameState {
     }
 
     public abstract int nextState();
+    public void removeStage(){
+    }
 
 }

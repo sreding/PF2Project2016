@@ -1546,4 +1546,7 @@ public class Manager extends GameState {
     @Override
     public void inputHandler() {
     }
-}
+    public void removeStage(){
+        stage.dispose();
+    }
+    }

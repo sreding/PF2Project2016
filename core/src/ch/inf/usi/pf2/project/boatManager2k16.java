@@ -26,6 +26,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 	int i;
 	NativeFunctions nf;
 	Player player;
+	Pause p;
 
 	public BoatManager2k16(NativeFunctions nf){
 		this.nf=nf;
@@ -46,6 +47,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		Player player= new Player();
 		this.player=player;
 		String s = nf.getDataFromDB();
+		p = new Pause(batch,player);
 
 
 
@@ -54,7 +56,7 @@ public class BoatManager2k16 extends ApplicationAdapter {
 		player.buildPlayerFromDb(s);
 		gameStates.add(new News(batch,player));
 		gameStates.add(new Manager(batch,player));
-		gameStates.add(new Pause(batch,player));
+		gameStates.add(p);
 
 		currentState = gameStates.get(0);
 
@@ -106,6 +108,31 @@ public class BoatManager2k16 extends ApplicationAdapter {
 
 			i = 0;
 		}
+
+
+		if(p.shouldReset()){
+			reset();
+		}
+
+	}
+	private void reset(){
+		//player.reset();
+		nf.storeStringInDb("");
+		for(GameState s : gameStates){
+			s.removeStage();
+		}
+		p=new Pause(batch,player);
+		Player player= new Player();
+		this.player=player;
+		gameStates = new ArrayList<GameState>();
+		gameStates.add(new Map(batch,player));
+		gameStates.add(new News(batch,player));
+		gameStates.add(new Manager(batch,player));
+		gameStates.add(p);
+
+		currentState = gameStates.get(0);
+
+		//Gdx.input.setInputProcessor(null);
 
 	}
 
