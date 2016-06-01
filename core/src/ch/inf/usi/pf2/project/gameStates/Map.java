@@ -599,7 +599,9 @@ public class Map extends GameState {
         tbl.setHeight(Gdx.graphics.getHeight());
         pause.pad(Gdx.graphics.getHeight()/20);
         tbl.add(pause);
-
+        news.setColor(1f,1f,1f,0.98f);
+        manager.setColor(1f,1f,1f,0.98f);
+        pause.setColor(1f,1f,1f,0.98f);
         table.add(news);
 
         stage.addActor(tbl);

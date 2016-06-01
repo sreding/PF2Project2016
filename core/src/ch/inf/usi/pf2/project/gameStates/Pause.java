@@ -45,16 +45,19 @@ public class Pause extends GameState{
 
         pause = new Label("Game Paused",skin);
         instructions = new Label("How to play:",skin);
-        instructions.setColor(0.4f,0.5f,1f,1f);
-        instructionContent = new Label("Map: Drag the map left or right to see different" +
+        instructions.setFontScale(Gdx.graphics.getWidth()*1.3f/1810f,Gdx.graphics.getHeight()*1.3f/1080f);
+        instructions.setColor(1f,1f,1f,1f);
+        instructionContent = new Label("Map: Drag the map left or right to see different " +
                 "parts of the world. Buy a boat in the manager (bottom left) and start " +
                 "drawing routes by selecting a port. A window will show up asking you to select " +
-                "a boat. Confirm selection and start drawing to a differnt port." +
-                "In the news you can find out about disasters along the route. Careful: Disaster may" +
-                "harm your boat so stay away from the regions mentioned in the news." +
+                "a boat. Confirm selection and start drawing to a different port." +
+                "\n\nIn the news you can find out about disasters along the route. Careful: Disaster may " +
+                "harm your boat so stay away from the regions mentioned in the news.\n\n" +
                 "Manager: here you can buy new boat or upgrade existing ones.",skin);
-        instructionContent.setColor(0.4f,0.4f,0.4f,1f);
+        instructionContent.setColor(1f,1f,1f,1f);
+        instructionContent.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         reset = new TextButton("Reset Game", skin);
+        reset.pad(Gdx.graphics.getHeight()/20);
         back = new TextButton("Back", skin);
         back.pad(Gdx.graphics.getHeight()/20);
         instructionContent.setWrap(true);
@@ -62,10 +65,11 @@ public class Pause extends GameState{
         container.maxWidth(Gdx.graphics.getWidth()/2);
         container.padTop(Gdx.graphics.getHeight()/40);
 
-        container.padRight(Gdx.graphics.getHeight()/40);
+        //container.padRight(Gdx.graphics.getHeight()/40);
         scrollPane = new ScrollPane(container);
         container.fillX();
-
+        reset.setColor(1f,1f,1f,0.7f);
+        back.setColor(1f,1f,1f,0.7f);
         table = new Table();
         table.align(Align.center);
         table.setWidth(Gdx.graphics.getWidth());
@@ -73,19 +77,26 @@ public class Pause extends GameState{
         //table.add(back);
         table.row();
         table.add(instructions).align(Align.center);
-        table.add(scrollPane).align(Align.left);
-        table.debug();
+        table.row();
+        table.add(scrollPane).align(Align.left).width(Gdx.graphics.getWidth()/2).height(Gdx.graphics.getHeight()/2);
+        table.row().height(Gdx.graphics.getHeight()/10);
+        table.add();
+        table.row();
+        table.add(reset);
+        //table.debug();
         Table tbl = new Table();
         tbl.setWidth(Gdx.graphics.getWidth());
         tbl.setHeight(Gdx.graphics.getHeight());
         tbl.align(Align.topLeft);
         tbl.add(back);
+        tbl.add().width(Gdx.graphics.getWidth()-back.getPrefWidth()-pause.getPrefWidth());
+        tbl.add(pause).align(Align.topRight);
 
         stage.addActor(table);
         stage.addActor(tbl);
         background = new Sprite(new Texture(Gdx.files.internal("backgroundTexture.png")),
                 Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        background.setColor(0.1f,0.1f,0.1f,0.5f);
+        background.setColor(0.4f,0.2f,0.2f,1f);
     }
     public void Update(float dt){
         stage.draw();
