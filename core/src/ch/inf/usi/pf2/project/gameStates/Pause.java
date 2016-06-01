@@ -53,7 +53,14 @@ public class Pause extends GameState{
                 "a boat. Confirm selection and start drawing to a different port." +
                 "\n\nIn the news you can find out about disasters along the route. Careful: Disaster may " +
                 "harm your boat so stay away from the regions mentioned in the news.\n\n" +
-                "Manager: here you can buy new boat or upgrade existing ones.",skin);
+                "Manager: here you can buy new boat or upgrade existing ones." +
+                "\n\n\n Credits:" +
+                "\nalexander c: java, database\n" +
+                "andrea p: database, interface\n" +
+                "ilija g: java\n" +
+                "gianmarco p: artwork\n" +
+                "simon r:java,interface,idea\n" +
+                "under guidance of omar j.",skin);
         instructionContent.setColor(1f,1f,1f,1f);
         instructionContent.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         reset = new TextButton("Reset Game", skin);
