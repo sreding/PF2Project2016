@@ -114,7 +114,7 @@ public class Map extends GameState {
 
 
     public Map(SpriteBatch batch, Player player){
-        System.out.println(Gdx.input.getInputProcessor());
+       // System.out.println(Gdx.input.getInputProcessor());
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
 
@@ -642,6 +642,11 @@ public class Map extends GameState {
             return 0;
         }
     }
+    public void removeStage(){
+        stage.dispose();
+    }
+
+
 
 
 

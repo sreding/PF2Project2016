@@ -44,6 +44,7 @@ public class Player {
     private ArrayList<Disaster> disasters;
     private Ports ports;
     public int MAP_WIDTH;
+    private final static int startMoney=100000;
     //
 
 
@@ -51,7 +52,7 @@ public class Player {
 
     public Player()
     {
-        this.money=100000;
+        this.money=startMoney;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = new ArrayList<Disaster>();
@@ -228,6 +229,14 @@ public class Player {
             }
         }
 
+    }
+
+    public void reset(){
+        boats = new ArrayList<Boat>();
+        money = startMoney;
+    }
+
+    public void removeStage(){
     }
 
 

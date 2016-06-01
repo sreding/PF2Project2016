@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -35,6 +37,7 @@ public class Pause extends GameState{
     ScrollPane scrollPane;
     TextButton back;
     Sprite background;
+    private boolean resetGame;
 
 
     public Pause(SpriteBatch batch, Player player){
@@ -42,6 +45,7 @@ public class Pause extends GameState{
         this.player = player;
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport(),batch);
+        this.resetGame=false;
 
         pause = new Label("Game Paused",skin);
         instructions = new Label("How to play:",skin);
@@ -65,6 +69,13 @@ public class Pause extends GameState{
         instructionContent.setFontScale(Gdx.graphics.getWidth()/1810f,Gdx.graphics.getHeight()/1080f);
         reset = new TextButton("Reset Game", skin);
         reset.pad(Gdx.graphics.getHeight()/20);
+        reset.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                resetGame=true;
+            }
+        });
+
         back = new TextButton("Back", skin);
         back.pad(Gdx.graphics.getHeight()/20);
         instructionContent.setWrap(true);
@@ -126,5 +137,11 @@ public class Pause extends GameState{
             return 0;
         }else{
         return 3;}
+    }
+    public boolean shouldReset(){
+        return resetGame;
+    }
+    public void removeStage(){
+        stage.dispose();
     }
 }
