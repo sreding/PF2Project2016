@@ -220,7 +220,7 @@ public class Manager extends GameState {
         this.sell = new TextButton("sell"+System.getProperty("line.separator")+"boat",skin);
 
         this.sell.setHeight(Gdx.graphics.getHeight()/6);
-        this.sell.setWidth(Gdx.graphics.getWidth()/8);
+        this.sell.setWidth(Gdx.graphics.getWidth()/6);
         this.sell.setPosition(0,Gdx.graphics.getHeight()/3);
         sell.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f,Gdx.graphics.getDensity()*0.3f);
 
@@ -333,7 +333,7 @@ public class Manager extends GameState {
 
                 your_boats.setHeight(Gdx.graphics.getHeight()/4);
                 your_boats.setWidth(Gdx.graphics.getWidth()/6);
-                your_boats.setPosition(Gdx.graphics.getWidth()/2,0);
+                your_boats.setPosition(Gdx.graphics.getWidth()/1.67f,0);
                 stage.addActor(your_boats);
                 stage.addActor(buy);
                 buy_bool=true;
@@ -353,6 +353,11 @@ public class Manager extends GameState {
                 your_boats_bool=true;
                 boatArrayList = new ArrayList<Boat>();
                 boatArrayList = playerObject.getBoats();
+                if(playerObject.getBoats().size()>0)
+                {
+                    stage.addActor(sell);
+                    sell_bool = true;
+                }
                 array = new ArrayList<String>();
                 for(Boat b: boatArrayList)
                 {
@@ -408,7 +413,7 @@ public class Manager extends GameState {
 
                 buy_boats.setHeight(Gdx.graphics.getHeight()/4);
                 buy_boats.setWidth(Gdx.graphics.getWidth()/6);
-                buy_boats.setPosition(Gdx.graphics.getWidth()/2,0);
+                buy_boats.setPosition(Gdx.graphics.getWidth()/1.77f,0);
                 stage.addActor(buy_boats);
                 if(playerObject.getBoats().size()>0)
                 {
@@ -591,7 +596,6 @@ public class Manager extends GameState {
                     }
 
                     boatArrayList = new ArrayList<Boat>();
-                    System.out.print(your_boat.getPrice());
                     playerObject.money += your_boat.getPrice()-your_boat.getPrice()/100*20;
                     if(your_boat.type_boat == 1)
                     {
@@ -1636,10 +1640,11 @@ public class Manager extends GameState {
             }
             if(your_boat.counter_upgrage<3)
             {
-                upgrade.setText("upgrade"+(your_boat.counter_upgrage+1) + System.getProperty("line.separator")+
-                                "price:" + your_boat.price/10 + System.getProperty("line.separator") +
-                                "capacity:"+ ((your_boat.getCapacity()+(your_boat.getCapacity()/100*10))/1000)+"k"+ System.getProperty("line.separator") +
-                                "speed:"+ (your_boat.getSpeed()+(your_boat.getSpeed()/100*10)));
+                upgrade.setText("upgrade"+ (your_boat.counter_upgrage+1) + System.getProperty("line.separator")+
+                                "price:" + ((int) your_boat.price/10 + System.getProperty("line.separator")) +
+                                "capacity:"+ ((float)((your_boat.getCapacity()+(your_boat.getCapacity()/100*10))/1000f))+"k"+ System.getProperty("line.separator") +
+                                "speed:"+ ((int)(your_boat.getSpeed()+(your_boat.getSpeed()/100*10))));
+
             }
             if(your_boat.counter_upgrage>=3)
             {
