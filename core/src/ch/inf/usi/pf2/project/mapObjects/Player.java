@@ -67,6 +67,7 @@ public class Player {
     public void addBoat(Boat b){
         boats.add(b);
     }
+    public void removeBoat(Boat b) {boats.remove(b);}
     public int numberOfBoatsOwned(){
         int i = boats.size();
         return i;

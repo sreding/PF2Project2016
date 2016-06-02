@@ -56,8 +56,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import java.util.ArrayList;
 
-
-
 /**
  * Created by simonreding on 17/05/16.
  */
@@ -124,7 +122,7 @@ public class Manager extends GameState {
     private boolean first_time_enter;
     private boolean label_boolean;
     private Label label;
-    private double height;
+    private float height;
     private float fixed_width;
     private float fixed_height;
     private Boat someBoat;
@@ -132,6 +130,7 @@ public class Manager extends GameState {
     private Sprite someSprite;
     private TextButton sell;
     private boolean sell_bool;
+    private int save;
 
 
     public Manager(SpriteBatch batch,Player player)
@@ -226,10 +225,11 @@ public class Manager extends GameState {
         sell.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f,Gdx.graphics.getDensity()*0.3f);
 
         this.back = new TextButton("Back",skin);
-        this.back.setHeight(Gdx.graphics.getHeight()/5);
-        this.back.setWidth(Gdx.graphics.getWidth()/7);
+        this.back.setHeight(Gdx.graphics.getHeight()/4);
+        this.back.setWidth(Gdx.graphics.getWidth()/6);
         back.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f,Gdx.graphics.getDensity()*0.3f);
         this.back.setPosition(0,0);
+        this.back.setColor(Color.FIREBRICK);
         this.stage.addActor(back);
 
         //this.back
@@ -246,8 +246,8 @@ public class Manager extends GameState {
         this.list = new List(skin);
         this.list.setItems(new String[] {});
 
-        your_boats =  new TextButton("YOUR BOATS",skin);
-        buy_boats =  new TextButton("BUY BOATS",skin);
+        your_boats =  new TextButton("YOUR BOATS" + System.getProperty("line.separator") + "menu",skin);
+        buy_boats =  new TextButton("BUY BOATS"  + System.getProperty("line.separator") + "menu" ,skin);
         your_boats.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f,Gdx.graphics.getDensity()*0.3f);
         buy_boats.getLabel().setFontScale(Gdx.graphics.getDensity()*0.3f,Gdx.graphics.getDensity()*0.3f);
 
@@ -265,6 +265,15 @@ public class Manager extends GameState {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                boat1_bool = false;
+                boat2_bool = false;
+                boat3_bool = false;
+                boat4_bool = false;
+                boat5_bool = false;
+                boat6_bool = false;
+                boat7_bool = false;
+                boat8_bool = false;
+                boat9_bool = false;
                 if(label_boolean)
                 {
                     label.remove();
@@ -291,6 +300,7 @@ public class Manager extends GameState {
                 if(sell_bool)
                 {
                     sell.remove();
+                    sell_bool = false;
                 }
                 if(upgrade_bool && playerObject.getBoats().size()>0)
                 {
@@ -313,6 +323,7 @@ public class Manager extends GameState {
 
                 scroll1 = new ScrollPane(table, skin);
                 Label label = new Label("Buy Boats" + System.getProperty("line.separator") + "Menu",skin);
+                label.setFontScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
                 table.add(label).row();
                 label.setAlignment(Align.center);
 
@@ -386,6 +397,7 @@ public class Manager extends GameState {
 
                 scroll2 = new ScrollPane(table, skin);
                 Label label = new Label("Your Boats" + System.getProperty("line.separator") + "Menu",skin);
+                label.setFontScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
                 table.add(label).row();
                 label.setAlignment(Align.center);
                 table.add(list);
@@ -531,7 +543,7 @@ public class Manager extends GameState {
                         break;
                     }
                 }
-                upgrade_stats = new Upgrade(your_boat.price/10,your_boat.getCapacity()+your_boat.capacity/10*100, your_boat.getSpeed()+your_boat.getSpeed()/10*100);
+                upgrade_stats = new Upgrade(your_boat.price/10,your_boat.getCapacity()+your_boat.capacity/100*10, your_boat.getSpeed()+your_boat.getSpeed()/100*10);
                 if(playerObject.money>=upgrade_stats.getPrice())
                 {
                     your_boat.counter_upgrage+=1;
@@ -577,18 +589,83 @@ public class Manager extends GameState {
                     }
 
                     boatArrayList = new ArrayList<Boat>();
-                    playerObject.money += your_boat.getPrice();
-                    playerObject.boats.remove(your_boat);
+                    System.out.print(your_boat.getPrice());
+                    playerObject.money += your_boat.getPrice()-your_boat.getPrice()/100*20;
+                    if(your_boat.type_boat == 1)
+                    {
+                        counter1-=1;
+                    }
+                    else if (your_boat.type_boat == 2)
+                    {
+                        counter2-=1;
+                    }
+                    else if (your_boat.type_boat == 3)
+                    {
+                        counter3-=1;
+                    }
+                    else if (your_boat.type_boat == 4)
+                    {
+                        counter4-=1;
+
+                    }
+                    else if (your_boat.type_boat == 5)
+                    {
+                        counter5-=1;
+                    }
+                    else if (your_boat.type_boat == 6)
+                    {
+                        counter6-=1;
+
+                    }
+                    else if (your_boat.type_boat == 7)
+                    {
+                        counter7-=1;
+
+                    }
+                    else if (your_boat.type_boat == 8)
+                    {
+                        counter8-=1;
+                    }
+                    else if (your_boat.type_boat == 9)
+                    {
+                        counter9-=1;
+                    }
+                    playerObject.removeBoat(your_boat);
                     boatArrayList = playerObject.getBoats();
                     array = new ArrayList<String>();
                     for (Boat b : boatArrayList) {
                         array.add(b.getLabel());
                     }
+                    Table table = new Table(skin);
+                    table.getSkin().getFont("default-font").getData().setScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
+                    table.align(Align.right|Align.top);
+                    table.setPosition(0,container.getHeight());
+
+                    scroll2.remove();
+
+                    scroll2 = new ScrollPane(table, skin);
+                    Label label1 = new Label("Your Boats" + System.getProperty("line.separator") + "Menu",skin);
+                    label1.setFontScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
+                    table.add(label1).row();
+                    label1.setAlignment(Align.center);
+                    table.add(list);
                     list.setItems(array.toArray());
+                    container.add(scroll2).fill();
+                    scroll2_bool=true;
                     money.setText("Current Balance:" + " " + playerObject.money);
                     boats_owned.setText("Boats Owned:" + " " + playerObject.numberOfBoatsOwned());
                     if(playerObject.getBoats().size()==0)
                     {
+                        sell.remove();
+                        if(upgrade_bool) {
+                            upgrade.remove();
+                            upgrade_bool = false;
+                        }
+                        if(label_boolean)
+                        {
+                            label.remove();
+                        }
+                        sell_bool = false;
                         boat_stats.remove();
                         your_actor.remove();
                         name.remove();
@@ -603,18 +680,20 @@ public class Manager extends GameState {
             }
         });
 
+
+
+        this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
+        this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
+        this.boats_owned.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
+
         this.player_stats.setPosition(Gdx.graphics.getWidth()*40/100,
-                Gdx.graphics.getHeight()-player_stats.getHeight());
+                stage.getHeight()-player_stats.getHeight());
+
         this.money.setPosition(Gdx.graphics.getWidth()*37/100,
                 Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
         this.boats_owned.setPosition(Gdx.graphics.getWidth()*37/100,
                 Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
 
-        height= player_stats.getHeight();
-
-        this.player_stats.setFontScale(0.333f*Gdx.graphics.getDensity(),0.333f*Gdx.graphics.getDensity());
-        this.money.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
-        this.boats_owned.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
         this.stage.addActor(this.player_stats);
         this.stage.addActor(this.boats_owned);
@@ -916,6 +995,7 @@ public class Manager extends GameState {
         }
         else if(var.equals("echo") && !boat2_bool)
         {
+            System.out.println("I enter");
             if(boat_stats_bool)
             {
                 boat_stats.remove();
@@ -1248,7 +1328,7 @@ public class Manager extends GameState {
             actor = new Image(region);
 
             actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
-            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+            actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.3f);
 
             this.name = new Label("Name:"+" "+testBoat.getLabel(),skin);
             this.price = new Label("Price:"+" "+testBoat.getPrice(),skin);
@@ -1299,22 +1379,21 @@ public class Manager extends GameState {
             this.vulnerability.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
             this.boat_stats.setPosition(Gdx.graphics.getWidth()*6/100,
-                    Gdx.graphics.getHeight()-boat_stats.getHeight());
-            System.out.print(boat_stats.getHeight());
+                    Gdx.graphics.getHeight()-boat_stats.getHeight()+Gdx.graphics.getDensity()*8);
             this.name.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100+Gdx.graphics.getDensity()*8);
             this.price.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2+Gdx.graphics.getDensity()*8);
             this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3+Gdx.graphics.getDensity()*8);
             this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4+Gdx.graphics.getDensity()*8);
             this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5+Gdx.graphics.getDensity()*8);
             this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6+Gdx.graphics.getDensity()*8);
             this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
-                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7);
+                    Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*7+Gdx.graphics.getDensity()*8);
 
             this.stage.addActor(this.boat_stats);
             this.stage.addActor(this.name);
@@ -1384,7 +1463,7 @@ public class Manager extends GameState {
                 else if (your_boat.type_boat == 9)
                 {
                     your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
-                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.3f);
                 }
 
                 if(your_boat.type_boat == 9)
@@ -1413,19 +1492,19 @@ public class Manager extends GameState {
                 this.vulnerability.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
                 this.boat_stats.setPosition(Gdx.graphics.getWidth()*6/100,
-                        Gdx.graphics.getHeight()-boat_stats.getHeight());
+                        Gdx.graphics.getHeight()-boat_stats.getHeight()+Gdx.graphics.getDensity()*8);
                 this.name.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100+Gdx.graphics.getDensity()*8);
                 this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2+Gdx.graphics.getDensity()*8);
                 this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3+Gdx.graphics.getDensity()*8);
                 this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4+Gdx.graphics.getDensity()*8);
                 this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5+Gdx.graphics.getDensity()*8);
                 this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6+Gdx.graphics.getDensity()*8);
 
                 this.stage.addActor(this.boat_stats);
                 this.stage.addActor(this.name);
@@ -1493,7 +1572,7 @@ public class Manager extends GameState {
                 else if (your_boat.type_boat == 9)
                 {
                     your_actor.setHeight(fixed_height*Gdx.graphics.getDensity()*1.7f);
-                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.7f);
+                    your_actor.setWidth(fixed_width*Gdx.graphics.getDensity()*1.3f);
                 }
 
                 if(your_boat.type_boat == 9)
@@ -1522,20 +1601,19 @@ public class Manager extends GameState {
                 this.vulnerability.setFontScale(0.3f*Gdx.graphics.getDensity(),0.3f*Gdx.graphics.getDensity());
 
                 this.boat_stats.setPosition(Gdx.graphics.getWidth()*6/100,
-                        Gdx.graphics.getHeight()-boat_stats.getHeight());
-
+                        Gdx.graphics.getHeight()-boat_stats.getHeight()+Gdx.graphics.getDensity()*8);
                 this.name.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100+Gdx.graphics.getDensity()*8);
                 this.capacity.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*2+Gdx.graphics.getDensity()*8);
                 this.speed.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*3+Gdx.graphics.getDensity()*8);
                 this.distanceLimit.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*4+Gdx.graphics.getDensity()*8);
                 this.maintenanceCost.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*5+Gdx.graphics.getDensity()*8);
                 this.vulnerability.setPosition(Gdx.graphics.getWidth()*3/100,
-                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6);
+                        Gdx.graphics.getHeight()-name.getHeight()-Gdx.graphics.getHeight()*5/100*6+Gdx.graphics.getDensity()*8);
 
                 this.stage.addActor(this.boat_stats);
                 this.stage.addActor(this.name);
@@ -1548,7 +1626,18 @@ public class Manager extends GameState {
                 this.stage.addActor(this.your_actor);
 
             }
+            if(sell_bool)
+            {
+                sell.setText("sell boat" + System.getProperty("line.separator") +"for:"+ (your_boat.getPrice()-your_boat.getPrice()/100*20));
 
+            }
+            if(your_boat.counter_upgrage<3)
+            {
+                upgrade.setText("upgrade"+(your_boat.counter_upgrage+1) + System.getProperty("line.separator")+
+                                "price:" + your_boat.price/10 + System.getProperty("line.separator") +
+                                "capacity:"+ ((your_boat.getCapacity()+(your_boat.getCapacity()/100*10))/1000)+"k"+ System.getProperty("line.separator") +
+                                "speed:"+ (your_boat.getSpeed()+(your_boat.getSpeed()/100*10)));
+            }
             if(your_boat.counter_upgrage>=3)
             {
                 if(!label_boolean) {
@@ -1565,7 +1654,7 @@ public class Manager extends GameState {
                 if(label_boolean)
                 {
                     label.remove();
-                    upgrade_stats = new Upgrade(your_boat.price/10,your_boat.getCapacity()+your_boat.capacity/10*100, your_boat.getSpeed()+your_boat.getSpeed()/10*100);
+                    upgrade_stats = new Upgrade(your_boat.price/10,your_boat.getCapacity()+your_boat.getCapacity()/100*10, your_boat.getSpeed()+your_boat.getSpeed()/100*10);
                     stage.addActor(upgrade);
                     label_boolean=false;
                 }
