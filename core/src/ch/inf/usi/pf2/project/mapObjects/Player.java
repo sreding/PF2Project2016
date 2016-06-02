@@ -44,6 +44,7 @@ public class Player {
     private ArrayList<Disaster> disasters;
     private Ports ports;
     public int MAP_WIDTH;
+    private final static int startMoney=100000;
     //
 
 
@@ -51,7 +52,7 @@ public class Player {
 
     public Player()
     {
-        this.money=100000;
+        this.money=startMoney;
         this.boats = new ArrayList<Boat>();
         this.articles = new ArrayList<Article>();
         this.disasters = new ArrayList<Disaster>();
@@ -140,17 +141,16 @@ public class Player {
         for(Disaster dis : disasters){
             for(Boat boat : boats){
                 int dist = dis.getGravity() * 10;
-                if(boat.isTraveling()){System.out.println(dist);}
+                //if(boat.isTraveling()){System.out.println(dist);}
                 if(dis.getX() - dist < (int)boat.getX()&&
                         dis.getX() + dist > (int)boat.getX()&&
                         dis.getY() - dist < (int)boat.getY() &&
                         dis.getY() + dist > (int)boat.getY() && boat.isTraveling()){
                     Random rn = new Random();
-                    System.out.println("dist"+dist);
-                    if(boat.getVulnerability() > 0){
-                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5));
-                        System.out.println("Vul: " +boat.getVulnerability());
 
+                    if(boat.getVulnerability() > 0){
+                        System.out.println("boat in distress");
+                        boat.setVulnerability(rn.nextInt((int)boat.getVulnerability()+5)/8);
                     }
                 }
             }
@@ -196,7 +196,7 @@ public class Player {
                 boat.setLabel(b.label);
                 boat.counter_upgrage=b.upgradeCount;
                 boat.capacity=b.capacity;
-                boat.speed=b.speed;
+
 
                 boats.add(boat);
 
@@ -225,13 +225,21 @@ public class Player {
     public void rmBoat(){
         for (Boat boat:boats){
             int i = 0;
-            if (boat.getVulnerability() <=0){
+            if (boat.getVulnerability() <= 1){
                 boats.remove(i);
                 i++;
                 System.out.println("removed Boat");
             }
         }
 
+    }
+
+    public void reset(){
+        boats = new ArrayList<Boat>();
+        money = startMoney;
+    }
+
+    public void removeStage(){
     }
 
 

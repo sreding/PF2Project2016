@@ -250,7 +250,7 @@ public class Boat {
         return y;
     }
     public void setVulnerability(int damage){
-        vulnerability = vulnerability - (damage/vulnerability);
+        vulnerability = vulnerability - damage;
     }
     public int getCounter_upgrage(){ return counter_upgrage;}
 }

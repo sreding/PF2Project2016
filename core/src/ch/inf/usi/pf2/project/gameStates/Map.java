@@ -105,6 +105,7 @@ public class Map extends GameState {
 
     private com.badlogic.gdx.scenes.scene2d.ui.Button managerNext;
     private com.badlogic.gdx.scenes.scene2d.ui.Button newsNext;
+    private com.badlogic.gdx.scenes.scene2d.ui.Button pauseNext;
     private int nextState;
     private Label playerMoney;
     private Skin skin;
@@ -113,7 +114,7 @@ public class Map extends GameState {
 
 
     public Map(SpriteBatch batch, Player player){
-        System.out.println(Gdx.input.getInputProcessor());
+       // System.out.println(Gdx.input.getInputProcessor());
         this.batch = batch;
         this.initialProjectionMatrix = batch.getProjectionMatrix().cpy();
 
@@ -202,6 +203,7 @@ public class Map extends GameState {
         tiledMapRenderer.render();
 
         player.updateDamage();
+        player.rmBoat();
 
         for(Boat b: player.getBoats()){
             //if(b.getCurrentPath() != null)
@@ -553,6 +555,7 @@ public class Map extends GameState {
         table.setWidth(Gdx.graphics.getWidth());
         table.align(Align.bottom| Align.left);
         table.add(manager);
+        TextButton pause = new TextButton("Pause",skin);
 
         if(drawing){
             TextButton undo = new TextButton("undo",skin);
@@ -591,14 +594,28 @@ public class Map extends GameState {
             table.add().width(Gdx.graphics.getWidth()-manager.getPrefWidth()-news.getPrefWidth());
         }
 
+        Table tbl = new Table(skin);
+        tbl.align(Align.topRight);
+        tbl.setWidth(Gdx.graphics.getWidth());
+        tbl.setHeight(Gdx.graphics.getHeight());
+        pause.pad(Gdx.graphics.getHeight()/20);
+        tbl.add(pause);
+        news.setColor(1f,1f,1f,0.98f);
+        manager.setColor(1f,1f,1f,0.98f);
+        pause.setColor(1f,1f,1f,0.98f);
         table.add(news);
 
-
+        stage.addActor(tbl);
         stage.addActor(table);
         Table monaaay = new Table();
         monaaay.setFillParent(true);
+        monaaay.setWidth(Gdx.graphics.getWidth());
         monaaay.align(Align.topLeft);
         monaaay.add(playerMoney);
+        pauseNext = pause;
+
+        pause.align(Align.topRight);
+
         stage.addActor(monaaay);
         Gdx.input.setInputProcessor(stage);
 
@@ -617,11 +634,20 @@ public class Map extends GameState {
             stage.clear();
             permanentActors();
             return 2;
-        }
+        }else if(pauseNext.isPressed() && Gdx.input.justTouched()){
+            selectingBoat=false;
+            stage.clear();
+            permanentActors();
+            return 3;}
         else {
             return 0;
         }
     }
+    public void removeStage(){
+        stage.dispose();
+    }
+
+
 
 
 

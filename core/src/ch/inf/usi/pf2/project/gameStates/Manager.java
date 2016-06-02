@@ -297,11 +297,13 @@ public class Manager extends GameState {
                     scroll2.remove();
                     scroll2_bool=false;
                 }
+
                 if(sell_bool)
                 {
                     sell.remove();
                     sell_bool = false;
                 }
+
                 if(upgrade_bool && playerObject.getBoats().size()>0)
                 {
                     upgrade.remove();
@@ -336,7 +338,7 @@ public class Manager extends GameState {
                 stage.addActor(buy);
                 buy_bool=true;
 
-
+                scroll1.setScrollingDisabled(true,false);
                 container.add(scroll1).fill();
                 scroll1_bool = true;
                 boat_stats_bool = true;
@@ -396,11 +398,13 @@ public class Manager extends GameState {
                 table.setPosition(0,container.getHeight());
 
                 scroll2 = new ScrollPane(table, skin);
+                scroll2.setScrollingDisabled(true,false);
                 Label label = new Label("Your Boats" + System.getProperty("line.separator") + "Menu",skin);
                 label.setFontScale(0.6f*Gdx.graphics.getDensity(),0.6f*Gdx.graphics.getDensity());
                 table.add(label).row();
                 label.setAlignment(Align.center);
                 table.add(list);
+
 
                 buy_boats.setHeight(Gdx.graphics.getHeight()/4);
                 buy_boats.setWidth(Gdx.graphics.getWidth()/6);
@@ -408,8 +412,6 @@ public class Manager extends GameState {
                 stage.addActor(buy_boats);
                 if(playerObject.getBoats().size()>0)
                 {
-                    stage.addActor(sell);
-                    sell_bool = true;
                     var =  list.getSelected().toString();
                     boatArrayList = playerObject.getBoats();
                     for(Boat b: boatArrayList)
@@ -679,6 +681,7 @@ public class Manager extends GameState {
                 }
             }
         });
+
 
 
 
@@ -1677,4 +1680,7 @@ public class Manager extends GameState {
     @Override
     public void inputHandler() {
     }
-}
+    public void removeStage(){
+        stage.dispose();
+    }
+    }
